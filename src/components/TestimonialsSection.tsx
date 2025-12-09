@@ -6,22 +6,22 @@ const TestimonialsSection = () => {
 
   const testimonials = [
     {
-      quote: "VideoAI has transformed how we manage and search through our massive video library. The AI understanding is remarkable.",
-      author: "Sarah Chen",
+      quote: "His deep understanding of both AI technology and business strategy helped us avoid costly mistakes and accelerate our AI roadmap by months.",
+      author: "Coming Soon",
       role: "VP of Engineering",
-      company: "MediaStream Inc.",
+      company: "Enterprise Client",
     },
     {
-      quote: "We've reduced our video processing time by 80% while gaining insights we never knew existed in our content.",
-      author: "Marcus Johnson",
+      quote: "The knowledge graph architecture he designed transformed how we access and utilize our internal data. Game-changing for our operations.",
+      author: "Coming Soon",
       role: "CTO",
-      company: "ContentFlow",
+      company: "Tech Startup",
     },
     {
-      quote: "The accuracy and speed of VideoAI's video understanding capabilities have exceeded all our expectations.",
-      author: "Elena Rodriguez",
-      role: "Head of AI",
-      company: "TechVision Labs",
+      quote: "Having a fractional CTO with this level of AI expertise gave us the technical leadership we needed without the full-time overhead.",
+      author: "Coming Soon",
+      role: "Founder & CEO",
+      company: "AI Startup",
     },
   ];
 
@@ -37,7 +37,7 @@ const TestimonialsSection = () => {
     <section className="py-20 lg:py-32">
       <div className="container mx-auto px-4 lg:px-8">
         <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider text-center mb-12">
-          What Our Partners Are Saying
+          Client Feedback
         </p>
 
         <div className="max-w-4xl mx-auto">

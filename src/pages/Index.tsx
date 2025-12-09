@@ -1,10 +1,11 @@
 import AnnouncementBar from "@/components/AnnouncementBar";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
-import MainHero from "@/components/MainHero";
-import ExpandViewSection from "@/components/ExpandViewSection";
-import TrustedBy from "@/components/TrustedBy";
+import ServicesSection from "@/components/ServicesSection";
+import ExpertiseSection from "@/components/ExpertiseSection";
+import PricingSection from "@/components/PricingSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
+import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 
 const Index = () => {
@@ -14,10 +15,11 @@ const Index = () => {
       <Navbar />
       <main>
         <HeroSection />
-        <MainHero />
-        <ExpandViewSection />
-        <TrustedBy />
+        <ServicesSection />
+        <ExpertiseSection />
+        <PricingSection />
         <TestimonialsSection />
+        <ContactSection />
       </main>
       <Footer />
     </div>

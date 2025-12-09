@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
-import { ArrowUpRight } from "lucide-react";
-import IsometricGraphic from "./IsometricGraphic";
+import { ArrowUpRight, MapPin } from "lucide-react";
+import profileImage from "@/assets/profile-placeholder.jpg";
 
 const HeroSection = () => {
   return (
-    <section className="relative overflow-hidden">
+    <section id="about" className="relative overflow-hidden">
       {/* Background Grid Pattern */}
       <div className="absolute inset-0 grid-pattern opacity-50" />
       
@@ -12,40 +12,72 @@ const HeroSection = () => {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
           <div className="relative z-10 animate-slide-up">
-            <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-4">
-              Introducing
-            </p>
+            <div className="flex items-center gap-2 mb-4">
+              <MapPin className="w-4 h-4 text-muted-foreground" />
+              <span className="text-sm text-muted-foreground">New York City</span>
+            </div>
             
-            <div className="flex items-center gap-4 mb-8">
-              {/* Icon */}
-              <svg className="w-16 h-16 lg:w-20 lg:h-20" viewBox="0 0 80 80" fill="none">
-                <path d="M20 35L40 25L60 35V55L40 65L20 55V35Z" fill="currentColor"/>
-                <path d="M30 30L40 25L50 30" stroke="currentColor" strokeWidth="2"/>
-                <circle cx="40" cy="45" r="8" fill="currentColor" fillOpacity="0.3"/>
-              </svg>
-              
-              <h1 className="text-6xl lg:text-8xl font-bold tracking-tight">
-                Nova
-              </h1>
-              
-              <span className="px-4 py-2 border-2 border-foreground rounded-lg text-2xl lg:text-3xl font-bold">
-                3.0
-              </span>
+            <h1 className="text-4xl lg:text-6xl font-bold tracking-tight mb-6 leading-tight">
+              Fractional CTO & <br />
+              <span className="hero-gradient bg-clip-text text-transparent">AI Strategy Advisor</span>
+            </h1>
+
+            <p className="text-lg lg:text-xl text-muted-foreground mb-8 max-w-xl leading-relaxed">
+              12+ years in AI research and industry. CS PhD with NYU Stern MBA. 
+              Helping enterprises unlock the power of AI, knowledge graphs, and intelligent systems.
+            </p>
+
+            <div className="flex flex-wrap gap-4 mb-8">
+              <div className="flex items-center gap-2 px-4 py-2 bg-muted rounded-full text-sm">
+                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                Accepting new clients
+              </div>
+              <div className="px-4 py-2 bg-muted rounded-full text-sm">
+                3 Startups Founded
+              </div>
+              <div className="px-4 py-2 bg-muted rounded-full text-sm">
+                1000+ AI Companies Analyzed
+              </div>
             </div>
 
             <div className="flex flex-wrap gap-4">
-              <Button variant="hero" size="lg">
-                LEARN ABOUT N3 <ArrowUpRight className="w-4 h-4" />
+              <Button variant="hero" size="lg" asChild>
+                <a href="#contact">
+                  Schedule a Call <ArrowUpRight className="w-4 h-4" />
+                </a>
               </Button>
-              <Button variant="heroOutline" size="lg">
-                TRY ON PLAYGROUND <ArrowUpRight className="w-4 h-4" />
+              <Button variant="heroOutline" size="lg" asChild>
+                <a href="#services">
+                  View Services <ArrowUpRight className="w-4 h-4" />
+                </a>
               </Button>
             </div>
           </div>
 
-          {/* Right Graphic */}
+          {/* Right - Profile Image */}
           <div className="relative flex justify-center lg:justify-end">
-            <IsometricGraphic />
+            <div className="relative">
+              {/* Decorative elements */}
+              <div className="absolute -inset-4 hero-gradient rounded-3xl opacity-20 blur-2xl" />
+              <div className="absolute -top-6 -right-6 w-24 h-24 border-2 border-primary/20 rounded-2xl" />
+              <div className="absolute -bottom-6 -left-6 w-32 h-32 border-2 border-primary/20 rounded-2xl" />
+              
+              {/* Profile Image */}
+              <div className="relative w-72 h-72 lg:w-96 lg:h-96 rounded-2xl overflow-hidden shadow-2xl border border-border">
+                <img 
+                  src={profileImage} 
+                  alt="AI Strategy Consultant" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              {/* Floating credential badge */}
+              <div className="absolute -bottom-4 -right-4 bg-background border border-border rounded-xl p-4 shadow-lg">
+                <p className="text-xs text-muted-foreground mb-1">Education</p>
+                <p className="font-semibold text-sm">PhD in Computer Science</p>
+                <p className="text-sm text-muted-foreground">NYU Stern MBA</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
