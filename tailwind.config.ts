@@ -50,11 +50,10 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        gradient: {
-          pink: "hsl(var(--gradient-pink))",
-          yellow: "hsl(var(--gradient-yellow))",
-          green: "hsl(var(--gradient-green))",
-          cyan: "hsl(var(--gradient-cyan))",
+        brand: {
+          DEFAULT: "hsl(var(--brand-orange))",
+          light: "hsl(var(--brand-orange-light))",
+          dark: "hsl(var(--brand-orange-dark))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
