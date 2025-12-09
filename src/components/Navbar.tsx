@@ -7,8 +7,8 @@ const Navbar = () => {
 
   const navItems = [
     { label: "About", href: "#about" },
+    { label: "Case Studies", href: "#case-studies" },
     { label: "Services", href: "#services" },
-    { label: "Expertise", href: "#expertise" },
     { label: "Pricing", href: "#pricing" },
     { label: "Contact", href: "#contact" },
   ];
@@ -20,9 +20,9 @@ const Navbar = () => {
           {/* Logo */}
           <div className="flex items-center gap-2">
             <div className="w-10 h-10 rounded-lg hero-gradient flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-lg">AI</span>
+              <span className="text-primary-foreground font-bold text-lg">JQ</span>
             </div>
-            <span className="font-bold text-xl tracking-tight">Dr. [Your Name]</span>
+            <span className="font-bold text-xl tracking-tight">Dr. Jesse Qin</span>
           </div>
 
           {/* Desktop Navigation */}

@@ -18,37 +18,36 @@ const HeroSection = () => {
             </div>
             
             <h1 className="text-4xl lg:text-6xl font-bold tracking-tight mb-6 leading-tight">
-              Fractional CTO & <br />
-              <span className="hero-gradient bg-clip-text text-transparent">AI Strategy Advisor</span>
+              Your AI initiatives <br />
+              <span className="hero-gradient bg-clip-text text-transparent">stuck or stalled?</span>
             </h1>
 
-            <p className="text-lg lg:text-xl text-muted-foreground mb-8 max-w-xl leading-relaxed">
-              12+ years in AI research and industry. CS PhD with NYU Stern MBA. 
-              Helping enterprises unlock the power of AI, knowledge graphs, and intelligent systems.
+            <p className="text-lg lg:text-xl text-muted-foreground mb-6 max-w-xl leading-relaxed">
+              I help enterprises cut through AI hype, build systems that actually work, 
+              and turn ambitious AI roadmaps into shipped products.
             </p>
 
-            <div className="flex flex-wrap gap-4 mb-8">
+            <p className="text-base text-foreground/80 mb-8 max-w-xl leading-relaxed border-l-2 border-primary pl-4">
+              <strong>12+ years</strong> in AI research & industry. <strong>CS PhD</strong> + <strong>NYU Stern MBA</strong>. 
+              Founded 3 startups. Analyzed 1,000+ AI companies. I've seen what works—and what doesn't.
+            </p>
+
+            <div className="flex flex-wrap gap-3 mb-8">
               <div className="flex items-center gap-2 px-4 py-2 bg-muted rounded-full text-sm">
                 <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                Accepting new clients
-              </div>
-              <div className="px-4 py-2 bg-muted rounded-full text-sm">
-                3 Startups Founded
-              </div>
-              <div className="px-4 py-2 bg-muted rounded-full text-sm">
-                1000+ AI Companies Analyzed
+                2 spots available Q1 2025
               </div>
             </div>
 
             <div className="flex flex-wrap gap-4">
               <Button variant="hero" size="lg" asChild>
                 <a href="#contact">
-                  Schedule a Call <ArrowUpRight className="w-4 h-4" />
+                  Book a Free Discovery Call <ArrowUpRight className="w-4 h-4" />
                 </a>
               </Button>
               <Button variant="heroOutline" size="lg" asChild>
-                <a href="#services">
-                  View Services <ArrowUpRight className="w-4 h-4" />
+                <a href="#case-studies">
+                  See My Work <ArrowUpRight className="w-4 h-4" />
                 </a>
               </Button>
             </div>
@@ -66,15 +65,15 @@ const HeroSection = () => {
               <div className="relative w-72 h-72 lg:w-96 lg:h-96 rounded-2xl overflow-hidden shadow-2xl border border-border">
                 <img 
                   src={profileImage} 
-                  alt="AI Strategy Consultant" 
+                  alt="Dr. Jesse Qin - AI Strategy Advisor" 
                   className="w-full h-full object-cover"
                 />
               </div>
 
               {/* Floating credential badge */}
               <div className="absolute -bottom-4 -right-4 bg-background border border-border rounded-xl p-4 shadow-lg">
-                <p className="text-xs text-muted-foreground mb-1">Education</p>
-                <p className="font-semibold text-sm">PhD in Computer Science</p>
+                <p className="text-xs text-muted-foreground mb-1">Dr. Jesse Qin</p>
+                <p className="font-semibold text-sm">PhD, Computer Science</p>
                 <p className="text-sm text-muted-foreground">NYU Stern MBA</p>
               </div>
             </div>
