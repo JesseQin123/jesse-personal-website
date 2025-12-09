@@ -1,30 +1,34 @@
-import { Brain, Database, Rocket, Users } from "lucide-react";
+import { Brain, Database, Rocket, Users, AlertCircle } from "lucide-react";
 
 const ServicesSection = () => {
   const services = [
     {
       icon: Brain,
       title: "AI Strategy Consulting",
-      description: "Navigate the AI landscape with confidence. I help enterprises identify high-impact AI opportunities, evaluate vendors, and build actionable roadmaps aligned with business goals.",
-      highlights: ["Technology Assessment", "Vendor Evaluation", "Implementation Roadmap"],
+      painPoint: "Confused about which AI tools to adopt? Worried about making expensive wrong bets?",
+      description: "I help you cut through the hype, identify high-impact AI opportunities specific to your business, evaluate vendors objectively, and build a roadmap that actually gets executed.",
+      deliverables: ["AI Opportunity Assessment", "Vendor Evaluation", "90-Day Implementation Roadmap"],
     },
     {
       icon: Database,
       title: "Knowledge Graph & RAG Systems",
-      description: "Build enterprise knowledge bases that actually work. From knowledge graph architecture to RAG implementation, I design systems that make your data searchable and actionable.",
-      highlights: ["Knowledge Architecture", "RAG Implementation", "Search Optimization"],
+      painPoint: "Your team can't find information? Your chatbot gives wrong answers?",
+      description: "I design and build enterprise knowledge systems that actually work—from knowledge graph architecture to production RAG implementation with proper evaluation and guardrails.",
+      deliverables: ["Knowledge Architecture Design", "RAG System Implementation", "Search Quality Optimization"],
     },
     {
       icon: Rocket,
       title: "AI MVP Development",
-      description: "Transform your AI ideas into working products. I deliver end-to-end MVP development with a focus on AI agents, automation workflows, and intelligent applications.",
-      highlights: ["AI Agent Development", "Proof of Concept", "Technical Validation"],
+      painPoint: "Have an AI product idea but don't know if it's technically feasible?",
+      description: "I take your AI product concept from idea to working prototype in weeks, not months. Get technical validation before you commit major resources.",
+      deliverables: ["Feasibility Analysis", "Working MVP", "Technical Documentation"],
     },
     {
       icon: Users,
       title: "Fractional CTO",
-      description: "Get senior technical leadership without the full-time commitment. I provide strategic guidance, team mentorship, and hands-on technical direction for AI initiatives.",
-      highlights: ["Technical Leadership", "Team Building", "Architecture Review"],
+      painPoint: "Need senior AI leadership but can't justify a full-time hire?",
+      description: "Get experienced technical leadership on a part-time basis. I integrate with your team, guide architecture decisions, mentor engineers, and keep your AI initiatives on track.",
+      deliverables: ["Weekly Strategy Sessions", "Architecture Reviews", "Team Mentorship"],
     },
   ];
 
@@ -37,10 +41,10 @@ const ServicesSection = () => {
             Services
           </p>
           <h2 className="text-3xl lg:text-5xl font-bold mb-6">
-            Expert guidance for your AI journey
+            How I can help
           </h2>
           <p className="text-lg text-muted-foreground">
-            From strategy to execution, I help organizations navigate the complexities of AI adoption and build systems that deliver real value.
+            Every engagement is focused on one thing: delivering measurable business value, not just "doing AI."
           </p>
         </div>
 
@@ -55,20 +59,34 @@ const ServicesSection = () => {
                 <service.icon className="w-7 h-7 text-primary-foreground" />
               </div>
               
-              <h3 className="text-xl font-bold mb-4">{service.title}</h3>
+              <h3 className="text-xl font-bold mb-3">{service.title}</h3>
+              
+              {/* Pain Point */}
+              <div className="flex items-start gap-2 mb-4 p-3 bg-muted/50 rounded-lg">
+                <AlertCircle className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                <p className="text-sm text-muted-foreground italic">
+                  {service.painPoint}
+                </p>
+              </div>
+
               <p className="text-muted-foreground mb-6 leading-relaxed">
                 {service.description}
               </p>
               
-              <div className="flex flex-wrap gap-2">
-                {service.highlights.map((highlight, idx) => (
-                  <span
-                    key={idx}
-                    className="px-3 py-1 bg-muted rounded-full text-sm text-muted-foreground"
-                  >
-                    {highlight}
-                  </span>
-                ))}
+              <div>
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+                  What you get
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {service.deliverables.map((deliverable, idx) => (
+                    <span
+                      key={idx}
+                      className="px-3 py-1 bg-muted rounded-full text-sm"
+                    >
+                      {deliverable}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
           ))}

@@ -11,9 +11,9 @@ const Footer = () => {
           <div className="max-w-md">
             <div className="flex items-center gap-2 mb-4">
               <div className="w-10 h-10 rounded-lg hero-gradient flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-lg">AI</span>
+                <span className="text-primary-foreground font-bold text-lg">JQ</span>
               </div>
-              <span className="font-bold text-xl">Dr. [Your Name]</span>
+              <span className="font-bold text-xl">Dr. Jesse Qin</span>
             </div>
             <p className="text-sm text-muted-foreground">
               AI Strategy Advisor & Fractional CTO based in New York City. 
@@ -26,10 +26,10 @@ const Footer = () => {
             <div>
               <h4 className="font-semibold mb-4">Navigate</h4>
               <ul className="space-y-3">
-                {["About", "Services", "Expertise", "Pricing", "Contact"].map((link) => (
+                {["About", "Case Studies", "Services", "Pricing", "Contact"].map((link) => (
                   <li key={link}>
                     <a
-                      href={`#${link.toLowerCase()}`}
+                      href={`#${link.toLowerCase().replace(" ", "-")}`}
                       className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                     >
                       {link}
@@ -44,7 +44,7 @@ const Footer = () => {
                 {[
                   { label: "LinkedIn", href: "https://linkedin.com" },
                   { label: "Twitter/X", href: "https://twitter.com" },
-                  { label: "Email", href: "mailto:your@email.com" },
+                  { label: "Email", href: "mailto:jesse@example.com" },
                 ].map((item) => (
                   <li key={item.label}>
                     <a
@@ -66,7 +66,7 @@ const Footer = () => {
         {/* Bottom */}
         <div className="flex flex-col lg:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-border">
           <p className="text-sm text-muted-foreground">
-            © {currentYear} All rights reserved.
+            © {currentYear} Dr. Jesse Qin. All rights reserved.
           </p>
           <p className="text-sm text-muted-foreground">
             Based in New York City

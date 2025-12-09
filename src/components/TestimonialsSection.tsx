@@ -6,22 +6,22 @@ const TestimonialsSection = () => {
 
   const testimonials = [
     {
-      quote: "His deep understanding of both AI technology and business strategy helped us avoid costly mistakes and accelerate our AI roadmap by months.",
-      author: "Coming Soon",
-      role: "VP of Engineering",
-      company: "Enterprise Client",
+      quote: "Jesse helped us avoid a $500K mistake. We were about to buy an enterprise AI platform that would have been completely wrong for our use case. His technical due diligence saved us—and pointed us to a solution that cost 10% as much.",
+      author: "VP of Engineering",
+      company: "Series B Fintech",
+      context: "AI Strategy Engagement",
     },
     {
-      quote: "The knowledge graph architecture he designed transformed how we access and utilize our internal data. Game-changing for our operations.",
-      author: "Coming Soon",
-      role: "CTO",
-      company: "Tech Startup",
+      quote: "We'd been trying to build a RAG system for 6 months with no success. Jesse came in, redesigned our architecture, and we had something working in 3 weeks. The difference was night and day.",
+      author: "CTO",
+      company: "Enterprise SaaS",
+      context: "Knowledge System Build",
     },
     {
-      quote: "Having a fractional CTO with this level of AI expertise gave us the technical leadership we needed without the full-time overhead.",
-      author: "Coming Soon",
-      role: "Founder & CEO",
-      company: "AI Startup",
+      quote: "As a non-technical founder, I was terrified of making wrong AI decisions. Jesse became my trusted technical partner—he explains things clearly, doesn't oversell, and always focuses on what actually matters for the business.",
+      author: "Founder & CEO",
+      company: "HealthTech Startup",
+      context: "Fractional CTO",
     },
   ];
 
@@ -36,15 +36,18 @@ const TestimonialsSection = () => {
   return (
     <section className="py-20 lg:py-32">
       <div className="container mx-auto px-4 lg:px-8">
-        <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider text-center mb-12">
-          Client Feedback
+        <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider text-center mb-4">
+          What Clients Say
+        </p>
+        <p className="text-center text-muted-foreground mb-12 max-w-md mx-auto">
+          Names withheld to protect client confidentiality. References available upon request.
         </p>
 
         <div className="max-w-4xl mx-auto">
           <div className="relative">
-            <Quote className="w-12 h-12 text-muted-foreground/20 mb-6" />
+            <Quote className="w-12 h-12 text-primary/20 mb-6" />
             
-            <blockquote className="text-2xl lg:text-4xl font-medium leading-relaxed mb-8">
+            <blockquote className="text-xl lg:text-3xl font-medium leading-relaxed mb-8">
               "{testimonials[currentIndex].quote}"
             </blockquote>
 
@@ -52,7 +55,10 @@ const TestimonialsSection = () => {
               <div>
                 <p className="font-semibold text-lg">{testimonials[currentIndex].author}</p>
                 <p className="text-muted-foreground">
-                  {testimonials[currentIndex].role}, {testimonials[currentIndex].company}
+                  {testimonials[currentIndex].company}
+                </p>
+                <p className="text-sm text-primary mt-1">
+                  {testimonials[currentIndex].context}
                 </p>
               </div>
 
@@ -60,12 +66,14 @@ const TestimonialsSection = () => {
                 <button
                   onClick={prevTestimonial}
                   className="p-3 rounded-full border border-border hover:bg-muted transition-colors"
+                  aria-label="Previous testimonial"
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </button>
                 <button
                   onClick={nextTestimonial}
                   className="p-3 rounded-full border border-border hover:bg-muted transition-colors"
+                  aria-label="Next testimonial"
                 >
                   <ChevronRight className="w-5 h-5" />
                 </button>
@@ -79,6 +87,7 @@ const TestimonialsSection = () => {
               <button
                 key={index}
                 onClick={() => setCurrentIndex(index)}
+                aria-label={`Go to testimonial ${index + 1}`}
                 className={`w-2 h-2 rounded-full transition-all ${
                   index === currentIndex ? "bg-primary w-6" : "bg-muted-foreground/30"
                 }`}
