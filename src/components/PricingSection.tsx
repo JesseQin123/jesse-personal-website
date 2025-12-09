@@ -35,6 +35,22 @@ const PricingSection = () => {
       cta: "Get Started",
       savings: "Save $391",
     },
+    {
+      name: "Long-Term Partnership",
+      price: "Custom",
+      period: "",
+      description: "Dedicated ongoing collaboration for organizations seeking a trusted AI advisor or Fractional CTO.",
+      features: [
+        "Everything in Retainer Package",
+        "Dedicated weekly hours",
+        "Team integration & mentoring",
+        "Strategic roadmap development",
+        "Board & stakeholder presentations",
+        "Direct Slack/Teams access",
+      ],
+      highlight: false,
+      cta: "Contact for Details",
+    },
   ];
 
   const engagementTypes = [
@@ -69,7 +85,7 @@ const PricingSection = () => {
         </div>
 
         {/* Pricing Cards */}
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mb-20">
+        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mb-20">
           {packages.map((pkg, index) => (
             <div
               key={index}
