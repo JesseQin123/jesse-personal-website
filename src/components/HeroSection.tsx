@@ -26,8 +26,8 @@ const HeroSection = () => {
             </p>
 
             <p className="text-base text-foreground/80 mb-8 max-w-xl leading-relaxed border-l-2 border-primary pl-4">
-              <strong>NYU Stern MSBAi</strong> in AI research & industry. <strong>CS PhD</strong> + <strong>NYU Stern MBA</strong>. 
-              Founded 3 startups. Analyzed 1,000+ AI companies. I've seen what works—and what doesn't.
+              <strong>Rutgers</strong> <strong>CS PhD</strong> backed by <strong>NYU Stern MSBAi</strong>. Bridging AI research with real-world execution at 3 startups. 
+              Analyzed 1,000+ AI companies. I've seen what works—and what doesn't.
             </p>
 
             <div className="flex flex-wrap gap-3 mb-8">
