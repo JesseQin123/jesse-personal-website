@@ -11,7 +11,7 @@ const CredibilitySection = () => {
       type: "Education",
       items: [
         "PhD in Computer Science (AI/ML focus)",
-        "MBA, NYU Stern School of Business",
+        "MSBAi, NYU Stern School of Business",
       ],
     },
     {
