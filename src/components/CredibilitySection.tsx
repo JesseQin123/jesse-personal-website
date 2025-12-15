@@ -18,7 +18,7 @@ const CredibilitySection = () => {
       type: "Experience",
       items: [
         "3x startup founder in AI space",
-        "Former ML researcher at [University]",
+        "Former ML researcher at Rutgers University",
         "Advised Fortune 500 companies on AI strategy",
       ],
     },
