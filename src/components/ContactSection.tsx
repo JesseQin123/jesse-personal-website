@@ -20,7 +20,7 @@ const ContactSection = () => {
           {/* CTA Buttons */}
           <div className="flex flex-wrap justify-center gap-4 mb-16">
             <Button variant="hero" size="lg" asChild>
-              <a href="mailto:your@email.com">
+              <a href="mailto:jesse@daydayup.co">
                 <Mail className="w-4 h-4" />
                 Send an Email
               </a>
