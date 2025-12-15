@@ -1,10 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { ArrowUpRight, MapPin } from "lucide-react";
 import profileImage from "@/assets/profile-placeholder.jpg";
-
 const HeroSection = () => {
-  return (
-    <section id="about" className="relative overflow-hidden">
+  return <section id="about" className="relative overflow-hidden">
       {/* Background Grid Pattern */}
       <div className="absolute inset-0 grid-pattern opacity-50" />
       
@@ -28,7 +26,7 @@ const HeroSection = () => {
             </p>
 
             <p className="text-base text-foreground/80 mb-8 max-w-xl leading-relaxed border-l-2 border-primary pl-4">
-              <strong>12+ years</strong> in AI research & industry. <strong>CS PhD</strong> + <strong>NYU Stern MBA</strong>. 
+              <strong>NYU Stern MSBAi</strong> in AI research & industry. <strong>CS PhD</strong> + <strong>NYU Stern MBA</strong>. 
               Founded 3 startups. Analyzed 1,000+ AI companies. I've seen what works—and what doesn't.
             </p>
 
@@ -42,13 +40,11 @@ const HeroSection = () => {
             <div className="flex flex-wrap gap-4">
               <Button variant="hero" size="lg" asChild>
                 <a href="#contact">
-                  Book a Free Discovery Call <ArrowUpRight className="w-4 h-4" />
+                  Book a Call   <ArrowUpRight className="w-4 h-4" />
                 </a>
               </Button>
               <Button variant="heroOutline" size="lg" asChild>
-                <a href="#case-studies">
-                  See My Work <ArrowUpRight className="w-4 h-4" />
-                </a>
+                
               </Button>
             </div>
           </div>
@@ -63,11 +59,7 @@ const HeroSection = () => {
               
               {/* Profile Image */}
               <div className="relative w-72 h-72 lg:w-96 lg:h-96 rounded-2xl overflow-hidden shadow-2xl border border-border">
-                <img 
-                  src={profileImage} 
-                  alt="Dr. Jesse Qin - AI Strategy Advisor" 
-                  className="w-full h-full object-cover"
-                />
+                <img src={profileImage} alt="Dr. Jesse Qin - AI Strategy Advisor" className="w-full h-full object-cover" />
               </div>
 
               {/* Floating credential badge */}
@@ -80,8 +72,6 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default HeroSection;
