@@ -21,7 +21,7 @@ const PricingSection = () => {
     },
     {
       name: "Retainer Package",
-      price: "$4,599",
+      price: "$4,500",
       period: "10 hours",
       description: "Ongoing advisory relationship for complex initiatives. Ideal for enterprises with evolving AI needs.",
       features: [
@@ -34,7 +34,7 @@ const PricingSection = () => {
       ],
       highlight: true,
       cta: "Get Started",
-      savings: "Save $391",
+      savings: "Save $500",
       href: "https://buy.stripe.com/fZucN45bbf8U8Gj2DUao801",
     },
     {
