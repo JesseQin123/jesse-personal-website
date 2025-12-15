@@ -35,7 +35,7 @@ const HeroSection = () => {
             <div className="flex flex-wrap gap-3 mb-8">
               <div className="flex items-center gap-2 px-4 py-2 bg-muted rounded-full text-sm">
                 <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                2 spots available Q1 2025
+                2 spots available Q4, 2025
               </div>
             </div>
 
