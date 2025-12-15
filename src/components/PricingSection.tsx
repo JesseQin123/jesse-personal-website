@@ -17,6 +17,7 @@ const PricingSection = () => {
       ],
       highlight: false,
       cta: "Book a Session",
+      href: "https://buy.stripe.com/4gMaEWgTT9OA6yb0vMao800",
     },
     {
       name: "Retainer Package",
@@ -34,6 +35,7 @@ const PricingSection = () => {
       highlight: true,
       cta: "Get Started",
       savings: "Save $391",
+      href: "https://buy.stripe.com/fZucN45bbf8U8Gj2DUao801",
     },
     {
       name: "Long-Term Partnership",
@@ -50,6 +52,7 @@ const PricingSection = () => {
       ],
       highlight: false,
       cta: "Contact for Details",
+      href: "#contact",
     },
   ];
 
@@ -127,7 +130,7 @@ const PricingSection = () => {
                 className="w-full"
                 asChild
               >
-                <a href="#contact">
+                <a href={pkg.href} target={pkg.href.startsWith("http") ? "_blank" : undefined} rel={pkg.href.startsWith("http") ? "noopener noreferrer" : undefined}>
                   {pkg.cta} <ArrowUpRight className="w-4 h-4" />
                 </a>
               </Button>
