@@ -1,7 +1,7 @@
 const CredibilitySection = () => {
   const stats = [
     { number: "12+", label: "Years in AI" },
-    { number: "3", label: "Startups Founded" },
+    { number: "3", label: "Startups Experiences" },
     { number: "1000+", label: "AI Companies Analyzed" },
     { number: "50+", label: "Enterprise Engagements" },
   ];
