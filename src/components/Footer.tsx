@@ -26,7 +26,7 @@ const Footer = () => {
             <div>
               <h4 className="font-semibold mb-4">Navigate</h4>
               <ul className="space-y-3">
-                {["About", "Case Studies", "Services", "Pricing", "Contact"].map((link) => (
+                {["About", "Services", "Pricing", "Contact"].map((link) => (
                   <li key={link}>
                     <a
                       href={`#${link.toLowerCase().replace(" ", "-")}`}
@@ -42,9 +42,8 @@ const Footer = () => {
               <h4 className="font-semibold mb-4">Connect</h4>
               <ul className="space-y-3">
                 {[
-                  { label: "LinkedIn", href: "https://linkedin.com" },
-                  { label: "Twitter/X", href: "https://twitter.com" },
-                  { label: "Email", href: "mailto:jesse@example.com" },
+                  { label: "LinkedIn", href: "https://www.linkedin.com/in/jesseqin-phd/" },
+                  { label: "Email", href: "mailto:jesse@daydayup.co" },
                 ].map((item) => (
                   <li key={item.label}>
                     <a
