@@ -7,7 +7,6 @@ const Navbar = () => {
 
   const navItems = [
     { label: "About", href: "#about" },
-    { label: "Case Studies", href: "#case-studies" },
     { label: "Services", href: "#services" },
     { label: "Pricing", href: "#pricing" },
     { label: "Contact", href: "#contact" },
