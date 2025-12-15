@@ -39,7 +39,7 @@ const HeroSection = () => {
 
             <div className="flex flex-wrap gap-4">
               <Button variant="hero" size="lg" asChild>
-                <a href="#contact">
+                <a href="#pricing">
                   Book a Call   <ArrowUpRight className="w-4 h-4" />
                 </a>
               </Button>
