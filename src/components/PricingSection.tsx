@@ -5,7 +5,7 @@ const PricingSection = () => {
   const packages = [
     {
       name: "Single Session",
-      price: "$499",
+      price: "$500",
       period: "per hour",
       description: "Perfect for focused problem-solving, strategic advice, or technical deep-dives on specific challenges.",
       features: [
