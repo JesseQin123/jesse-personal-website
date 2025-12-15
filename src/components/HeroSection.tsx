@@ -66,7 +66,7 @@ const HeroSection = () => {
               <div className="absolute -bottom-4 -right-4 bg-background border border-border rounded-xl p-4 shadow-lg">
                 <p className="text-xs text-muted-foreground mb-1">Dr. Jesse Qin</p>
                 <p className="font-semibold text-sm">PhD, Computer Science</p>
-                <p className="text-sm text-muted-foreground">NYU Stern MBA</p>
+                <p className="text-sm text-muted-foreground">NYU Stern MSBAi</p>
               </div>
             </div>
           </div>
