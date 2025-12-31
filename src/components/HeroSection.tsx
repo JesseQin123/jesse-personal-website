@@ -1,6 +1,7 @@
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowUpRight, MapPin } from "lucide-react";
-import profileImage from "@/assets/profile-placeholder.jpg";
+import profileImage from "@/assets/jesse-profile.jpg";
 const HeroSection = () => {
   return <section id="about" className="relative overflow-hidden">
       {/* Background Grid Pattern */}
@@ -39,9 +40,9 @@ const HeroSection = () => {
 
             <div className="flex flex-wrap gap-4">
               <Button variant="hero" size="lg" asChild>
-                <a href="#pricing">
+                <Link to="/book-call">
                   Book a Call   <ArrowUpRight className="w-4 h-4" />
-                </a>
+                </Link>
               </Button>
               <Button variant="heroOutline" size="lg" asChild>
                 

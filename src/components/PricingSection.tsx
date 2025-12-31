@@ -88,7 +88,7 @@ const PricingSection = () => {
         </div>
 
         {/* Pricing Cards */}
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mb-20">
+        <div className="grid md:grid-cols-3 gap-8 mb-20">
           {packages.map((pkg, index) => (
             <div
               key={index}

@@ -1,5 +1,6 @@
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowUpRight, Mail, Linkedin, Calendar } from "lucide-react";
+import { Mail, Linkedin, Calendar } from "lucide-react";
 
 const ContactSection = () => {
   return (
@@ -26,10 +27,10 @@ const ContactSection = () => {
               </a>
             </Button>
             <Button variant="heroOutline" size="lg" asChild>
-              <a href="https://calendly.com" target="_blank" rel="noopener noreferrer">
+              <Link to="/book-call">
                 <Calendar className="w-4 h-4" />
                 Schedule a Call
-              </a>
+              </Link>
             </Button>
             <Button variant="heroOutline" size="lg" asChild>
               <a href="https://www.linkedin.com/in/jesseqin-phd/" target="_blank" rel="noopener noreferrer">

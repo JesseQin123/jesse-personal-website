@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 
@@ -6,10 +7,10 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
-    { label: "About", href: "#about" },
-    { label: "Services", href: "#services" },
-    { label: "Pricing", href: "#pricing" },
-    { label: "Contact", href: "#contact" },
+    { label: "About", href: "/#about" },
+    { label: "Services", href: "/#services" },
+    { label: "Pricing", href: "/#pricing" },
+    { label: "Contact", href: "/#contact" },
   ];
 
   return (
@@ -17,12 +18,12 @@ const Navbar = () => {
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <div className="flex items-center gap-2">
+          <Link to="/" className="flex items-center gap-2">
             <div className="w-10 h-10 rounded-lg hero-gradient flex items-center justify-center">
               <span className="text-primary-foreground font-bold text-lg">JQ</span>
             </div>
             <span className="font-bold text-xl tracking-tight">Dr. Jesse Qin</span>
-          </div>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-1">
@@ -40,9 +41,9 @@ const Navbar = () => {
           {/* Desktop CTA */}
           <div className="hidden lg:flex items-center gap-3">
             <Button variant="hero" size="default" asChild>
-              <a href="#contact">
+              <Link to="/book-call">
                 Book Consultation <ArrowUpRight className="w-4 h-4" />
-              </a>
+              </Link>
             </Button>
           </div>
 
@@ -71,9 +72,9 @@ const Navbar = () => {
               ))}
               <div className="mt-4 px-4">
                 <Button variant="hero" size="lg" className="w-full" asChild>
-                  <a href="#contact">
+                  <Link to="/book-call">
                     Book Consultation <ArrowUpRight className="w-4 h-4" />
-                  </a>
+                  </Link>
                 </Button>
               </div>
             </div>

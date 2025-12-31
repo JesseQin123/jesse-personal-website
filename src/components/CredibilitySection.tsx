@@ -48,7 +48,7 @@ const CredibilitySection = () => {
         </div>
 
         {/* Unique Value Prop */}
-        <div className="mt-20 max-w-3xl">
+        <div className="mt-20">
           <h3 className="text-2xl lg:text-3xl font-bold mb-6">
             Why work with me?
           </h3>
