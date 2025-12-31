@@ -53,9 +53,9 @@ const HeroSection = () => {
               <div className="absolute -top-6 -right-6 w-24 h-24 border-2 border-primary/20 rounded-2xl hidden lg:block" />
               <div className="absolute -bottom-6 -left-6 w-32 h-32 border-2 border-primary/20 rounded-2xl hidden lg:block" />
 
-              {/* Profile Image - full width on mobile, square on desktop */}
-              <div className="relative w-full lg:w-96 lg:h-96 rounded-2xl overflow-hidden shadow-2xl border border-border">
-                <img src={profileImage} alt="Dr. Jesse Qin - AI Strategy Advisor" className="w-full h-auto lg:h-full lg:object-cover" />
+              {/* Profile Image - full width square on mobile, fixed square on desktop */}
+              <div className="relative w-full aspect-square lg:w-96 lg:h-96 rounded-2xl overflow-hidden shadow-2xl border border-border">
+                <img src={profileImage} alt="Dr. Jesse Qin - AI Strategy Advisor" className="w-full h-full object-cover" />
               </div>
 
               {/* Floating credential badge - hidden on mobile */}
