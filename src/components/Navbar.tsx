@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowUpRight, Menu, X } from "lucide-react";
+import logo from "@/assets/jq_logo.png";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -19,9 +20,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-lg hero-gradient flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-lg">JQ</span>
-            </div>
+            <img src={logo} alt="JAI Logo" className="w-10 h-10 rounded-lg" />
             <span className="font-bold text-xl tracking-tight">Dr. Jesse Qin</span>
           </Link>
 

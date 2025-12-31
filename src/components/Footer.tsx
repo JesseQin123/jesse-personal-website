@@ -1,4 +1,5 @@
 import { ArrowUpRight } from "lucide-react";
+import logo from "@/assets/jq_logo.png";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -10,9 +11,7 @@ const Footer = () => {
           {/* Logo & Description */}
           <div className="max-w-md">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 rounded-lg hero-gradient flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-lg">JQ</span>
-              </div>
+              <img src={logo} alt="JAI Logo" className="w-10 h-10 rounded-lg" />
               <span className="font-bold text-xl">Dr. Jesse Qin</span>
             </div>
             <p className="text-sm text-muted-foreground">
@@ -44,6 +43,27 @@ const Footer = () => {
                 {[
                   { label: "LinkedIn", href: "https://www.linkedin.com/in/jesseqin-phd/" },
                   { label: "Email", href: "mailto:jesse@daydayup.co" },
+                ].map((item) => (
+                  <li key={item.label}>
+                    <a
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1 group"
+                    >
+                      {item.label}
+                      <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-4">My Ventures</h4>
+              <ul className="space-y-3">
+                {[
+                  { label: "Solo Unicorn Club", href: "https://www.solounicorn.club/" },
+                  { label: "Life in AGI", href: "https://www.lifeinagi.com/" },
                 ].map((item) => (
                   <li key={item.label}>
                     <a

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Mail, Linkedin, Calendar } from "lucide-react";
+import { Linkedin, Calendar } from "lucide-react";
 
 const ContactSection = () => {
   return (
@@ -21,12 +21,6 @@ const ContactSection = () => {
           {/* CTA Buttons */}
           <div className="flex flex-wrap justify-center gap-4 mb-16">
             <Button variant="hero" size="lg" asChild>
-              <a href="mailto:jesse@daydayup.co">
-                <Mail className="w-4 h-4" />
-                Send an Email
-              </a>
-            </Button>
-            <Button variant="heroOutline" size="lg" asChild>
               <Link to="/book-call">
                 <Calendar className="w-4 h-4" />
                 Schedule a Call

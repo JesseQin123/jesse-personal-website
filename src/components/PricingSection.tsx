@@ -4,10 +4,10 @@ import { ArrowUpRight, Check } from "lucide-react";
 const PricingSection = () => {
   const packages = [
     {
-      name: "Single Session",
+      name: "AI Roadmap Session",
       price: "$500",
       period: "per hour",
-      description: "Perfect for focused problem-solving, strategic advice, or technical deep-dives on specific challenges.",
+      description: "Walk away with a clear AI roadmap tailored to your business. Perfect for focused problem-solving and strategic direction.",
       features: [
         "1-on-1 video consultation",
         "Pre-session briefing document",
@@ -23,12 +23,12 @@ const PricingSection = () => {
       name: "Retainer Package",
       price: "$4,500",
       period: "10 hours",
-      description: "Ongoing advisory relationship for complex initiatives. Ideal for enterprises with evolving AI needs.",
+      description: "Ongoing advisory relationship for complex initiatives. Ideal for enterprises with evolving AI needs. Cancel anytime.",
       features: [
-        "Everything in Single Session",
+        "Everything in AI Roadmap Session",
         "Priority scheduling",
         "Async support via email",
-        "Weekly or bi-weekly cadence",
+        "Weekly code review included",
         "Project deliverables included",
         "Rollover unused hours (30 days)",
       ],
