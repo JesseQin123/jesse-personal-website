@@ -34,20 +34,20 @@ const TestimonialsSection = () => {
   };
 
   return (
-    <section className="py-20 lg:py-32">
+    <section className="py-12 lg:py-32">
       <div className="container mx-auto px-4 lg:px-8">
-        <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider text-center mb-4">
+        <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider text-center mb-2 md:mb-4">
           What Clients Say
         </p>
-        <p className="text-center text-muted-foreground mb-12 max-w-md mx-auto">
+        <p className="text-center text-muted-foreground mb-6 md:mb-12 max-w-md mx-auto text-sm md:text-base">
           Names withheld to protect client confidentiality. References available upon request.
         </p>
 
         <div className="max-w-4xl mx-auto">
           <div className="relative">
-            <Quote className="w-12 h-12 text-primary/20 mb-6" />
-            
-            <blockquote className="text-xl lg:text-3xl font-medium leading-relaxed mb-8">
+            <Quote className="w-8 h-8 md:w-12 md:h-12 text-primary/20 mb-4 md:mb-6" />
+
+            <blockquote className="text-lg md:text-xl lg:text-3xl font-medium leading-relaxed mb-6 md:mb-8">
               "{testimonials[currentIndex].quote}"
             </blockquote>
 

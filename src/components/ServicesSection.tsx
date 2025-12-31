@@ -33,17 +33,17 @@ const ServicesSection = () => {
   ];
 
   return (
-    <section id="services" className="py-20 lg:py-32 bg-muted/30">
+    <section id="services" className="py-12 lg:py-32 bg-muted/30">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Section Header */}
-        <div className="max-w-3xl mb-16">
-          <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-4">
+        <div className="max-w-3xl mb-8 md:mb-16">
+          <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-2 md:mb-4">
             Services
           </p>
-          <h2 className="text-3xl lg:text-5xl font-bold mb-6">
+          <h2 className="text-2xl lg:text-5xl font-bold mb-4 md:mb-6">
             How I can help
           </h2>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-base md:text-lg text-muted-foreground">
             Every engagement is focused on one thing: delivering measurable business value, not just "doing AI."
           </p>
         </div>
@@ -60,16 +60,16 @@ const ServicesSection = () => {
               </div>
               
               <h3 className="text-xl font-bold mb-3">{service.title}</h3>
-              
-              {/* Pain Point */}
-              <div className="flex items-start gap-2 mb-4 p-3 bg-muted/50 rounded-lg">
+
+              {/* Pain Point - hidden on mobile for density */}
+              <div className="hidden md:flex items-start gap-2 mb-4 p-3 bg-muted/50 rounded-lg">
                 <AlertCircle className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
                 <p className="text-sm text-muted-foreground italic">
                   {service.painPoint}
                 </p>
               </div>
 
-              <p className="text-muted-foreground mb-6 leading-relaxed">
+              <p className="text-muted-foreground mb-4 md:mb-6 leading-relaxed text-sm md:text-base">
                 {service.description}
               </p>
               

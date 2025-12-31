@@ -4,22 +4,22 @@ import { Linkedin, Calendar } from "lucide-react";
 
 const ContactSection = () => {
   return (
-    <section id="contact" className="py-20 lg:py-32 bg-muted/30">
+    <section id="contact" className="py-12 lg:py-32 bg-muted/30">
       <div className="container mx-auto px-4 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
-          <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-4">
+          <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-2 md:mb-4">
             Get in Touch
           </p>
-          <h2 className="text-3xl lg:text-5xl font-bold mb-6">
+          <h2 className="text-2xl lg:text-5xl font-bold mb-4 md:mb-6">
             Ready to accelerate your AI journey?
           </h2>
-          <p className="text-lg text-muted-foreground mb-12 max-w-2xl mx-auto">
-            Whether you have a specific challenge or want to explore possibilities, 
+          <p className="text-base md:text-lg text-muted-foreground mb-8 md:mb-12 max-w-2xl mx-auto">
+            Whether you have a specific challenge or want to explore possibilities,
             let's start a conversation about how I can help.
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-wrap justify-center gap-4 mb-16">
+          <div className="flex flex-wrap justify-center gap-4 mb-8 md:mb-16">
             <Button variant="hero" size="lg" asChild>
               <Link to="/book-call">
                 <Calendar className="w-4 h-4" />

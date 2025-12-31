@@ -72,27 +72,27 @@ const PricingSection = () => {
   ];
 
   return (
-    <section id="pricing" className="py-20 lg:py-32 bg-muted/30">
+    <section id="pricing" className="py-12 lg:py-32 bg-muted/30">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Section Header */}
-        <div className="max-w-3xl mb-16">
-          <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-4">
+        <div className="max-w-3xl mb-8 md:mb-16">
+          <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-2 md:mb-4">
             Pricing
           </p>
-          <h2 className="text-3xl lg:text-5xl font-bold mb-6">
+          <h2 className="text-2xl lg:text-5xl font-bold mb-4 md:mb-6">
             Transparent, value-driven pricing
           </h2>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-base md:text-lg text-muted-foreground">
             Whether you need a one-time consultation or ongoing partnership, I offer flexible engagement models focused on delivering measurable results.
           </p>
         </div>
 
         {/* Pricing Cards */}
-        <div className="grid md:grid-cols-3 gap-8 mb-20">
+        <div className="grid md:grid-cols-3 gap-6 md:gap-8 mb-10 md:mb-20">
           {packages.map((pkg, index) => (
             <div
               key={index}
-              className={`relative p-8 rounded-2xl border ${
+              className={`relative p-5 md:p-8 rounded-2xl border ${
                 pkg.highlight
                   ? "bg-foreground text-background border-foreground"
                   : "bg-background border-border"

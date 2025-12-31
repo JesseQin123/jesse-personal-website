@@ -22,13 +22,13 @@ const CredibilitySection = () => {
     type: "Focus Areas",
     items: ["Large Language Models & AI Agents", "Knowledge Graphs & RAG Systems", "AI Product Strategy & GTM", "Technical Due Diligence"]
   }];
-  return <section className="py-20 lg:py-32 bg-foreground text-background">
+  return <section className="py-12 lg:py-32 bg-foreground text-background">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Stats */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 mb-10 md:mb-20">
           {stats.map((stat, index) => <div key={index} className="text-center">
-              <p className="text-4xl lg:text-6xl font-bold mb-2">{stat.number}</p>
-              <p className="text-background/70">{stat.label}</p>
+              <p className="text-3xl md:text-4xl lg:text-6xl font-bold mb-1 md:mb-2">{stat.number}</p>
+              <p className="text-background/70 text-sm md:text-base">{stat.label}</p>
             </div>)}
         </div>
 
@@ -47,14 +47,14 @@ const CredibilitySection = () => {
             </div>)}
         </div>
 
-        {/* Unique Value Prop */}
-        <div className="mt-20">
+        {/* Unique Value Prop - hidden on mobile for density */}
+        <div className="mt-10 md:mt-20 hidden md:block">
           <h3 className="text-2xl lg:text-3xl font-bold mb-6">
             Why work with me?
           </h3>
           <p className="text-lg text-background/80 leading-relaxed mb-4">
-            I sit at the intersection of deep technical expertise and business acumen. 
-            Most AI consultants are either too academic (great research, can't ship) 
+            I sit at the intersection of deep technical expertise and business acumen.
+            Most AI consultants are either too academic (great research, can't ship)
             or too superficial (buzzwords, no substance).
           </p>
           <p className="text-lg text-background/80 leading-relaxed">I've built production AI systems and analyzed nearly a thousand AI companies. I know what actually works—and I'll tell you the truth, even when it's not what you want to hear.</p>

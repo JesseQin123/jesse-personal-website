@@ -7,7 +7,7 @@ const HeroSection = () => {
       {/* Background Grid Pattern */}
       <div className="absolute inset-0 grid-pattern opacity-50" />
       
-      <div className="container mx-auto px-4 lg:px-8 py-16 lg:py-24">
+      <div className="container mx-auto px-4 lg:px-8 py-10 lg:py-24">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
           <div className="relative z-10 animate-slide-up">
@@ -48,18 +48,18 @@ const HeroSection = () => {
           {/* Right - Profile Image */}
           <div className="relative flex justify-center lg:justify-end">
             <div className="relative">
-              {/* Decorative elements */}
-              <div className="absolute -inset-4 hero-gradient rounded-3xl opacity-20 blur-2xl" />
-              <div className="absolute -top-6 -right-6 w-24 h-24 border-2 border-primary/20 rounded-2xl" />
-              <div className="absolute -bottom-6 -left-6 w-32 h-32 border-2 border-primary/20 rounded-2xl" />
-              
-              {/* Profile Image */}
-              <div className="relative w-72 h-72 lg:w-96 lg:h-96 rounded-2xl overflow-hidden shadow-2xl border border-border">
+              {/* Decorative elements - hidden on mobile */}
+              <div className="absolute -inset-4 hero-gradient rounded-3xl opacity-20 blur-2xl hidden lg:block" />
+              <div className="absolute -top-6 -right-6 w-24 h-24 border-2 border-primary/20 rounded-2xl hidden lg:block" />
+              <div className="absolute -bottom-6 -left-6 w-32 h-32 border-2 border-primary/20 rounded-2xl hidden lg:block" />
+
+              {/* Profile Image - smaller on mobile */}
+              <div className="relative w-48 h-48 lg:w-96 lg:h-96 rounded-2xl overflow-hidden shadow-2xl border border-border">
                 <img src={profileImage} alt="Dr. Jesse Qin - AI Strategy Advisor" className="w-full h-full object-cover" />
               </div>
 
-              {/* Floating credential badge */}
-              <div className="absolute -bottom-4 -right-4 bg-background border border-border rounded-xl p-4 shadow-lg">
+              {/* Floating credential badge - hidden on mobile */}
+              <div className="absolute -bottom-4 -right-4 bg-background border border-border rounded-xl p-4 shadow-lg hidden lg:block">
                 <p className="text-xs text-muted-foreground mb-1">Dr. Jesse Qin</p>
                 <p className="font-semibold text-sm">PhD, Computer Science</p>
                 <p className="text-sm text-muted-foreground">NYU Stern MSBAi</p>
