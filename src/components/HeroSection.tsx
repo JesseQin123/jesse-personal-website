@@ -31,21 +31,16 @@ const HeroSection = () => {
               Analyzed 1,000+ AI companies. I've seen what works—and what doesn't.
             </p>
 
-            <div className="flex flex-wrap gap-3 mb-8">
-              <div className="flex items-center gap-2 px-4 py-2 bg-muted rounded-full text-sm">
-                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                2 spots available Q4, 2025
-              </div>
-            </div>
-
             <div className="flex flex-wrap gap-4">
               <Button variant="hero" size="lg" asChild>
                 <Link to="/book-call">
-                  Book a Call   <ArrowUpRight className="w-4 h-4" />
+                  Book a Call <ArrowUpRight className="w-4 h-4" />
                 </Link>
               </Button>
               <Button variant="heroOutline" size="lg" asChild>
-                
+                <a href="#pricing">
+                  View Pricing <ArrowUpRight className="w-4 h-4" />
+                </a>
               </Button>
             </div>
           </div>
