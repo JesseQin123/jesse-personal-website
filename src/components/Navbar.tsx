@@ -11,7 +11,7 @@ const Navbar = () => {
     { label: "About", href: "/#about" },
     { label: "Services", href: "/#services" },
     { label: "Pricing", href: "/#pricing" },
-    { label: "Projects", href: "/projects" },
+    { label: "Projects", href: "/projects", newTab: true },
     { label: "Contact", href: "/#contact" },
   ];
 
@@ -31,6 +31,8 @@ const Navbar = () => {
               <a
                 key={item.label}
                 href={item.href}
+                target={item.newTab ? "_blank" : undefined}
+                rel={item.newTab ? "noopener noreferrer" : undefined}
                 className="px-4 py-2 text-sm font-medium text-foreground/80 hover:text-foreground transition-colors"
               >
                 {item.label}
@@ -64,6 +66,8 @@ const Navbar = () => {
                 <a
                   key={item.label}
                   href={item.href}
+                  target={item.newTab ? "_blank" : undefined}
+                  rel={item.newTab ? "noopener noreferrer" : undefined}
                   onClick={() => setMobileMenuOpen(false)}
                   className="px-4 py-3 text-sm font-medium text-foreground/80 hover:text-foreground hover:bg-muted rounded-lg transition-colors"
                 >

@@ -50,7 +50,12 @@ const ProjectCard = ({ project }: { project: Project }) => {
   return (
     <article className="group relative bg-card border border-border rounded-2xl overflow-hidden hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5">
       {/* Project Image */}
-      <div className="aspect-video bg-gradient-to-br from-primary/10 via-primary/5 to-transparent flex items-center justify-center relative overflow-hidden">
+      <a
+        href={project.liveUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block aspect-video relative overflow-hidden cursor-pointer"
+      >
         {project.imageUrl ? (
           <img
             src={project.imageUrl}
@@ -58,7 +63,7 @@ const ProjectCard = ({ project }: { project: Project }) => {
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
         ) : (
-          <>
+          <div className="w-full h-full bg-gradient-to-br from-primary/10 via-primary/5 to-transparent flex items-center justify-center">
             <div className="absolute inset-0 bg-grid-pattern opacity-30" />
             <div className="relative z-10 text-center">
               <span className="text-5xl font-bold text-primary/20">{project.title.charAt(0)}</span>
@@ -66,9 +71,9 @@ const ProjectCard = ({ project }: { project: Project }) => {
                 <p className="text-2xl font-medium text-primary/40 mt-2">{project.titleCn}</p>
               )}
             </div>
-          </>
+          </div>
         )}
-      </div>
+      </a>
 
       {/* Content */}
       <div className="p-6 lg:p-8">
