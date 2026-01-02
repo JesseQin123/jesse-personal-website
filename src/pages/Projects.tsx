@@ -1,0 +1,188 @@
+import { Link } from "react-router-dom";
+import { ArrowLeft, ExternalLink, Sparkles } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+
+interface Project {
+  id: string;
+  title: string;
+  titleCn?: string;
+  description: string;
+  features: string[];
+  techStack: string[];
+  liveUrl: string;
+  imageUrl?: string;
+  status: "live" | "beta" | "coming-soon";
+}
+
+const projects: Project[] = [
+  {
+    id: "eat-well",
+    title: "Eat Well",
+    titleCn: "吃好饭",
+    description:
+      "An AI-powered recipe generation app that helps you cook delicious meals based on what's in your fridge. Simply tell it what ingredients you have and what cuisine you're craving, and it will generate personalized recipes for you.",
+    features: [
+      "Smart ingredient recognition",
+      "Personalized recipe generation",
+      "Cuisine preference matching",
+      "Step-by-step cooking instructions",
+    ],
+    techStack: ["React", "TypeScript", "AI/LLM", "Tailwind CSS"],
+    liveUrl: "https://eat-well.jesseqin.me",
+    status: "live",
+  },
+];
+
+const statusConfig = {
+  live: { label: "Live", className: "bg-green-500/10 text-green-600 border-green-500/20" },
+  beta: { label: "Beta", className: "bg-yellow-500/10 text-yellow-600 border-yellow-500/20" },
+  "coming-soon": { label: "Coming Soon", className: "bg-gray-500/10 text-gray-600 border-gray-500/20" },
+};
+
+const ProjectCard = ({ project }: { project: Project }) => {
+  const status = statusConfig[project.status];
+
+  return (
+    <article className="group relative bg-card border border-border rounded-2xl overflow-hidden hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5">
+      {/* Project Image Placeholder */}
+      <div className="aspect-video bg-gradient-to-br from-primary/10 via-primary/5 to-transparent flex items-center justify-center relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid-pattern opacity-30" />
+        <div className="relative z-10 text-center">
+          <span className="text-5xl font-bold text-primary/20">{project.title.charAt(0)}</span>
+          {project.titleCn && (
+            <p className="text-2xl font-medium text-primary/40 mt-2">{project.titleCn}</p>
+          )}
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="p-6 lg:p-8">
+        {/* Header */}
+        <div className="flex items-start justify-between gap-4 mb-4">
+          <div>
+            <h2 className="text-2xl font-bold text-foreground group-hover:text-primary transition-colors">
+              {project.title}
+              {project.titleCn && (
+                <span className="text-lg font-normal text-muted-foreground ml-2">
+                  ({project.titleCn})
+                </span>
+              )}
+            </h2>
+          </div>
+          <Badge variant="outline" className={status.className}>
+            {status.label}
+          </Badge>
+        </div>
+
+        {/* Description */}
+        <p className="text-muted-foreground mb-6 leading-relaxed">
+          {project.description}
+        </p>
+
+        {/* Features */}
+        <div className="mb-6">
+          <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-primary" />
+            Key Features
+          </h3>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            {project.features.map((feature, index) => (
+              <li
+                key={index}
+                className="text-sm text-muted-foreground flex items-center gap-2"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-primary/60" />
+                {feature}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Tech Stack */}
+        <div className="mb-6">
+          <div className="flex flex-wrap gap-2">
+            {project.techStack.map((tech) => (
+              <Badge key={tech} variant="secondary" className="text-xs">
+                {tech}
+              </Badge>
+            ))}
+          </div>
+        </div>
+
+        {/* CTA */}
+        <div className="flex items-center gap-3">
+          <Button variant="hero" size="default" asChild>
+            <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+              Visit Project <ExternalLink className="w-4 h-4 ml-1" />
+            </a>
+          </Button>
+        </div>
+      </div>
+    </article>
+  );
+};
+
+const Projects = () => {
+  return (
+    <div className="min-h-screen bg-background flex flex-col">
+      <Navbar />
+
+      {/* Hero Section */}
+      <section className="relative py-16 lg:py-24 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent" />
+        <div className="container mx-auto px-4 lg:px-8 relative z-10">
+          <div className="max-w-3xl">
+            <Badge variant="outline" className="mb-4 border-primary/30 text-primary">
+              Vibe Coding
+            </Badge>
+            <h1 className="text-4xl lg:text-5xl font-bold mb-4">
+              Projects
+            </h1>
+            <p className="text-lg lg:text-xl text-muted-foreground leading-relaxed">
+              A collection of projects built through Vibe Coding — where AI meets creativity.
+              Each project is crafted with curiosity, powered by modern AI tools, and designed
+              to solve real problems.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Projects Grid */}
+      <main className="flex-1 pb-16 lg:pb-24">
+        <div className="container mx-auto px-4 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {projects.map((project) => (
+              <ProjectCard key={project.id} project={project} />
+            ))}
+          </div>
+
+          {/* More Coming Soon */}
+          {projects.length < 4 && (
+            <div className="mt-12 text-center">
+              <p className="text-muted-foreground">
+                More projects coming soon...
+              </p>
+            </div>
+          )}
+
+          {/* Back to Home */}
+          <div className="mt-16 text-center">
+            <Button variant="outline" size="lg" asChild>
+              <Link to="/">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back to Home
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </main>
+
+      <Footer />
+    </div>
+  );
+};
+
+export default Projects;
