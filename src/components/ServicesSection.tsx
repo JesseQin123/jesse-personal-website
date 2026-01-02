@@ -1,20 +1,6 @@
 import { Brain, Database, Rocket, Users, AlertCircle } from "lucide-react";
-import { useStaggerReveal, useScrollReveal } from "@/animations";
 
 const ServicesSection = () => {
-  const headerRef = useScrollReveal<HTMLDivElement>({
-    translateY: 30,
-    duration: 600,
-  });
-
-  const cardsRef = useStaggerReveal<HTMLDivElement>({
-    itemSelector: '.service-card',
-    staggerDelay: 100,
-    duration: 500,
-    translateY: 40,
-    from: 'first',
-  });
-
   const services = [
     {
       icon: Brain,
@@ -50,7 +36,7 @@ const ServicesSection = () => {
     <section id="services" className="py-12 lg:py-32 bg-muted/30">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Section Header */}
-        <div ref={headerRef} className="max-w-3xl mb-8 md:mb-16">
+        <div className="max-w-3xl mb-8 md:mb-16">
           <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-2 md:mb-4">
             Services
           </p>
@@ -63,11 +49,11 @@ const ServicesSection = () => {
         </div>
 
         {/* Services Grid */}
-        <div ref={cardsRef} className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-8">
           {services.map((service, index) => (
             <div
               key={index}
-              className="service-card group p-8 bg-background rounded-2xl border border-border hover:border-primary/50 hover:shadow-lg transition-all duration-300"
+              className="group p-8 bg-background rounded-2xl border border-border hover:border-primary/50 hover:shadow-lg transition-all duration-300"
             >
               <div className="w-14 h-14 rounded-xl hero-gradient flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <service.icon className="w-7 h-7 text-primary-foreground" />

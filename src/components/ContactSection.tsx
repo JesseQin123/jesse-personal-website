@@ -1,32 +1,13 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Linkedin, Calendar } from "lucide-react";
-import { useScrollReveal, useStaggerReveal } from "@/animations";
 
 const ContactSection = () => {
-  const headerRef = useScrollReveal<HTMLDivElement>({
-    translateY: 30,
-    duration: 600,
-  });
-
-  const ctaRef = useScrollReveal<HTMLDivElement>({
-    translateY: 20,
-    duration: 500,
-    delay: 200,
-  });
-
-  const stepsRef = useStaggerReveal<HTMLDivElement>({
-    itemSelector: '.process-step',
-    staggerDelay: 150,
-    duration: 500,
-    translateY: 30,
-  });
-
   return (
     <section id="contact" className="py-12 lg:py-32 bg-muted/30">
       <div className="container mx-auto px-4 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
-          <div ref={headerRef}>
+          <div>
             <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-2 md:mb-4">
               Get in Touch
             </p>
@@ -40,7 +21,7 @@ const ContactSection = () => {
           </div>
 
           {/* CTA Buttons */}
-          <div ref={ctaRef} className="flex flex-wrap justify-center gap-4 mb-8 md:mb-16">
+          <div className="flex flex-wrap justify-center gap-4 mb-8 md:mb-16">
             <Button variant="hero" size="lg" asChild>
               <Link to="/book-call">
                 <Calendar className="w-4 h-4" />
@@ -56,8 +37,8 @@ const ContactSection = () => {
           </div>
 
           {/* Process Overview */}
-          <div ref={stepsRef} className="grid md:grid-cols-3 gap-8 text-left">
-            <div className="process-step p-6 bg-background rounded-xl border border-border">
+          <div className="grid md:grid-cols-3 gap-8 text-left">
+            <div className="p-6 bg-background rounded-xl border border-border">
               <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                 <span className="font-bold text-primary">1</span>
               </div>
@@ -66,7 +47,7 @@ const ContactSection = () => {
                 15-minute intro call to understand your challenges and determine if we're a good fit.
               </p>
             </div>
-            <div className="process-step p-6 bg-background rounded-xl border border-border">
+            <div className="p-6 bg-background rounded-xl border border-border">
               <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                 <span className="font-bold text-primary">2</span>
               </div>
@@ -75,7 +56,7 @@ const ContactSection = () => {
                 I'll outline a clear engagement plan with deliverables, timeline, and investment.
               </p>
             </div>
-            <div className="process-step p-6 bg-background rounded-xl border border-border">
+            <div className="p-6 bg-background rounded-xl border border-border">
               <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                 <span className="font-bold text-primary">3</span>
               </div>

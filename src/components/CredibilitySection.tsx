@@ -1,4 +1,4 @@
-import { useCountUp, useStaggerReveal, useScrollReveal } from "@/animations";
+import { useCountUp } from "@/animations";
 
 // Component for animated stat numbers
 const StatNumber = ({ endValue, suffix, label }: { endValue: number; suffix: string; label: string }) => {
@@ -36,18 +36,6 @@ const CredibilitySection = () => {
     items: ["Large Language Models & AI Agents", "Knowledge Graphs & RAG Systems", "AI Product Strategy & GTM", "Technical Due Diligence"]
   }];
 
-  const credentialsRef = useStaggerReveal<HTMLDivElement>({
-    itemSelector: '.credential-card',
-    staggerDelay: 100,
-    duration: 500,
-    translateY: 30,
-  });
-
-  const valuePropsRef = useScrollReveal<HTMLDivElement>({
-    translateY: 30,
-    duration: 600,
-  });
-
   return (
     <section className="py-12 lg:py-32 bg-foreground text-background">
       <div className="container mx-auto px-4 lg:px-8">
@@ -59,9 +47,9 @@ const CredibilitySection = () => {
         </div>
 
         {/* Credentials Grid */}
-        <div ref={credentialsRef} className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-3 gap-8">
           {credentials.map((cred, index) => (
-            <div key={index} className="credential-card">
+            <div key={index}>
               <h3 className="text-sm font-semibold uppercase tracking-wider text-background/50 mb-4">
                 {cred.type}
               </h3>
@@ -78,7 +66,7 @@ const CredibilitySection = () => {
         </div>
 
         {/* Unique Value Prop - hidden on mobile for density */}
-        <div ref={valuePropsRef} className="mt-10 md:mt-20 hidden md:block">
+        <div className="mt-10 md:mt-20 hidden md:block">
           <h3 className="text-2xl lg:text-3xl font-bold mb-6">
             Why work with me?
           </h3>

@@ -12,6 +12,8 @@ export const EASINGS = {
   dramatic: 'outExpo',
   // Number counting
   countUp: 'outExpo',
+  // Very gentle, no sudden stops - best for buttons
+  gentle: 'outSine',
 } as const;
 
 export const DURATIONS = {

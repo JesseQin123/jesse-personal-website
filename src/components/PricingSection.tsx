@@ -1,28 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowUpRight, Check } from "lucide-react";
-import { useStaggerReveal, useScrollReveal } from "@/animations";
 
 const PricingSection = () => {
-  const headerRef = useScrollReveal<HTMLDivElement>({
-    translateY: 30,
-    duration: 600,
-  });
-
-  const pricingCardsRef = useStaggerReveal<HTMLDivElement>({
-    itemSelector: '.pricing-card',
-    staggerDelay: 150,
-    duration: 600,
-    translateY: 40,
-    from: 'first',
-  });
-
-  const engagementRef = useStaggerReveal<HTMLDivElement>({
-    itemSelector: '.engagement-card',
-    staggerDelay: 100,
-    duration: 400,
-    translateY: 20,
-  });
-
   const packages = [
     {
       name: "AI Roadmap Session",
@@ -96,7 +75,7 @@ const PricingSection = () => {
     <section id="pricing" className="py-12 lg:py-32 bg-muted/30">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Section Header */}
-        <div ref={headerRef} className="max-w-3xl mb-8 md:mb-16">
+        <div className="max-w-3xl mb-8 md:mb-16">
           <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-2 md:mb-4">
             Pricing
           </p>
@@ -109,11 +88,11 @@ const PricingSection = () => {
         </div>
 
         {/* Pricing Cards */}
-        <div ref={pricingCardsRef} className="grid md:grid-cols-3 gap-6 md:gap-8 mb-10 md:mb-20">
+        <div className="grid md:grid-cols-3 gap-6 md:gap-8 mb-10 md:mb-20">
           {packages.map((pkg, index) => (
             <div
               key={index}
-              className={`pricing-card relative p-5 md:p-8 rounded-2xl border ${
+              className={`relative p-5 md:p-8 rounded-2xl border ${
                 pkg.highlight
                   ? "bg-foreground text-background border-foreground"
                   : "bg-background border-border"
@@ -162,11 +141,11 @@ const PricingSection = () => {
         {/* Engagement Types */}
         <div>
           <h3 className="text-xl font-bold mb-8">Engagement Models</h3>
-          <div ref={engagementRef} className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-3 gap-6">
             {engagementTypes.map((type, index) => (
               <div
                 key={index}
-                className="engagement-card p-6 bg-background rounded-xl border border-border"
+                className="p-6 bg-background rounded-xl border border-border"
               >
                 <h4 className="font-semibold mb-2">{type.title}</h4>
                 <p className="text-sm text-muted-foreground">{type.description}</p>

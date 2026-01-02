@@ -83,7 +83,7 @@ export function useHeroAnimation(
       const buttons = ctaRef.current.querySelectorAll('a, button');
       buttons.forEach((btn) => {
         (btn as HTMLElement).style.opacity = '0';
-        (btn as HTMLElement).style.transform = 'translateY(20px)';
+        (btn as HTMLElement).style.transform = 'translateY(15px)';
       });
     }
 
@@ -132,23 +132,23 @@ export function useHeroAnimation(
       }, DURATIONS.slow * 0.6);
     }
 
-    // CTA buttons with spring effect
+    // CTA buttons with very smooth animation - gentle easing for natural stop
     if (ctaRef.current) {
       const buttons = ctaRef.current.querySelectorAll('a, button');
       if (buttons.length > 0) {
         tl.add(buttons, {
-          translateY: [20, 0],
+          translateY: [15, 0],
           opacity: [0, 1],
-          duration: DURATIONS.slow,
+          duration: DURATIONS.slower,
           delay: stagger(STAGGER.slow),
-          ease: EASINGS.bounce,
+          ease: EASINGS.gentle,
         }, DURATIONS.slow * 0.7);
       } else {
         tl.add(ctaRef.current, {
-          translateY: [20, 0],
+          translateY: [15, 0],
           opacity: [0, 1],
-          duration: DURATIONS.slow,
-          ease: EASINGS.bounce,
+          duration: DURATIONS.slower,
+          ease: EASINGS.gentle,
         }, DURATIONS.slow * 0.7);
       }
     }
