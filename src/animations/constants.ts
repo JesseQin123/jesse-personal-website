@@ -1,16 +1,17 @@
 // Animation constants for consistent timing and easing across the site
 
+// In Anime.js v4, use standard easing names
 export const EASINGS = {
   // Smooth, professional feel
-  smooth: 'cubicBezier(0.4, 0, 0.2, 1)',
+  smooth: 'outQuad',
   // Natural, bouncy interactions
-  bounce: 'spring(1, 80, 10, 0)',
+  bounce: 'outBack',
   // Quick, responsive feedback
-  sharp: 'cubicBezier(0.4, 0, 0.6, 1)',
+  sharp: 'outQuart',
   // Dramatic reveals
-  dramatic: 'cubicBezier(0.16, 1, 0.3, 1)',
+  dramatic: 'outExpo',
   // Number counting
-  countUp: 'easeOutExpo',
+  countUp: 'outExpo',
 } as const;
 
 export const DURATIONS = {

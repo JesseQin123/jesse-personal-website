@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowUpRight, MapPin } from "lucide-react";
 import profileImage from "@/assets/jesse-profile.jpg";
 import { useHeroAnimation } from "@/animations";
+import { NeuralNetwork, AnimatedCircuitLines } from "@/components/animations";
 
 const HeroSection = () => {
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -27,6 +28,9 @@ const HeroSection = () => {
     <section id="about" className="relative overflow-hidden">
       {/* Background Grid Pattern */}
       <div className="absolute inset-0 grid-pattern opacity-50" />
+
+      {/* Animated Circuit Lines - Top Left (Desktop only) */}
+      <AnimatedCircuitLines className="top-0 left-0 w-80 h-60 opacity-40 hidden lg:block" />
 
       <div className="container mx-auto px-4 lg:px-8 py-10 lg:py-24">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -77,6 +81,9 @@ const HeroSection = () => {
 
           {/* Right - Profile Image */}
           <div className="relative flex justify-center lg:justify-end">
+            {/* Neural Network Animation - Behind the image (Desktop only) */}
+            <NeuralNetwork className="absolute -left-20 -top-10 w-[500px] h-[350px] opacity-30 hidden lg:block" />
+
             <div className="relative w-full lg:w-auto">
               {/* Decorative elements - hidden on mobile */}
               <div className="absolute -inset-4 hero-gradient rounded-3xl opacity-20 blur-2xl hidden lg:block" />
