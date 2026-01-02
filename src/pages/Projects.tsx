@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import eatWellPoster from "@/assets/projects/eat-well-app-poster.png";
 
 interface Project {
   id: string;
@@ -32,6 +33,7 @@ const projects: Project[] = [
     ],
     techStack: ["React", "TypeScript", "AI/LLM", "Tailwind CSS"],
     liveUrl: "https://eat-well.jesseqin.me",
+    imageUrl: eatWellPoster,
     status: "live",
   },
 ];
@@ -47,15 +49,25 @@ const ProjectCard = ({ project }: { project: Project }) => {
 
   return (
     <article className="group relative bg-card border border-border rounded-2xl overflow-hidden hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5">
-      {/* Project Image Placeholder */}
+      {/* Project Image */}
       <div className="aspect-video bg-gradient-to-br from-primary/10 via-primary/5 to-transparent flex items-center justify-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid-pattern opacity-30" />
-        <div className="relative z-10 text-center">
-          <span className="text-5xl font-bold text-primary/20">{project.title.charAt(0)}</span>
-          {project.titleCn && (
-            <p className="text-2xl font-medium text-primary/40 mt-2">{project.titleCn}</p>
-          )}
-        </div>
+        {project.imageUrl ? (
+          <img
+            src={project.imageUrl}
+            alt={project.title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+        ) : (
+          <>
+            <div className="absolute inset-0 bg-grid-pattern opacity-30" />
+            <div className="relative z-10 text-center">
+              <span className="text-5xl font-bold text-primary/20">{project.title.charAt(0)}</span>
+              {project.titleCn && (
+                <p className="text-2xl font-medium text-primary/40 mt-2">{project.titleCn}</p>
+              )}
+            </div>
+          </>
+        )}
       </div>
 
       {/* Content */}
