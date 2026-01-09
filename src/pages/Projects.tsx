@@ -5,6 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import eatWellPoster from "@/assets/projects/eat-well-app-poster.png";
+import contentRewriterPoster from "@/assets/projects/content_rewriter_poster.png";
+import jtimerPoster from "@/assets/projects/jtimer_poster.png";
 
 interface Project {
   id: string;
@@ -34,6 +36,40 @@ const projects: Project[] = [
     techStack: ["React", "TypeScript", "AI/LLM", "Tailwind CSS"],
     liveUrl: "https://eat-well.jesseqin.me",
     imageUrl: eatWellPoster,
+    status: "live",
+  },
+  {
+    id: "workout-timer",
+    title: "Workout Timer",
+    titleCn: "运动计时器",
+    description:
+      "A motivational workout timer designed to help you build consistent exercise habits. Track your planks, HIIT sessions, and more while watching your progress grow over weeks and months. Visualize your cumulative workout minutes with growth charts and stay motivated as you see your dedication add up.",
+    features: [
+      "Plank & HIIT timer modes",
+      "Weekly and monthly progress tracking",
+      "Growth visualization charts",
+      "Personal motivation insights",
+    ],
+    techStack: ["React", "TypeScript", "Tailwind CSS"],
+    liveUrl: "https://timer.jesseqin.me",
+    imageUrl: jtimerPoster,
+    status: "live",
+  },
+  {
+    id: "content-rewriter",
+    title: "Content Rewriter",
+    titleCn: "内容改写器",
+    description:
+      "A powerful AI tool that transforms your content into platform-optimized posts ready to go viral. Input any text and instantly generate engaging versions tailored for different social media platforms — the ultimate productivity tool for content creators and social media managers.",
+    features: [
+      "One-click content transformation",
+      "Multi-platform optimization",
+      "AI-powered viral copywriting",
+      "Boost content creator efficiency",
+    ],
+    techStack: ["React", "TypeScript", "AI/LLM", "Tailwind CSS"],
+    liveUrl: "https://rewriter.jesseqin.me",
+    imageUrl: contentRewriterPoster,
     status: "live",
   },
 ];
