@@ -9,6 +9,8 @@ import contentRewriterPoster from "@/assets/projects/content_rewriter_poster.png
 import jtimerPoster from "@/assets/projects/jtimer_poster.png";
 import contextGraphPoster from "@/assets/projects/contextgraph_poster.png";
 import churchAppPoster from "@/assets/projects/church_app_poster.png";
+import lifeInAgiPoster from "@/assets/projects/life_in_agi_poster.png";
+import soloUnicornPoster from "@/assets/projects/solounicorn_club_poster.png";
 
 interface Project {
   id: string;
@@ -106,6 +108,40 @@ const projects: Project[] = [
     techStack: ["React", "TypeScript", "PWA", "Tailwind CSS"],
     liveUrl: "https://church.jesseqin.me",
     imageUrl: churchAppPoster,
+    status: "live",
+  },
+  {
+    id: "life-in-agi",
+    title: "Life in AGI",
+    titleCn: "AGI时代的生活",
+    description:
+      "An optimistic exploration of life in the AGI era. Jesse shares his vision and thoughts on how AGI will transform society, personal life, career development, and human collaboration. A forward-looking perspective on embracing the future with hope and purpose.",
+    features: [
+      "Vision for AGI-era society",
+      "Personal life transformation insights",
+      "Career development in the AI age",
+      "Human collaboration perspectives",
+    ],
+    techStack: ["React", "TypeScript", "Tailwind CSS"],
+    liveUrl: "https://lifeinagi.com",
+    imageUrl: lifeInAgiPoster,
+    status: "live",
+  },
+  {
+    id: "solo-unicorn-club",
+    title: "Solo Unicorn Club",
+    titleCn: "「一人独角兽」俱乐部",
+    description:
+      "NYC's premier community for ambitious individuals leveraging AI to become one-person companies. Founded by Jesse to bring together like-minded people in New York who are passionate about using AI to unlock unlimited potential. Features regular offline mixups and an online community for collaboration, knowledge sharing, and mutual support.",
+    features: [
+      "NYC offline mixup events",
+      "Online community & knowledge sharing",
+      "AI-powered solopreneur support",
+      "Dream chasing & wellness focus",
+    ],
+    techStack: ["React", "TypeScript", "Tailwind CSS"],
+    liveUrl: "https://solounicorn.club",
+    imageUrl: soloUnicornPoster,
     status: "live",
   },
 ];
