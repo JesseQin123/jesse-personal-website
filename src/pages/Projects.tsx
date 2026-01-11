@@ -7,6 +7,8 @@ import Footer from "@/components/Footer";
 import eatWellPoster from "@/assets/projects/eat-well-app-poster.png";
 import contentRewriterPoster from "@/assets/projects/content_rewriter_poster.png";
 import jtimerPoster from "@/assets/projects/jtimer_poster.png";
+import contextGraphPoster from "@/assets/projects/contextgraph_poster.png";
+import churchAppPoster from "@/assets/projects/church_app_poster.png";
 
 interface Project {
   id: string;
@@ -70,6 +72,40 @@ const projects: Project[] = [
     techStack: ["React", "TypeScript", "AI/LLM", "Tailwind CSS"],
     liveUrl: "https://rewriter.jesseqin.me",
     imageUrl: contentRewriterPoster,
+    status: "live",
+  },
+  {
+    id: "context-graph",
+    title: "Context Graph",
+    titleCn: "上下文图谱",
+    description:
+      "The marketplace for enterprise-grade context graphs. Turn tribal knowledge into searchable precedent. Download industry-specific context graphs or contribute your own to help enterprises improve LLM implementation accuracy and production efficiency.",
+    features: [
+      "Enterprise context graph marketplace",
+      "Industry-specific knowledge sharing",
+      "Improve LLM implementation accuracy",
+      "Community-driven contributions",
+    ],
+    techStack: ["React", "TypeScript", "AI/LLM", "Knowledge Graph"],
+    liveUrl: "https://contextgraph.tech",
+    imageUrl: contextGraphPoster,
+    status: "coming-soon",
+  },
+  {
+    id: "church-app",
+    title: "Church in Piscataway",
+    titleCn: "教会网站",
+    description:
+      "A modern church website built as a PWA for app-like mobile experience. Features convenient Bible search, audio playback, and organized resources for the congregation. A volunteer project to help the local church community stay connected with spiritual content anytime, anywhere.",
+    features: [
+      "Easy Bible lookup & search",
+      "Audio sermon playback",
+      "Organized church resources",
+      "PWA for mobile app experience",
+    ],
+    techStack: ["React", "TypeScript", "PWA", "Tailwind CSS"],
+    liveUrl: "https://church.jesseqin.me",
+    imageUrl: churchAppPoster,
     status: "live",
   },
 ];
