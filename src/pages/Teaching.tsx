@@ -72,15 +72,15 @@ const Teaching = () => {
       <Navbar />
 
       {/* Hero */}
-      <section className="py-20 lg:py-32">
+      <section className="py-12 sm:py-20 lg:py-32">
         <div className="container mx-auto px-4 lg:px-8 text-center">
           <Badge className="mb-4" variant="secondary">
             Private 1-on-1 AI Coaching
           </Badge>
-          <h1 className="text-4xl lg:text-6xl font-bold tracking-tight mb-6">
+          <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold tracking-tight mb-4 sm:mb-6">
             Become Dangerous with AI
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
+          <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-6 sm:mb-8">
             A private, hands-on coaching program that turns ambitious professionals
             into AI-powered operators. No fluff. You build real things from day one.
           </p>
@@ -97,10 +97,10 @@ const Teaching = () => {
       <Separator />
 
       {/* What you'll gain */}
-      <section className="py-16 lg:py-24">
+      <section className="py-10 sm:py-16 lg:py-24">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">What You'll Be Able to Do</h2>
+          <div className="text-center mb-8 sm:mb-12">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-4">What You'll Be Able to Do</h2>
             <p className="text-muted-foreground max-w-xl mx-auto">
               By the end of the program, AI won't be something you read about — it'll be
               something you use to ship faster, think sharper, and automate the boring stuff.
@@ -129,11 +129,11 @@ const Teaching = () => {
       <Separator />
 
       {/* Why this is different */}
-      <section className="py-16 lg:py-24 bg-muted/30">
+      <section className="py-10 sm:py-16 lg:py-24 bg-muted/30">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="max-w-3xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Not Another AI Course</h2>
+            <div className="text-center mb-8 sm:mb-12">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-4">Not Another AI Course</h2>
               <p className="text-muted-foreground">
                 This isn't a pre-recorded course or a generic workshop.
                 It's a private coaching engagement designed around you.
@@ -154,13 +154,13 @@ const Teaching = () => {
       <Separator />
 
       {/* Who is this for */}
-      <section className="py-16 lg:py-24">
+      <section className="py-10 sm:py-16 lg:py-24">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="max-w-2xl mx-auto text-center">
-            <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
-              <Users className="h-7 w-7 text-primary" />
+            <div className="mx-auto mb-4 sm:mb-6 flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-primary/10">
+              <Users className="h-6 w-6 sm:h-7 sm:w-7 text-primary" />
             </div>
-            <h2 className="text-3xl font-bold mb-4">Who Is This For?</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold mb-4">Who Is This For?</h2>
             <div className="text-left space-y-3 text-muted-foreground">
               <p>
                 <strong>Product managers and project managers</strong> who want AI to
@@ -193,11 +193,11 @@ const Teaching = () => {
       <Separator />
 
       {/* Student Login */}
-      <section className="py-16 lg:py-24 bg-muted/30">
+      <section className="py-10 sm:py-16 lg:py-24 bg-muted/30">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="max-w-md mx-auto text-center">
-            <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
-              <LogIn className="h-7 w-7 text-primary" />
+            <div className="mx-auto mb-4 sm:mb-6 flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-primary/10">
+              <LogIn className="h-6 w-6 sm:h-7 sm:w-7 text-primary" />
             </div>
             <h2 className="text-2xl font-bold mb-2">Current Students</h2>
             <p className="text-muted-foreground mb-6">

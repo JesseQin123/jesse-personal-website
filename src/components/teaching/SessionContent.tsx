@@ -36,8 +36,8 @@ function CopyablePrompt({ label, text }: { label: string; text: string }) {
 
   return (
     <div className="my-4 rounded-lg border bg-muted/50">
-      <div className="flex items-center justify-between px-4 py-2 border-b">
-        <span className="text-sm font-medium text-muted-foreground">
+      <div className="flex items-center justify-between gap-2 px-3 sm:px-4 py-2 border-b">
+        <span className="text-xs sm:text-sm font-medium text-muted-foreground truncate">
           {label}
         </span>
         <Button
@@ -54,7 +54,7 @@ function CopyablePrompt({ label, text }: { label: string; text: string }) {
           {copied ? "已复制" : "复制"}
         </Button>
       </div>
-      <pre className="p-4 text-sm whitespace-pre-wrap font-mono leading-relaxed">
+      <pre className="p-3 sm:p-4 text-xs sm:text-sm whitespace-pre-wrap break-words font-mono leading-relaxed overflow-x-auto">
         {text}
       </pre>
     </div>
@@ -106,7 +106,7 @@ function ImageBlock({
   if (error || !block.src) {
     return (
       <figure className="my-6">
-        <div className="flex flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/30 py-12 px-6">
+        <div className="flex flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/30 py-8 sm:py-12 px-4 sm:px-6">
           <ImageIcon className="h-8 w-8 text-muted-foreground/40" />
           <span className="text-sm text-muted-foreground/60 text-center">
             {block.caption || block.alt}
@@ -149,7 +149,7 @@ function HeadingBlock({
     return (
       <h2
         id={id}
-        className="text-2xl font-bold mt-12 mb-4 pb-2 border-b scroll-mt-20"
+        className="text-xl sm:text-2xl font-bold mt-10 sm:mt-12 mb-4 pb-2 border-b scroll-mt-20"
       >
         {text}
       </h2>
@@ -157,7 +157,7 @@ function HeadingBlock({
   }
 
   return (
-    <h3 id={id} className="text-xl font-semibold mt-8 mb-3 scroll-mt-20">
+    <h3 id={id} className="text-lg sm:text-xl font-semibold mt-6 sm:mt-8 mb-3 scroll-mt-20">
       {text}
     </h3>
   );
@@ -199,9 +199,9 @@ function ContentBlockRenderer({
               <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm font-medium">
                 {i + 1}
               </div>
-              <div>
+              <div className="min-w-0">
                 <div className="font-medium">{item.title}</div>
-                <div className="text-sm text-muted-foreground">
+                <div className="text-sm text-muted-foreground break-words">
                   {item.description}
                 </div>
               </div>
@@ -305,13 +305,13 @@ function HomeworkSection({
                 className="flex items-start gap-3 rounded-lg border p-3"
               >
                 <div
-                  className={`rounded px-2 py-0.5 text-xs font-medium ${typeColors[hw.type]}`}
+                  className={`rounded px-2 py-0.5 text-xs font-medium shrink-0 ${typeColors[hw.type]}`}
                 >
                   {typeLabels[hw.type]}
                 </div>
-                <div className="flex-1">
+                <div className="flex-1 min-w-0">
                   <div className="font-medium text-sm">{hw.titleCn}</div>
-                  <div className="text-xs text-muted-foreground mt-0.5">
+                  <div className="text-xs text-muted-foreground mt-0.5 break-words">
                     {hw.descriptionCn}
                   </div>
                 </div>
@@ -336,7 +336,7 @@ const SessionContentView = ({ session }: SessionContentProps) => {
           <Badge variant="outline">第{session.week}周</Badge>
           <Badge variant="secondary">第{session.sessionNumber}课</Badge>
         </div>
-        <h1 className="text-3xl font-bold mb-2">{session.titleCn}</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold mb-2">{session.titleCn}</h1>
         <p className="text-muted-foreground">{session.subtitleCn}</p>
 
         {/* Meta info */}

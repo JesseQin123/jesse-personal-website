@@ -17,7 +17,7 @@ const PricingSection = () => {
       ],
       highlight: false,
       cta: "Book a Session",
-      href: "https://buy.stripe.com/4gMaEWgTT9OA6yb0vMao800",
+      href: import.meta.env.VITE_STRIPE_ROADMAP_SESSION_URL || "#",
     },
     {
       name: "Retainer Package",
@@ -35,7 +35,7 @@ const PricingSection = () => {
       highlight: true,
       cta: "Get Started",
       savings: "Save $500",
-      href: "https://buy.stripe.com/fZucN45bbf8U8Gj2DUao801",
+      href: import.meta.env.VITE_STRIPE_RETAINER_PACKAGE_URL || "#",
     },
     {
       name: "Long-Term Partnership",

@@ -17,10 +17,10 @@ const CourseOverview = ({ course, student, onNavigate }: CourseOverviewProps) =>
     <div className="max-w-3xl mx-auto">
       {/* Welcome */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">
+        <h1 className="text-2xl sm:text-3xl font-bold mb-2">
           Welcome, {student.name.split(" ")[0]}!
         </h1>
-        <p className="text-muted-foreground text-lg">
+        <p className="text-muted-foreground text-base sm:text-lg">
           {course.titleCn} · {course.descriptionCn}
         </p>
       </div>

@@ -30,9 +30,9 @@ const ToolCard = ({ tool }: ToolCardProps) => {
   return (
     <Card className="flex flex-col h-full hover:shadow-md transition-shadow">
       <CardHeader className="pb-3">
-        <div className="flex items-start justify-between">
-          <CardTitle className="text-lg">{tool.name}</CardTitle>
-          <Badge className={`text-xs ${categoryColors[tool.category]}`} variant="outline">
+        <div className="flex items-start justify-between gap-2">
+          <CardTitle className="text-base sm:text-lg">{tool.name}</CardTitle>
+          <Badge className={`text-xs shrink-0 ${categoryColors[tool.category]}`} variant="outline">
             {categoryLabels[tool.category]}
           </Badge>
         </div>

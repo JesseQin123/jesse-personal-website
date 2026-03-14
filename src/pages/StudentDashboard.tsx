@@ -72,7 +72,7 @@ const StudentDashboard = () => {
   }
 
   return (
-    <div className="flex h-screen bg-background">
+    <div className="flex h-dvh bg-background">
       {/* Desktop sidebar */}
       <DesktopSidebar
         course={course}
@@ -94,7 +94,7 @@ const StudentDashboard = () => {
 
         {/* Content area */}
         <ScrollArea className="flex-1">
-          <div className="p-6 lg:p-8">{mainContent}</div>
+          <div className="p-4 sm:p-6 lg:p-8">{mainContent}</div>
         </ScrollArea>
       </div>
     </div>

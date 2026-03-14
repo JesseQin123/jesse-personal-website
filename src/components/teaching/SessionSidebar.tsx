@@ -210,7 +210,7 @@ export function MobileSidebar(props: SessionSidebarProps) {
           <Menu className="h-5 w-5" />
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="w-80 p-0">
+      <SheetContent side="left" className="w-[85vw] max-w-80 p-0">
         <SheetTitle className="sr-only">{props.course.titleCn}</SheetTitle>
         <SidebarContent {...props} onViewChange={handleViewChange} />
       </SheetContent>
