@@ -563,24 +563,24 @@ export const fionaCourse: CourseData = {
       id: "s2",
       sessionNumber: 2,
       week: 1,
-      title: "Website Upgrade - Intro to Vibe Coding",
-      titleCn: "网站升级 - Vibe Coding 入门",
-      subtitle: "Improve your website with AI-assisted coding and prompt engineering",
-      subtitleCn: "用AI辅助编程改进网站 · 学习Prompt工程基础",
+      title: "Introduction to AI Agents",
+      titleCn: "AI Agent 入门",
+      subtitle: "Build your first AI agent workflows with Google Opal",
+      subtitleCn: "用 Google Opal 构建你的第一批 AI Agent 工作流",
       duration: "60分钟",
       objectives: [
-        "Improve website with Claude Code/Cursor",
-        "Learn prompt engineering fundamentals",
-        "Add multi-page functionality",
-        "Redeploy updated website",
+        "Understand what AI Agents are and how they differ from chatbots",
+        "Learn the core loop: Perceive → Decide → Act",
+        "Build 5 agent workflows in Google Opal (creative, PM analysis, user research chain, learning)",
+        "Experience agent chaining: multiple agents working together as a pipeline",
       ],
       objectivesCn: [
-        "用Claude Code/Cursor改进网站",
-        "学习Prompt工程基础",
-        "添加多页面功能",
-        "再次部署更新",
+        "理解什么是 AI Agent，它和普通聊天机器人的区别",
+        "掌握 Agent 核心循环：感知 → 决策 → 行动",
+        "在 Google Opal 中构建 5 个 Agent 工作流（创意、PM分析、用研链、学习加速）",
+        "体验 Agent 链：多个 Agent 串联协作，形成工作流水线",
       ],
-      toolIds: ["claude", "cursor", "vercel"],
+      toolIds: ["opal", "gemini"],
       content: [
         // ── 开场 ──
         { type: "heading", text: "Opening + Homework Review", textCn: "开场 · 作业回顾", level: 2 },
@@ -599,323 +599,318 @@ export const fionaCourse: CourseData = {
                 { title: "AI工具探索", description: "Fiona 分别体验了 Gemini、NotebookLM、Claude 吗？哪个印象最深？" },
                 { title: "NotebookLM 播客", description: "是否成功生成了 Audio Overview？用了什么内容？" },
                 { title: "职业照", description: "是否准备好了大头照？分辨率够吗？" },
-                { title: "网站简介草稿", description: "「关于我」的草稿写好了吗？我们今天会用AI来润色。" },
+                { title: "网站简介草稿", description: "「关于我」的草稿写好了吗？" },
                 { title: "AI加速清单", description: "列出了哪3个可用AI加速的工作任务？" },
               ],
             },
           ],
         },
         {
-          type: "tip",
-          textCn: "查看 Vercel Analytics：打开 vercel.com → 选择个人网站项目 → Analytics。一起看看上线一周后有多少人访问了。",
-        },
-        {
           type: "paragraph",
-          textCn: "今天的课程分三个部分：Prompt工程基础 → Vibe Coding 实战 → 测试部署。我们将学习写好 Prompt 的核心方法，然后用 Claude Code 实际改进你的网站。",
+          textCn: "今天的课程主题是 AI Agent——你将学会什么是「能自己干活的AI」，并亲手用 Google Opal 构建 4 个 Agent 工作流，从调研到创意，全面体验 Agent 的能力。",
         },
         { type: "divider" },
 
         // ══════════════════════════════════════
-        // Part 1: Prompt 工程基础
+        // Part 1: AI Agent 概念建立（10min）
         // ══════════════════════════════════════
-        { type: "heading", text: "Part 1: Prompt Engineering Fundamentals", textCn: "Part 1: Prompt 工程基础", level: 2 },
+        { type: "heading", text: "Part 1: What is an AI Agent?", textCn: "Part 1: 什么是 AI Agent？", level: 2 },
         {
           type: "paragraph",
-          textCn: "Prompt 工程是和AI沟通的核心技能。一个好的 Prompt 和一个差的 Prompt，输出质量差距可以达到10倍。掌握这5个要素，你就能让AI输出专业级内容。",
+          textCn: "上节课我们用 ChatGPT、Claude、Gemini 对话——你提问，它回答。但今天的 AI Agent 完全不一样：它不只回答问题，而是能自己规划步骤、调用工具、完成一整个任务。",
         },
 
-        { type: "heading", text: "The 5 Elements of a Great Prompt", textCn: "好 Prompt 的5个要素" },
+        { type: "heading", text: "Chatbot vs Agent", textCn: "聊天机器人 vs Agent" },
+        {
+          type: "paragraph",
+          textCn: "想象你在酒店——\n\n聊天机器人 = 大堂信息牌：你看问题，它显示答案，不会主动做任何事。\n\nAI Agent = 酒店管家：你说「帮我安排周末行程」，他自己查天气、搜餐厅、订门票、安排车辆——你只给目标，他搞定一切。\n\n一句话总结：聊天机器人是「你推一步，它走一步」；Agent 是「你给方向，它自己走完全程」。",
+        },
+        {
+          type: "tip",
+          textCn: "关键让 Fiona 体会：Agent 是「目标驱动」而不是「问题驱动」。你给目标，它自己想办法完成。",
+        },
+
+        { type: "heading", text: "The Agent Core Loop", textCn: "Agent 核心循环" },
         {
           type: "steps",
           items: [
-            { title: "角色 (Role)", description: "给AI一个清晰的身份。如：「你是一名资深前端开发者，有10年React经验」。角色越具体，输出越专业。" },
-            { title: "上下文 (Context)", description: "提供背景信息。如：「我有一个用React + Tailwind CSS构建的个人网站，目标受众是科技行业HR」。" },
-            { title: "任务 (Task)", description: "明确告诉AI你需要什么。如：「请帮我创建一个About页面组件」。用动词开头，越具体越好。" },
-            { title: "格式 (Format)", description: "指定输出格式。如：「输出完整的TypeScript React组件代码」「用Markdown表格」「分5个bullet points」。" },
-            { title: "约束 (Constraints)", description: "设定限制条件。如：「使用Tailwind CSS」「不超过200行代码」「移动端优先」「风格简约专业」。" },
+            { title: "感知 (Perceive)", description: "接收信息——用户输入、网页内容、文件数据等。Agent 的「眼睛和耳朵」。" },
+            { title: "决策 (Decide)", description: "分析信息，规划下一步。AI大模型（如 Gemini）在这里「思考」该做什么。" },
+            { title: "行动 (Act)", description: "执行操作——搜索网页、生成文本、创建图片、调用工具。Agent 的「手」。" },
           ],
         },
-        {
-          type: "collapsible",
-          title: "Visual Framework",
-          titleCn: "记忆口诀：RCTFC",
-          content: [
-            {
-              type: "paragraph",
-              textCn: "Role → Context → Task → Format → Constraints\n角色 → 背景 → 任务 → 格式 → 约束\n\n记忆方法：「让(R)此(C)特(T)发(F)挥(C)」—— 让这个Prompt充分发挥作用！",
-            },
-          ],
-        },
-        { type: "divider" },
-
-        { type: "heading", text: "Good vs Bad Prompt Comparison", textCn: "好 Prompt vs 差 Prompt 对比" },
         {
           type: "paragraph",
-          textCn: "我们用同一个需求——「给网站添加一个关于我页面」——来对比好 Prompt 和差 Prompt 的输出差异。",
-        },
-        {
-          type: "prompt",
-          label: "差 Prompt（缺少要素）",
-          text: "帮我做一个关于我的页面",
-        },
-        {
-          type: "tip",
-          textCn: "先让 Fiona 把这个差 Prompt 发给 Claude，看看输出结果。然后再试下面的好 Prompt，对比两者差异。",
-        },
-        {
-          type: "prompt",
-          label: "好 Prompt（5要素齐全）",
-          text: "你是一名资深前端开发者，熟悉React和Tailwind CSS。（角色）\n\n我有一个个人网站（React + Tailwind），目标受众是科技行业的HR和招聘经理。（上下文）\n\n请生成一个完整的「关于我」页面React组件，包含：（任务）\n- 个人简介区域（含头像位置）\n- 工作经验时间线（3段经历）\n- 技能标签云\n- 一段个人宣言/座右铭\n\n输出格式：完整的TypeScript React组件代码。（格式）\n\n约束：使用Tailwind CSS，响应式设计（移动端优先），风格简约专业，组件命名为AboutPage。（约束）",
-        },
-        {
-          type: "tip",
-          textCn: "让 Fiona 对比两次输出的差异。关键要让她体会到：5个要素缺一不可。Prompt越具体，AI输出越精准。",
-        },
-
-        { type: "heading", text: "Practice: Write Your Own Prompt", textCn: "练习：写你自己的 Prompt" },
-        {
-          type: "paragraph",
-          textCn: "现在轮到 Fiona 动手了。选择一个网站改进方向，用5要素框架写一个完整的 Prompt。",
-        },
-        {
-          type: "collapsible",
-          title: "Practice Options",
-          titleCn: "练习方向选择",
-          content: [
-            {
-              type: "steps",
-              items: [
-                { title: "选项A: 项目展示页", description: "让AI生成一个展示你过去项目经验的页面" },
-                { title: "选项B: 技能雷达图", description: "让AI生成一个可视化的技能展示组件" },
-                { title: "选项C: 推荐信展示", description: "让AI设计一个同事推荐信/testimonial展示区" },
-              ],
-            },
-          ],
-        },
-        {
-          type: "prompt",
-          label: "Prompt 模板（Fiona 填空使用）",
-          text: "你是一名[角色]，擅长[技能]。\n\n我的情况：[背景描述]。\n\n请帮我[具体任务]，包含：\n- [要求1]\n- [要求2]\n- [要求3]\n\n输出格式：[格式要求]。\n\n约束：[限制条件]。",
+          textCn: "这个循环不断重复：行动结果变成新的「感知」，Agent 再决策、再行动……直到任务完成。这就是 Agent 能处理复杂任务的原因——它会自己「迭代」。",
         },
         { type: "divider" },
 
         // ══════════════════════════════════════
-        // Part 2: Vibe Coding 实战
+        // Part 2: Google Opal 平台介绍（5min）
         // ══════════════════════════════════════
-        { type: "heading", text: "Part 2: Vibe Coding Hands-on", textCn: "Part 2: Vibe Coding 实战", level: 2 },
+        { type: "heading", text: "Part 2: Meet Google Opal", textCn: "Part 2: 认识 Google Opal", level: 2 },
         {
           type: "paragraph",
-          textCn: "Vibe Coding 的核心理念：你描述你想要什么，AI帮你写代码。不需要你会编程——你只需要会「说话」。今天我们用 Claude Code（命令行工具）来实际改进 Fiona 的网站。",
+          textCn: "Google Opal 是 Google Labs 推出的无代码 AI 应用构建器。你用自然语言描述需求，Opal 就生成一个可运行的「AI 小程序」。2026年2月它新增了 Agent 功能，支持搜索网页、生成图片和视频、输出到 Google Docs/Slides——而且完全免费，只需 Google 账号。",
         },
 
-        { type: "heading", text: "Tool Introduction: Claude Code", textCn: "工具介绍：Claude Code" },
-        {
-          type: "paragraph",
-          textCn: "Claude Code 是 Anthropic 的AI编程助手，运行在终端/命令行中。它可以直接读取你的项目代码，理解整个项目结构，然后根据你的描述修改代码。",
-        },
         {
           type: "collapsible",
           title: "Setup Steps",
-          titleCn: "环境准备步骤",
-          content: [
-            {
-              type: "steps",
-              items: [
-                { title: "打开终端", description: "Mac: Command + Space → 输入 Terminal → 回车" },
-                { title: "进入项目目录", description: "输入：cd ~/my-website（或你的项目路径）" },
-                { title: "启动 Claude Code", description: "输入：claude → 回车，等待AI加载" },
-                { title: "确认连接", description: "看到 Claude Code 的提示符后，输入「请总结一下这个项目的结构」验证一切正常" },
-              ],
-            },
-          ],
-        },
-        {
-          type: "tip",
-          textCn: "如果 Fiona 的电脑还没装好 Claude Code，Jesse 屏幕共享操作，Fiona 口述需求。重要的是让她学会如何描述需求，而不是如何操作终端。",
-        },
-        { type: "divider" },
-
-        { type: "heading", text: "Demo 1: Polish the Hero Section", textCn: "Demo 1: 润色 Hero 区域" },
-        {
-          type: "paragraph",
-          textCn: "第一个改进：用 Fiona 准备的草稿和头像，更新网站首页的 Hero 区域。让网站看起来更像「她」。",
-        },
-        {
-          type: "collapsible",
-          title: "Detailed Steps",
-          titleCn: "详细操作步骤",
-          content: [
-            {
-              type: "steps",
-              items: [
-                { title: "查看当前 Hero", description: "先在浏览器中打开个人网站，截图当前的 Hero 区域作为「Before」" },
-                { title: "准备素材", description: "确认 Fiona 的大头照文件路径和About Me草稿文字" },
-                { title: "输入 Prompt", description: "在 Claude Code 中输入下方的 prompt" },
-                { title: "预览结果", description: "Claude Code 修改完成后，运行 npm run dev → 在浏览器中查看效果" },
-                { title: "迭代调整", description: "如果 Fiona 觉得文案需要调整，继续用自然语言告诉 Claude Code 修改" },
-              ],
-            },
-          ],
-        },
-        {
-          type: "prompt",
-          label: "Claude Code: 更新 Hero 区域",
-          text: "请更新网站首页的Hero区域：\n\n1. 头像：添加一张圆形头像（使用 /images/fiona-avatar.jpg 路径）\n2. 标题：Fiona Zheng\n3. 副标题：Tech Product Manager | AI Enthusiast\n4. 简介：用以下草稿润色成专业的英文简介（2-3句话）：\n   [粘贴 Fiona 的 About Me 草稿]\n5. 添加两个CTA按钮：View My Work（滚动到项目区域）和 Connect on LinkedIn（外部链接）\n\n保持现有的设计风格，确保移动端显示正常。",
-        },
-        {
-          type: "image",
-          src: "/screenshots/s2-hero-before-after.png",
-          alt: "Hero区域Before/After对比",
-          caption: "截图：Hero区域改进前后对比（课堂截图替换）",
-        },
-        { type: "divider" },
-
-        { type: "heading", text: "Demo 2: Create About Page", textCn: "Demo 2: 创建 About 页面" },
-        {
-          type: "paragraph",
-          textCn: "第二个改进：添加一个完整的「关于我」页面，包含工作经历时间线和技能展示。这是用 Fiona 练习的好 Prompt 的成果来实际实现。",
-        },
-        {
-          type: "collapsible",
-          title: "Detailed Steps",
-          titleCn: "详细操作步骤",
-          content: [
-            {
-              type: "steps",
-              items: [
-                { title: "输入建页 Prompt", description: "复制下方 prompt，粘贴到 Claude Code" },
-                { title: "等待生成", description: "Claude Code 会自动创建文件、添加路由、生成组件代码" },
-                { title: "本地预览", description: "浏览器访问 localhost:3000/about 查看效果" },
-                { title: "调整内容", description: "和 Fiona 一起逐段确认内容，需要改的地方直接告诉 Claude Code" },
-                { title: "添加导航", description: "确认 Navbar 中已添加 About 链接" },
-              ],
-            },
-          ],
-        },
-        {
-          type: "prompt",
-          label: "Claude Code: 创建 About 页面",
-          text: "请为网站创建一个 /about 页面，包含以下内容：\n\n1. Hero 区域：名字 + 一句话定位\n2. 个人简介：2段话，介绍 Fiona 的背景（加拿大Big 4科技PM，热爱用AI改进工作流程）\n3. 工作经历时间线：\n   - 现在：Tech PM at Big 4 Consulting Firm\n   - 之前：[Fiona 提供的2-3段经历]\n4. 技能标签：Product Management, Agile/Scrum, Stakeholder Management, Data Analytics, AI Tools, JIRA, Confluence\n5. 兴趣/个人面：简短一段\n\n设计要求：\n- 使用现有的设计系统和配色\n- 时间线用左侧竖线+节点的经典设计\n- 技能标签用彩色 Badge 组件\n- 响应式设计，移动端优先\n- 添加到 Navbar 导航中",
-        },
-        {
-          type: "image",
-          src: "/screenshots/s2-about-page.png",
-          alt: "About 页面效果",
-          caption: "截图：新创建的 About 页面（课堂截图替换）",
-        },
-        {
-          type: "tip",
-          textCn: "如果时间充裕，让 Fiona 用 Claude 润色她的「关于我」文案——先生成英文版，再翻译成中文版。双语简介在求职中很加分。",
-        },
-        { type: "divider" },
-
-        { type: "heading", text: "Demo 3: Add Projects Showcase", textCn: "Demo 3: 添加项目展示" },
-        {
-          type: "paragraph",
-          textCn: "第三个改进：添加一个项目/作品展示页面。即使 Fiona 现在还没有太多项目，我们可以先搭好框架，后续课程中不断填充。",
-        },
-        {
-          type: "prompt",
-          label: "Claude Code: 创建项目展示页",
-          text: "请创建一个 /projects 页面，用卡片网格布局展示项目：\n\n预置项目：\n1. 个人品牌网站 — 用AI从零构建的个人品牌网站（标记：本课程项目）\n2. [留2-3个空位，用优雅的占位卡片，标题「Coming Soon」]\n\n每个项目卡片包含：\n- 项目截图/占位图\n- 项目名称\n- 一句话描述\n- 技术标签（React, AI, Tailwind 等）\n- 「查看详情」按钮\n\n设计：2列网格（桌面端），1列（移动端），卡片带 hover 效果。",
-        },
-        {
-          type: "tip",
-          textCn: "跟 Fiona 说：「这个项目页面会随着课程推进越来越丰富。每节课做的东西都会添加进来，到毕业的时候就是一份完整的AI作品集。」",
-        },
-        { type: "divider" },
-
-        // ══════════════════════════════════════
-        // Part 3: 测试 + 部署
-        // ══════════════════════════════════════
-        { type: "heading", text: "Part 3: Test + Deploy", textCn: "Part 3: 测试 + 部署", level: 2 },
-        {
-          type: "paragraph",
-          textCn: "所有修改完成后，我们需要测试、提交代码、部署上线。这个流程以后每节课都会重复，今天建立标准流程。",
-        },
-        {
-          type: "collapsible",
-          title: "Deployment Workflow",
-          titleCn: "标准部署流程",
+          titleCn: "登录步骤",
           defaultOpen: true,
           content: [
             {
               type: "steps",
               items: [
-                { title: "本地测试", description: "浏览器打开 localhost:3000，逐页检查每个页面是否正常" },
-                { title: "手机预览", description: "浏览器按 F12 → 切换到手机视图 → 检查移动端布局" },
-                { title: "提交代码", description: "Claude Code 中输入：「请帮我提交所有修改到 Git，commit message 写今天做了什么」" },
-                { title: "推送部署", description: "Claude Code 中输入：「请 push 到 GitHub」→ Vercel 自动触发部署" },
-                { title: "验证上线", description: "等待1分钟 → 打开个人网站确认更新成功" },
-                { title: "手机真机测试", description: "让 Fiona 在自己手机上打开网站，确认真实体验" },
+                { title: "打开 Opal", description: "浏览器访问 opal.google → 点击「Get started」" },
+                { title: "登录 Google 账号", description: "用 Fiona 的 Google 账号登录（和 Gemini 同一个账号）" },
+                { title: "浏览模板", description: "首页有一些模板和示例，先花1分钟浏览感受一下" },
+                { title: "创建新应用", description: "点击「Create」开始创建你的第一个 AI 小程序" },
               ],
             },
           ],
         },
         {
-          type: "image",
-          src: "/screenshots/s2-deploy-success.png",
-          alt: "Vercel 部署成功",
-          caption: "截图：Vercel 部署成功页面（课堂截图替换）",
-        },
-        {
           type: "tip",
-          textCn: "让 Fiona 把更新后的网站截图发到朋友圈或微信群——分享成就感是持续学习的动力。",
+          textCn: "让 Fiona 先自己登录和浏览1分钟。感受界面很重要——降低后续操作的心理门槛。",
         },
         { type: "divider" },
 
-        // ── 总结 ──
-        { type: "heading", text: "Wrap Up", textCn: "总结 · 回顾", level: 2 },
+        // ══════════════════════════════════════
+        // Part 3: 练习一 — Visual Storyteller（热身，5min）
+        // ══════════════════════════════════════
+        { type: "heading", text: "Part 3: Exercise 1 — Visual Storyteller", textCn: "Part 3: 练习一 — AI 视觉故事创作", level: 2 },
         {
           type: "paragraph",
-          textCn: "回顾今天学到的核心内容：",
+          textCn: "先从一个超好玩的练习热身！Visual Storyteller 是 Google Opal 社区最受欢迎的应用之一——你输入一个故事设定，Agent 自动编写故事、为每个场景生成 AI 配图，创造出一个图文并茂的交互式故事。",
+        },
+        {
+          type: "prompt",
+          label: "Opal: Visual Storyteller",
+          text: "Build an interactive visual story generator.\n\nInput: The user describes a story setting in 1-2 sentences (characters, world, genre). For example: \"A curious cat detective solving mysteries in a futuristic Tokyo\" or \"A product manager who discovers their office is secretly run by AI agents.\"\n\nThe agent should:\n1. Create a 4-part short story based on the setting\n2. Generate a unique AI illustration for each part of the story\n3. Add a plot twist in part 3\n4. End with an interactive choice: give the reader 2 options for how the story ends, then generate the chosen ending\n\nOutput: A beautiful storybook-style page with:\n- A title and genre badge\n- 4 story chapters, each with a generated illustration above the text\n- Vivid, descriptive prose (3-4 sentences per chapter)\n- The interactive ending choice at the bottom\n\nMake it look like a modern digital picture book with a clean, immersive layout.",
+        },
+        {
+          type: "tip",
+          textCn: "让 Fiona 自由发挥故事设定——越有趣越好！这个练习的目的是让她亲眼看到 Agent 的多模态能力：同时生成文字+图片，还有交互式选择。这比普通聊天机器人强太多了。鼓励她试试和 PM 工作相关的幽默设定，比如「一个PM发现自己的团队全是AI」。",
+        },
+        {
+          type: "image",
+          src: "/screenshots/s2-opal-storyteller.png",
+          alt: "Opal视觉故事创作",
+          caption: "截图：Visual Storyteller 效果（课堂截图替换）",
+        },
+        { type: "divider" },
+
+        // ══════════════════════════════════════
+        // Part 4: 练习二 — Feature Comparison Matrix（10min）
+        // ══════════════════════════════════════
+        { type: "heading", text: "Part 4: Exercise 2 — Feature Comparison Matrix", textCn: "Part 4: 练习二 — 功能对比矩阵", level: 2 },
+        {
+          type: "paragraph",
+          textCn: "现在来一个 PM 超实用工具。Feature Comparison Matrix 是产品评审会的必备素材——输入你的产品和几个竞品名称，Agent 自动搜索信息，生成一张专业的 ✓/◐/✗ 对比矩阵。这个灵感来自 Optimizely 的 Opal Agent 示例库。",
+        },
+
+        {
+          type: "collapsible",
+          title: "Step-by-Step Guide",
+          titleCn: "操作步骤",
+          defaultOpen: true,
+          content: [
+            {
+              type: "steps",
+              items: [
+                { title: "创建新应用", description: "在 Opal 首页点击「Create」" },
+                { title: "输入描述", description: "粘贴下方 Prompt" },
+                { title: "测试运行", description: "输入你的产品名和 2-3 个竞品（如 Jira vs Asana vs Monday.com vs Linear）" },
+                { title: "查看矩阵", description: "看看 ✓/◐/✗ 对比表格，体会 Agent 多次搜索+结构化输出的能力" },
+                { title: "定制维度", description: "试试修改描述来调整对比维度，比如「add AI capabilities and API quality as categories」" },
+              ],
+            },
+          ],
+        },
+        {
+          type: "prompt",
+          label: "Opal: Feature Comparison Matrix Builder",
+          text: "Build a feature comparison matrix generator for product analysis.\n\nInput: The user enters a product name and a comma-separated list of competitors (e.g., \"Our product: Jira. Competitors: Asana, Monday.com, Linear\").\n\nThe agent should:\n1. Search the web for the latest feature information on each product\n2. Identify the most important feature categories for this product space\n3. Build an objective, data-driven comparison matrix\n\nOutput: A professional comparison matrix with:\n- A clean table where rows = feature categories, columns = products\n- Use symbols for support level: ✓ (full support), ◐ (partial support), ✗ (not available)\n- Feature categories should include: Core Features, AI Capabilities, Integrations, Mobile App, Pricing (per user/month), Free Tier, API Quality, Customer Support\n- Below the matrix: a \"Best For\" section recommending which product fits which use case\n- A \"Key Takeaway\" summary (3 bullet points)\n\nKeep the tone neutral and factual — let the data speak. Format as a clean web page that could be screenshot and dropped into a product review deck.",
+        },
+        {
+          type: "tip",
+          textCn: "让 Fiona 输入她工作中实际评估过的工具。和 Visual Storyteller 对比——同样的 Agent 能力（搜索→分析→输出），用在完全不同场景。Agent 核心不变，变的只是目标。如果她对比结果有异议，鼓励她修改 prompt 来优化——这就是「迭代」的力量。",
+        },
+        {
+          type: "image",
+          src: "/screenshots/s2-opal-matrix.png",
+          alt: "Opal功能对比矩阵",
+          caption: "截图：功能对比矩阵效果（课堂截图替换）",
+        },
+        { type: "divider" },
+
+        // ══════════════════════════════════════
+        // Part 5: 练习三 — User Research 双连击（15min）
+        // ══════════════════════════════════════
+        { type: "heading", text: "Part 5: Exercise 3 — User Research Combo", textCn: "Part 5: 练习三 — 用研双连击", level: 2 },
+        {
+          type: "paragraph",
+          textCn: "这个练习展示 Agent 的「工作链」概念：先用一个 Agent 生成访谈提纲（采访前），再用另一个 Agent 把访谈笔记转成 PRD（采访后）。两个 Agent 串联起来，覆盖了 PM 用户研究的完整流程。",
+        },
+
+        { type: "heading", text: "Step A: Interview Guide Builder", textCn: "Step A: 访谈提纲生成器" },
+        {
+          type: "paragraph",
+          textCn: "灵感来自 Optimizely 的 User Research Interview Guide Builder。核心原则：问过去真实行为，不问假设性问题；多问「为什么」，挖掘表面答案下的真实需求。",
+        },
+        {
+          type: "prompt",
+          label: "Opal: Interview Guide Builder",
+          text: "Build a user research interview guide generator.\n\nInput: The user provides:\n1. Research goal (e.g., \"Understand how PMs track project progress\")\n2. User segment (e.g., \"Product managers at mid-size SaaS companies\")\n3. Product context (e.g., \"We're building a project tracking dashboard\")\n\nThe agent should:\n1. Generate a structured 30-minute interview guide\n2. Follow best practices: ask about past behavior (not hypothetical), use \"tell me about the last time...\" framing, include follow-up \"why\" prompts\n\nOutput: A ready-to-use interview guide with:\n- Introduction script (how to start the conversation, build rapport, explain recording)\n- Warm-up questions (2-3 easy questions to get the person talking)\n- Core research questions (5-7 questions, each with 2-3 follow-up probes)\n- Wrap-up questions (\"anything else?\", next steps)\n- A sidebar of DO's and DON'Ts for the interviewer\n\nFormat as a clean, printable document. Mark each question with estimated time.",
+        },
+        {
+          type: "tip",
+          textCn: "让 Fiona 用她真实工作中的一个研究目标来测试。关键体会：Agent 不只是帮你写问题——它还内置了用研方法论（问过去行为、5-Why 追问），这相当于一个「AI用研顾问」。",
+        },
+
+        { type: "heading", text: "Step B: Notes → PRD Generator", textCn: "Step B: 笔记 → PRD 生成器" },
+        {
+          type: "paragraph",
+          textCn: "现在假设访谈做完了，你手里有一堆笔记。这个 Agent 帮你把混乱的笔记变成结构化的 PRD 片段——直接可以粘贴到真实文档中。",
+        },
+        {
+          type: "prompt",
+          label: "Opal: User Research → PRD Agent",
+          text: "Build a tool that converts user research notes into PRD fragments.\n\nInput: The user pastes their raw interview notes or user research findings (can be messy, unstructured text).\n\nThe agent should:\n1. Analyze the notes and extract key user pain points\n2. Identify patterns and recurring themes\n3. Prioritize findings by frequency and severity\n4. Generate structured PRD fragments\n\nOutput should include:\n- Problem Statement (2-3 sentences summarizing the core user need)\n- User Stories (3-5 user stories in \"As a [role], I want [goal], so that [benefit]\" format)\n- Acceptance Criteria (for each user story, in bullet points)\n- Priority Recommendation (High / Medium / Low with reasoning)\n- Out of Scope (things mentioned but not critical)\n\nFormat as a clean document that could be copied into a real PRD.",
+        },
+        {
+          type: "collapsible",
+          title: "Sample Interview Notes",
+          titleCn: "示例访谈笔记（用于测试）",
+          content: [
+            {
+              type: "prompt",
+              label: "Sample Input: User Interview Notes",
+              text: "Interview with Sarah, Marketing Manager at TechCorp (March 2026)\n\n- Spends 2+ hours daily on reporting, pulling data from 5 different tools\n- \"I wish I could just ask a question and get the answer instead of building dashboards\"\n- Tried using ChatGPT but it doesn't connect to their internal data\n- Team of 8 people, everyone does their own reporting differently\n- Biggest pain: weekly stakeholder report takes half a day every Friday\n- Wants consistent formatting across team reports\n- Mentioned competitor product Databox but said it's too expensive\n- Would pay $30-50/user/month for something that \"just works\"\n- Security concern: data can't leave their cloud environment\n- \"If it could also track our KPIs automatically and alert me when something drops, that would be amazing\"",
+            },
+          ],
+        },
+        {
+          type: "tip",
+          textCn: "这两个 Agent 串联起来就是一个完整的用研工作流：Guide Builder（采访前）→ 执行访谈 → PRD Generator（采访后）。让 Fiona 体会「Agent 链」的概念——多个 Agent 各司其职，串联成流水线。",
+        },
+        {
+          type: "image",
+          src: "/screenshots/s2-opal-research.png",
+          alt: "Opal用研双连击",
+          caption: "截图：访谈提纲 + PRD 生成器效果（课堂截图替换）",
+        },
+        { type: "divider" },
+
+        // ══════════════════════════════════════
+        // Part 6: 练习四 — Learning with YouTube（10min）
+        // ══════════════════════════════════════
+        { type: "heading", text: "Part 6: Exercise 4 — Learning with YouTube", textCn: "Part 6: 练习四 — YouTube 学习加速器", level: 2 },
+        {
+          type: "paragraph",
+          textCn: "压轴练习！这是 Google Opal 社区另一个明星应用——把任意 YouTube 视频变成结构化学习材料：摘要、知识点、测验题、学习报告。对 PM 来说，再也不用花 40 分钟看完一个行业视频了——5 分钟搞定核心内容。",
+        },
+
+        {
+          type: "prompt",
+          label: "Opal: YouTube Learning Accelerator",
+          text: "Build a YouTube video learning tool.\n\nInput: The user pastes a YouTube video URL.\n\nThe agent should:\n1. Extract and analyze the video content (transcript/description)\n2. Create comprehensive learning materials from the video\n\nOutput: A complete learning package with:\n- Video Summary (3-5 bullet points, the key takeaways)\n- Detailed Notes (structured outline of the video content, with timestamps if available)\n- Key Concepts (list of important terms/ideas explained in simple language)\n- Quiz (5 multiple-choice questions to test understanding, with answers hidden in a collapsible section)\n- Action Items (3 practical things the viewer can do based on what they learned)\n- Related Topics (suggestions for what to learn next)\n\nFormat as a clean study guide page. Make it look like something you'd find in an online course platform.",
+        },
+        {
+          type: "collapsible",
+          title: "Suggested Test Videos",
+          titleCn: "推荐测试视频",
+          content: [
+            {
+              type: "steps",
+              items: [
+                { title: "AI Agents 入门", description: "搜索「What are AI Agents explained」找一个 5-10 分钟的视频" },
+                { title: "PM 技能", description: "搜索「Product Manager skills 2026」或「How to write a PRD」" },
+                { title: "Fiona 感兴趣的话题", description: "让她选一个她最近想学但没时间看的视频" },
+              ],
+            },
+          ],
+        },
+        {
+          type: "tip",
+          textCn: "这个练习的「wow factor」：Fiona 平时花 30-40 分钟看一个视频，现在 Agent 帮她 1 分钟提取核心内容+生成测验。让她算一下：如果每周看 5 个行业视频，能省多少时间？这就是 Agent 的实际价值。同时这个应用也能帮她为团队制作培训材料。",
+        },
+        {
+          type: "image",
+          src: "/screenshots/s2-opal-youtube.png",
+          alt: "Opal YouTube学习加速器",
+          caption: "截图：YouTube 学习加速器效果（课堂截图替换）",
+        },
+        { type: "divider" },
+
+        // ══════════════════════════════════════
+        // 认知连接 + 总结（5min）
+        // ══════════════════════════════════════
+        { type: "heading", text: "Wrap Up: Your AI Map", textCn: "总结 · 你的 AI 工具地图", level: 2 },
+        {
+          type: "paragraph",
+          textCn: "经过两节课，你已经从「AI 能聊天」升级到「AI 能干活」。快速回顾你的 AI 工具地图：",
         },
         {
           type: "steps",
           items: [
-            { title: "Prompt 5要素", description: "Role + Context + Task + Format + Constraints = 专业输出" },
-            { title: "好Prompt vs 差Prompt", description: "亲身体验了10倍差距——Prompt越具体，AI越精准" },
-            { title: "Vibe Coding", description: "用自然语言描述需求 → Claude Code 自动写代码 → 无需编程经验" },
-            { title: "完整流程", description: "修改代码 → 本地测试 → Git 提交 → 自动部署 → 上线验证" },
+            { title: "聊天助手（问答型）", description: "ChatGPT、Claude、Gemini — 你提问，它回答。适合写作、翻译、头脑风暴。" },
+            { title: "专项工具（创作型）", description: "NotebookLM（文档+播客）、Suno（音乐）、v0（网站）— 专精一个领域。" },
+            { title: "Agent 平台（自动化型）", description: "Google Opal — 你给目标，它自己搜索、生成图片、写文案、做对比。一个指令，全套搞定。" },
           ],
         },
         {
           type: "paragraph",
-          textCn: "下节课预告：我们将深入学习高级 Prompt 技巧（Chain-of-Thought、Few-Shot），并用AI帮你拆解真实的PRD需求文档，导入到 Linear 进行项目管理。",
+          textCn: "今天的核心收获：",
+        },
+        {
+          type: "steps",
+          items: [
+            { title: "Agent ≠ 聊天机器人", description: "Agent 是目标驱动的——你给目标，它自己规划、调用工具、完成任务。" },
+            { title: "核心循环", description: "感知→决策→行动，不断迭代直到任务完成。" },
+            { title: "4 个实战工作流", description: "视觉故事（创意多模态）→ 功能对比矩阵（PM调研）→ 用研双连击（Agent链）→ YouTube加速器（学习效率）。" },
+            { title: "Agent 链", description: "多个 Agent 可以串联——访谈提纲→执行访谈→PRD生成，形成完整工作流水线。" },
+          ],
+        },
+        {
+          type: "paragraph",
+          textCn: "下节课我们将深入学习高级 Prompt 技巧和 PM 工具链，用AI帮你拆解真实的需求文档。",
         },
       ],
       homework: [
         {
           id: "s2-hw1",
-          title: "Improve Website Copy",
-          titleCn: "改进网站文案",
-          description: "Use AI to improve your website copy or design",
-          descriptionCn: "用 Claude/ChatGPT 改进网站上的任意一段文案（Hero标语、About简介等），对比修改前后",
+          title: "Competitive Insights Agent",
+          titleCn: "竞争情报 Agent",
+          description: "Build a competitive intelligence agent in Opal",
+          descriptionCn: "在 Opal 中构建一个「竞争情报 Agent」：输入一个竞品名称，Agent 自动搜索过去30天的动态（产品更新、融资新闻、用户评价），生成一份情报简报 + 建议应对策略。用你工作中实际关注的竞品来测试",
           type: "practice",
         },
         {
           id: "s2-hw2",
-          title: "Share on LinkedIn",
-          titleCn: "LinkedIn分享",
-          description: "Share your personal website on LinkedIn",
-          descriptionCn: "在 LinkedIn 发一条 post 分享你的个人网站，附上一段你用AI写的介绍文案",
+          title: "PM Workflow Agent",
+          titleCn: "PM 工作流 Agent",
+          description: "Build an Opal agent for a PM task at work",
+          descriptionCn: "用 Opal 做一个和你 PM 工作直接相关的自动化工具（如 Sprint 总结、Stakeholder 更新邮件、会议议程生成器），截图记录结果",
           type: "project",
         },
         {
           id: "s2-hw3",
-          title: "Prompt Best Practices",
-          titleCn: "Prompt最佳实践",
-          description: "Study prompt engineering best practices",
-          descriptionCn: "用5要素框架写3个不同场景的 Prompt（工作邮件、会议总结、数据分析），保存到笔记中",
+          title: "Agent Thinking",
+          titleCn: "Agent 思维练习",
+          description: "Reflect on how AI agents could transform PM workflows",
+          descriptionCn: "列出你工作中 3 个可以用 Agent 自动化的任务，并写出：目标是什么、Agent 需要哪些「感知」（输入信息）、期望的「行动」（输出结果）",
           type: "reflection",
         },
         {
           id: "s2-hw4",
-          title: "AI-Accelerated Tasks",
-          titleCn: "AI加速任务",
-          description: "List 3 work tasks that AI could accelerate",
-          descriptionCn: "在工作中实际使用AI完成一个任务（写邮件/做总结/分析数据），记录节省了多少时间",
-          type: "reflection",
+          title: "Explore Opal Gallery",
+          titleCn: "探索 Opal 模板库",
+          description: "Browse and try Opal community templates",
+          descriptionCn: "在 Opal 首页浏览社区模板，重点看 Video Hooks Brainstormer（视频创意）和 Personal Podcaster（播客生成）这两个应用，试用并记录哪个最实用",
+          type: "practice",
         },
       ],
     },

@@ -143,6 +143,17 @@ export const aiTools: AITool[] = [
     useCase: "Quick demo of creative AI in Session 1",
     useCaseCn: "S1：AI创意展示",
   },
+  {
+    id: "opal",
+    name: "Google Opal",
+    nameCn: "Google Opal",
+    description: "No-code AI mini-app builder with agentic workflows by Google Labs",
+    descriptionCn: "无代码AI小程序构建器，支持Agent工作流",
+    category: "automation",
+    signUpUrl: "https://opal.google",
+    useCase: "Build AI agent workflows and mini-apps in S2",
+    useCaseCn: "S2：构建AI Agent工作流和迷你应用",
+  },
 ];
 
 export const toolCategories = [
