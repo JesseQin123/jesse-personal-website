@@ -12,6 +12,7 @@ const Navbar = () => {
     { label: "Services", href: "/#services" },
     { label: "Pricing", href: "/#pricing" },
     { label: "VibeCoding", href: "/projects" },
+    { label: "Tutorials", href: "/tutorials" },
     { label: "Teaching", href: "/teaching" },
     { label: "Contact", href: "/#contact" },
   ];

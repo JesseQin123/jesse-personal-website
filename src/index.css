@@ -190,3 +190,78 @@
     opacity: 1;
   }
 }
+
+/* Tutorial markdown prose styles */
+.tutorial-content h1 {
+  @apply text-3xl font-bold mt-8 mb-4 pb-2 border-b border-border;
+}
+.tutorial-content h2 {
+  @apply text-2xl font-semibold mt-8 mb-3 pb-1 border-b border-border/50;
+}
+.tutorial-content h3 {
+  @apply text-xl font-semibold mt-6 mb-2;
+}
+.tutorial-content h4 {
+  @apply text-lg font-medium mt-4 mb-2;
+}
+.tutorial-content p {
+  @apply my-3 leading-7 text-foreground/90;
+}
+.tutorial-content ul {
+  @apply my-3 pl-6 list-disc space-y-1;
+}
+.tutorial-content ol {
+  @apply my-3 pl-6 list-decimal space-y-1;
+}
+.tutorial-content li {
+  @apply leading-7;
+}
+.tutorial-content li > ul,
+.tutorial-content li > ol {
+  @apply my-1;
+}
+.tutorial-content a {
+  @apply text-primary underline underline-offset-2 hover:text-primary/80 transition-colors;
+}
+.tutorial-content blockquote {
+  @apply my-4 pl-4 border-l-4 border-primary/30 bg-muted/50 py-2 pr-4 rounded-r-lg italic text-muted-foreground;
+}
+.tutorial-content code {
+  @apply px-1.5 py-0.5 bg-muted rounded text-sm font-mono text-foreground;
+}
+.tutorial-content pre {
+  @apply my-4 p-4 bg-gray-100 text-gray-900 rounded-lg overflow-x-auto border border-gray-200;
+}
+.tutorial-content pre code {
+  @apply p-0 bg-transparent text-gray-900;
+}
+.tutorial-content table {
+  @apply w-full my-4 border-collapse text-sm;
+}
+.tutorial-content th {
+  @apply border border-border bg-muted px-3 py-2 text-left font-semibold;
+}
+.tutorial-content td {
+  @apply border border-border px-3 py-2;
+}
+.tutorial-content tr:hover {
+  @apply bg-muted/50;
+}
+.tutorial-content hr {
+  @apply my-8 border-border;
+}
+.tutorial-content img {
+  @apply max-w-full h-auto rounded-lg my-4;
+}
+.tutorial-content details {
+  @apply my-4 rounded-lg border border-border;
+}
+.tutorial-content summary {
+  @apply px-4 py-2 cursor-pointer font-medium hover:bg-muted/50 rounded-lg;
+}
+.tutorial-content details[open] summary {
+  @apply border-b border-border rounded-b-none;
+}
+.tutorial-content details > :not(summary) {
+  @apply px-4;
+}
