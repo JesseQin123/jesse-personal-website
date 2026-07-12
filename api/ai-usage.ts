@@ -21,7 +21,7 @@ export default async function handler(request: ApiRequest, response: ApiResponse
     )
   ).filter(Boolean);
 
-  const expectedMachineIds = process.env.AI_USAGE_MACHINE_IDS?.split(",").map((id) => id.trim()).filter(Boolean) || [];
+  const expectedMachineIds = process.env.AI_USAGE_MACHINE_IDS?.split(",").map((id) => id.trim()).filter(Boolean) || ["jesse-mbp", "jesse-desktop"];
   response.setHeader("Cache-Control", "public, max-age=60");
   response.setHeader("CDN-Cache-Control", "public, s-maxage=900, stale-while-revalidate=3600");
   return response.status(200).json({ generatedAt: new Date().toISOString(), expectedMachineIds, machines: snapshots });
