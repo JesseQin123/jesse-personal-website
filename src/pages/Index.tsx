@@ -4,6 +4,7 @@ import CredibilitySection from "@/components/CredibilitySection";
 import ServicesSection from "@/components/ServicesSection";
 import PricingSection from "@/components/PricingSection";
 import ContactSection from "@/components/ContactSection";
+import AiUsageIndicator from "@/components/AiUsageIndicator";
 import Footer from "@/components/Footer";
 
 const Index = () => {
@@ -12,6 +13,7 @@ const Index = () => {
       <Navbar />
       <main>
         <HeroSection />
+        <AiUsageIndicator />
         <CredibilitySection />
         <ServicesSection />
         <PricingSection />

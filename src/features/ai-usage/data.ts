@@ -4,8 +4,11 @@ export type DailyUsage = UsageTotals & {
   date: string;
   coverage: number;
   claude: number;
+  claudeCost: number;
   codex: number;
+  codexCost: number;
   hermes: number;
+  hermesCost: number;
 };
 
 export type MachineView = {
@@ -63,16 +66,16 @@ export function buildUsageModel(response: AiUsageResponse) {
   const today = localDate();
   const start = "2026-01-01";
   const daily = datesBetween(start, today).map<DailyUsage>((date) => {
-    const item: DailyUsage = { date, coverage: 0, claude: 0, codex: 0, hermes: 0, ...EMPTY };
+    const item: DailyUsage = { date, coverage: 0, claude: 0, claudeCost: 0, codex: 0, codexCost: 0, hermes: 0, hermesCost: 0, ...EMPTY };
     for (const machine of response.machines) {
       const day = machine.days.find((candidate) => candidate.date === date);
       if (!day) continue;
       item.coverage += 1;
       add(item, day.totals);
       for (const agent of day.agents) {
-        if (agent.agent === "claude") item.claude += agent.totalTokens;
-        if (agent.agent === "codex") item.codex += agent.totalTokens;
-        if (agent.agent === "hermes") item.hermes += agent.totalTokens;
+        if (agent.agent === "claude") { item.claude += agent.totalTokens; item.claudeCost += agent.totalCost; }
+        if (agent.agent === "codex") { item.codex += agent.totalTokens; item.codexCost += agent.totalCost; }
+        if (agent.agent === "hermes") { item.hermes += agent.totalTokens; item.hermesCost += agent.totalCost; }
       }
     }
     return item;
@@ -91,6 +94,13 @@ export function compact(value: number) {
   if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(value >= 100_000_000 ? 1 : 2)}M`;
   if (value >= 1_000) return `${(value / 1_000).toFixed(1)}K`;
   return value.toLocaleString();
+}
+
+export function totalsForDays(days: DailyUsage[]) {
+  return days.reduce<UsageTotals>((totals, day) => {
+    add(totals, day);
+    return totals;
+  }, { ...EMPTY });
 }
 
 export function shortDate(date: string) {
