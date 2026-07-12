@@ -21,6 +21,7 @@ import profileImage from "@/assets/jesse-profile.jpg";
 import contextGraphPoster from "@/assets/projects/contextgraph_poster.png";
 import soloUnicornPoster from "@/assets/projects/solounicorn_club_poster.png";
 import { Button } from "@/components/ui/button";
+import AiUsageIndicator from "@/components/AiUsageIndicator";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -319,6 +320,8 @@ const SoloUnicornHomepage = () => {
             </div>
           </div>
         </section>
+
+        <AiUsageIndicator />
 
         <section id="proof" className="border-b border-[#DDE7E6] bg-[#FCFBF8]">
           <div className="mx-auto grid max-w-[1500px] grid-cols-2 gap-px px-5 py-6 sm:px-8 md:grid-cols-3 lg:grid-cols-6 lg:px-12">

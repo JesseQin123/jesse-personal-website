@@ -11,6 +11,7 @@ import StudentDashboard from "./pages/StudentDashboard";
 import NotFound from "./pages/NotFound";
 import Tutorials from "./pages/Tutorials";
 import TutorialReader from "./pages/TutorialReader";
+import AiUsageDashboard from "./pages/AiUsageDashboard";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +29,7 @@ const App = () => (
           <Route path="/teaching/:studentSlug" element={<StudentDashboard />} />
           <Route path="/tutorials" element={<Tutorials />} />
           <Route path="/tutorials/:tutorialId" element={<TutorialReader />} />
+          <Route path="/ai-usage" element={<AiUsageDashboard />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
