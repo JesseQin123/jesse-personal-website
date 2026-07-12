@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { execFileSync } from "node:child_process";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { resolve } from "node:path";
 
@@ -189,6 +189,11 @@ const payload = {
 
 const placeholders = dateRange(settings.startDate, shiftDate(today, -1)).length - days.filter((day) => day.date < today).length;
 console.log(`[ai-usage] Prepared ${days.length} reported days; ${Math.max(0, placeholders)} historical dates remain placeholders.`);
+const outputPath = argument("output");
+if (outputPath) {
+  writeFileSync(resolve(outputPath), `${JSON.stringify(payload, null, 2)}\n`, { mode: 0o600 });
+  console.log(`[ai-usage] Wrote payload to ${resolve(outputPath)}.`);
+}
 if (dryRun) {
   console.log(`[ai-usage] Dry run complete. Latest total: ${days.at(-1)?.totals.totalTokens.toLocaleString() || 0} tokens.`);
   process.exit(0);

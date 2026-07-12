@@ -20,3 +20,5 @@ Use `jesse-desktop` and the correct label on the second computer. Before running
 `confirmZeroFrom` is the first date when the scheduled collector is considered reliable. Before it, absent local records stay as placeholders. On and after it, a scanned day with no records becomes a confirmed-zero day.
 
 Add `--dry-run` to inspect the scan without uploading.
+
+Add `--output=/path/to/payload.json` to write the normalized payload for inspection or a direct Blob import. The file is created with owner-only permissions because it contains machine-level usage metadata.
