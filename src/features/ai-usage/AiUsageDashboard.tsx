@@ -66,11 +66,6 @@ export default function AiUsageDashboard() {
   const latestFresh = model.latest.inputTokens + model.latest.outputTokens;
   const monthDays = model.daily.filter((day) => day.date.startsWith(model.today.slice(0, 7)));
   const monthTotals = totalsForDays(monthDays);
-  const monthAgentCosts = {
-    codex: monthDays.reduce((sum, day) => sum + day.codexCost, 0),
-    claude: monthDays.reduce((sum, day) => sum + day.claudeCost, 0),
-    hermes: monthDays.reduce((sum, day) => sum + day.hermesCost, 0),
-  };
   const recent = model.daily.slice(-30);
   const recentRows = [...model.daily].reverse().filter((day) => day.coverage > 0).slice(0, 10);
   const coverageDays = model.daily.slice(-84);
@@ -121,9 +116,9 @@ export default function AiUsageDashboard() {
             <Card className="border-border/80 bg-foreground text-background shadow-sm">
               <CardHeader><p className="text-xs font-semibold uppercase tracking-wider text-primary">Year to date</p><CardTitle className="text-2xl text-background">2026 activity</CardTitle></CardHeader>
               <CardContent className="space-y-7">
-                <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2"><div><p className="text-sm text-background/60">Total tokens processed</p><p className="mt-2 text-4xl font-bold">{model.yearTotals.totalTokens ? compact(model.yearTotals.totalTokens) : "—"}</p></div><div><p className="text-sm text-background/60">Total estimated cost</p><p className="mt-2 text-4xl font-bold text-primary">{model.yearTotals.totalCost ? money(model.yearTotals.totalCost) : "—"}</p></div></div>
+                <div><p className="text-sm text-background/60">Total tokens processed</p><p className="mt-2 text-4xl font-bold">{model.yearTotals.totalTokens ? compact(model.yearTotals.totalTokens) : "—"}</p></div>
+                <div className="border-t border-background/15 pt-6"><p className="text-sm text-background/60">Total estimated cost</p><p className="mt-2 break-words text-3xl font-bold tabular-nums text-primary 2xl:text-4xl">{model.yearTotals.totalCost ? money(model.yearTotals.totalCost) : "—"}</p></div>
                 <div className="grid grid-cols-2 gap-5 border-t border-background/15 pt-6"><div><p className="text-xs text-background/50">Fresh input</p><p className="mt-1 text-xl font-semibold">{compact(model.yearTotals.inputTokens)}</p></div><div><p className="text-xs text-background/50">Generated output</p><p className="mt-1 text-xl font-semibold">{compact(model.yearTotals.outputTokens)}</p></div></div>
-                <div className="border-t border-background/15 pt-6"><p className="text-xs uppercase tracking-wider text-background/50">This month by agent</p><div className="mt-4 space-y-3 text-sm"><div className="flex justify-between"><span>Codex</span><strong>{money(monthAgentCosts.codex)}</strong></div><div className="flex justify-between"><span>Claude</span><strong>{money(monthAgentCosts.claude)}</strong></div><div className="flex justify-between"><span>Hermes</span><strong>{money(monthAgentCosts.hermes)}</strong></div><div className="flex justify-between border-t border-background/15 pt-3 text-primary"><span>Total</span><strong>{money(monthTotals.totalCost)}</strong></div></div></div>
                 <div className="rounded-xl bg-background/10 p-4 text-sm leading-6 text-background/70"><CheckCircle2 className="mb-2 h-4 w-4 text-primary" />Prompt contents, project names, and source code are never uploaded—only aggregate token counts.</div>
               </CardContent>
             </Card>
