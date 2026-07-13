@@ -5,6 +5,7 @@ import { ArrowUpRight, MapPin } from "lucide-react";
 import profileImage from "@/assets/jesse-profile.jpg";
 import { useHeroAnimation } from "@/animations";
 import { NeuralNetwork, AnimatedCircuitLines } from "@/components/animations";
+import HomeAiUsageWidget from "@/components/HomeAiUsageWidget";
 
 const HeroSection = () => {
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -77,6 +78,8 @@ const HeroSection = () => {
                 </a>
               </Button>
             </div>
+
+            <HomeAiUsageWidget />
           </div>
 
           {/* Right - Profile Image */}
