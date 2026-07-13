@@ -217,7 +217,9 @@ if (remoteSnapshot?.sourceInstanceId && remoteSnapshot.sourceInstanceId !== sett
 }
 const remoteDays = new Map((remoteSnapshot?.days || []).map((day) => [day.date, day]));
 const alwaysRefreshFrom = shiftDate(today, -1);
-const changedDays = days.filter((day) => day.date >= alwaysRefreshFrom || !sameDay(remoteDays.get(day.date), day));
+const changedDays = allowHistoricalRewrite
+  ? days
+  : days.filter((day) => day.date >= alwaysRefreshFrom || !sameDay(remoteDays.get(day.date), day));
 
 const payload = {
   schemaVersion: 2,
