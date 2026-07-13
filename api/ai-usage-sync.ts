@@ -1,5 +1,5 @@
 import { timingSafeEqual } from "node:crypto";
-import { BlobPreconditionFailedError, get, put } from "@vercel/blob";
+import { BlobNotFoundError, BlobPreconditionFailedError, get, head, put } from "@vercel/blob";
 import type { ApiRequest, ApiResponse } from "./_types.js";
 
 type UsageTotals = {
@@ -90,11 +90,18 @@ function validPayload(value: unknown): value is UsagePayload {
 }
 
 async function loadSnapshot(pathname: string): Promise<{ snapshot?: StoredSnapshot; etag?: string }> {
+  let metadata;
+  try {
+    metadata = await head(pathname);
+  } catch (error) {
+    if (error instanceof BlobNotFoundError) return {};
+    throw error;
+  }
   const result = await get(pathname, { access: "public", useCache: false });
-  if (!result) return {};
+  if (!result) throw new Error("Blob disappeared after metadata lookup");
   if (result.statusCode !== 200) throw new Error(`Unable to read existing snapshot (${result.statusCode})`);
   const snapshot = await new Response(result.stream).json() as StoredSnapshot;
-  return { snapshot, etag: result.blob.etag.replace(/^W\//, "") };
+  return { snapshot, etag: metadata.etag };
 }
 
 function isSuspiciousHistoricalRewrite(previous: UsageDay, next: UsageDay, reportedThrough: string) {
