@@ -21,6 +21,7 @@ export type MachineUsageDay = {
 
 export type MachineUsageSnapshot = {
   schemaVersion: 1;
+  sourceInstanceId?: string;
   machineId: string;
   machineLabel: string;
   timezone: string;
