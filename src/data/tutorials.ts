@@ -206,31 +206,4 @@ export const openclawTutorial: Tutorial = {
   ],
 };
 
-export const hermesTutorial: Tutorial = {
-  id: "hermes",
-  title: "Hermes Agent: The Complete Guide",
-  titleCn: "Hermes Agent 从入门到精通",
-  description:
-    "Orange Book series by HuaShu (花叔). A practical guide to Hermes Agent — Nous Research's open-source AI Agent framework with built-in self-improving learning loop, three-layer memory, and auto-evolving Skills.",
-  descriptionCn:
-    "橙皮书系列 · 花叔著。Nous Research 开源 AI Agent 框架的实战指南——内建自改进学习循环、三层记忆、Skill 自动进化。17 章 5 部分，含中英文 PDF 下载。",
-  icon: "🪽",
-  tags: ["AI", "Hermes Agent", "Orange Book", "中文"],
-  sourceUrl: "https://github.com/alchaincyf/hermes-agent-orange-book",
-  sections: [
-    {
-      title: "The Book",
-      titleCn: "全书",
-      chapters: [
-        {
-          id: "00-overview",
-          title: "Overview & PDF Download",
-          titleCn: "全书简介与 PDF 下载",
-          path: "docs/00-overview.md",
-        },
-      ],
-    },
-  ],
-};
-
-export const tutorials: Tutorial[] = [openclawTutorial, hermesTutorial];
+export const tutorials: Tutorial[] = [openclawTutorial];

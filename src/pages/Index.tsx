@@ -1,7 +1,25 @@
-import SoloUnicornHomepage from "@/components/SoloUnicornHomepage";
+import Navbar from "@/components/Navbar";
+import HeroSection from "@/components/HeroSection";
+import CredibilitySection from "@/components/CredibilitySection";
+import ServicesSection from "@/components/ServicesSection";
+import PricingSection from "@/components/PricingSection";
+import ContactSection from "@/components/ContactSection";
+import Footer from "@/components/Footer";
 
 const Index = () => {
-  return <SoloUnicornHomepage />;
+  return (
+    <div className="min-h-screen bg-background">
+      <Navbar />
+      <main>
+        <HeroSection />
+        <CredibilitySection />
+        <ServicesSection />
+        <PricingSection />
+        <ContactSection />
+      </main>
+      <Footer />
+    </div>
+  );
 };
 
 export default Index;
