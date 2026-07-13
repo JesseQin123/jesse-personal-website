@@ -94,7 +94,7 @@ async function loadSnapshot(pathname: string): Promise<{ snapshot?: StoredSnapsh
   if (!result) return {};
   if (result.statusCode !== 200) throw new Error(`Unable to read existing snapshot (${result.statusCode})`);
   const snapshot = await new Response(result.stream).json() as StoredSnapshot;
-  return { snapshot, etag: result.blob.etag };
+  return { snapshot, etag: result.blob.etag.replace(/^W\//, "") };
 }
 
 function isSuspiciousHistoricalRewrite(previous: UsageDay, next: UsageDay, reportedThrough: string) {
