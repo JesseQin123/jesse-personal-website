@@ -14,7 +14,6 @@ const Navbar = () => {
     { label: "VibeCoding", href: "/projects" },
     { label: "Tutorials", href: "/tutorials" },
     { label: "Teaching", href: "/teaching" },
-    { label: "AI Usage", href: "/ai-usage" },
     { label: "Contact", href: "/#contact" },
   ];
 

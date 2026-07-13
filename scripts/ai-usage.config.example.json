@@ -1,8 +1,0 @@
-{
-  "endpoint": "https://www.jesseqin.me/api/ai-usage-sync",
-  "machineId": "jesse-mbp",
-  "machineLabel": "Jesse's MacBook Pro",
-  "startDate": "2026-01-01",
-  "confirmZeroFrom": "2026-07-12",
-  "timezone": "America/New_York"
-}
