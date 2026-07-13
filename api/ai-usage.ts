@@ -1,4 +1,4 @@
-import { list } from "@vercel/blob";
+import { get, list } from "@vercel/blob";
 import type { ApiRequest, ApiResponse } from "./_types.js";
 
 export default async function handler(request: ApiRequest, response: ApiResponse) {
@@ -12,8 +12,9 @@ export default async function handler(request: ApiRequest, response: ApiResponse
     await Promise.all(
       blobs.map(async (blob) => {
         try {
-          const result = await fetch(blob.downloadUrl || blob.url, { cache: "no-store" });
-          return result.ok ? await result.json() : null;
+          const result = await get(blob.pathname, { access: "public", useCache: false });
+          if (!result || result.statusCode !== 200) return null;
+          return await new Response(result.stream).json();
         } catch {
           return null;
         }
