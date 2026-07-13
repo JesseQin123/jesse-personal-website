@@ -1,6 +1,17 @@
 # AI usage sync
 
-The public dashboard lives at `/ai-usage`. Each computer writes a private Vercel Blob snapshot. The read API validates those snapshots, aggregates them server-side, and publishes only combined daily totals and agent categories.
+The public dashboard lives at `/ai-usage`. It keeps one Vercel Blob snapshot per computer and aggregates each calendar day across those sources.
+
+## Consistency model
+
+- Every computer must have a unique `machine-id` such as `jesse-mbp` or `jesse-desktop`.
+- The collector creates a permanent random source identity in `~/.config/jesse-ai-usage/<machine-id>.source-id`. The server binds that identity to the machine ID. A second computer that accidentally reuses the same machine ID receives `409` instead of overwriting the first source.
+- Synchronization is a sparse daily upsert. The collector compares local ccusage days with the stored source snapshot, then sends today, yesterday, missing dates, and dates whose values changed.
+- The server merges by date and preserves all unsent history. Retries are idempotent, and Blob ETags prevent concurrent runs from losing each other's updates.
+- Historical changes larger than 3x are blocked unless the operator explicitly passes `--allow-historical-rewrite` after inspecting the data.
+- The dashboard counts each machine once per day, then sums token totals across machines.
+
+Do not sync the same Claude/Codex/Hermes log directory onto two computers. The collector receives daily aggregates from ccusage, not event IDs, so identical logs uploaded under two different machine IDs cannot be distinguished and would be counted twice.
 
 ## Daily scheduled command
 
@@ -15,7 +26,7 @@ npm run sync:ai-usage -- \
   --confirm-zero-from=2026-07-12
 ```
 
-Use `jesse-desktop` and the correct label on the second computer. Before running, use `vercel link` and `vercel env pull .env.local --environment development --yes` so the ignored `.env.local` contains `AI_USAGE_SYNC_SECRET`.
+Use `jesse-desktop` and the correct label on the second computer. Never copy the generated `.source-id` file between machines. Before running, use `vercel link` and `vercel env pull .env.local --environment development --yes` so the ignored `.env.local` contains `AI_USAGE_SYNC_SECRET`.
 
 ## Add the second computer
 
@@ -45,4 +56,4 @@ Remove `--dry-run` for the first upload. Use that same command in the computer's
 
 Add `--dry-run` to inspect the scan without uploading.
 
-Add `--output=/path/to/payload.json` to write the normalized payload for inspection or a direct Blob import. The file is created with owner-only permissions because it contains machine-level usage metadata.
+Add `--output=/path/to/payload.json` to write the incremental API payload for inspection. The file is created with owner-only permissions because it contains machine-level usage metadata. Upload through `/api/ai-usage-sync`; do not write directly to Blob because direct writes bypass source binding, merge protection, and historical sanity checks.
