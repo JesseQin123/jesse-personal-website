@@ -161,7 +161,9 @@ export default async function handler(request: ApiRequest, response: ApiResponse
       });
     }
 
-    const existingDays = new Map((existing?.days || []).map((day) => [day.date, day]));
+    const existingDays = new Map(
+      (payload.allowHistoricalRewrite ? [] : existing?.days || []).map((day) => [day.date, day]),
+    );
     const suspiciousDates = payload.days
       .filter((day) => {
         const previous = existingDays.get(day.date);
