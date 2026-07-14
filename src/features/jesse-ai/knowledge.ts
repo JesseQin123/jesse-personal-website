@@ -103,8 +103,8 @@ const KNOWLEDGE: KnowledgeEntry[] = [
     ],
     topic: { en: "Current work", zh: "当前工作" },
     answer: {
-      en: "Jesse's current work centers on enterprise AI infrastructure and products at Kamiwaza, with a technical focus on ontology, context graphs, and agent workflows. The recurring question behind the work is how organizations change when people and AI agents share context, make decisions, and act together.",
-      zh: "Jesse 目前的工作集中在 Kamiwaza 的企业 AI 基础设施与产品，技术重点包括本体、上下文图谱和 Agent 工作流。他持续探索的问题是：当人和 AI Agent 共享上下文、共同决策并采取行动时，组织会变成什么样。",
+      en: "Jesse is a Senior Member of Technical Staff at Kamiwaza. His work centers on enterprise AI infrastructure and products, with a technical focus on ontology, context graphs, and agent workflows. The recurring question behind the work is how organizations change when people and AI agents share context, make decisions, and act together.",
+      zh: "Jesse 目前在 Kamiwaza 担任 Senior Member of Technical Staff（高级技术人员）。他的工作集中在企业 AI 基础设施与产品，技术重点包括本体、上下文图谱和 Agent 工作流。他持续探索的问题是：当人和 AI Agent 共享上下文、共同决策并采取行动时，组织会变成什么样。",
     },
     followUps: {
       en: ["Why do context graphs matter?", "Tell me about Jesse's founder practice"],
@@ -167,8 +167,8 @@ const KNOWLEDGE: KnowledgeEntry[] = [
     ],
     topic: { en: "Projects", zh: "项目" },
     answer: {
-      en: "Jesse's selected work includes enterprise AI product engineering at Kamiwaza; Context Graph, a public technical thesis and reference model for agent-ready organizational context; Solo Unicorn Toolbox, a bilingual open-source technical radar; Solo Unicorn Club, a New York founder community; and Life in AGI, an editorial research project about work, learning, creativity, and human agency.",
-      zh: "Jesse 的代表性工作包括 Kamiwaza 的企业 AI 产品工程；面向 Agent 组织上下文的公开技术论述与参考模型 Context Graph；双语开源技术雷达「一人独角兽工具箱」；纽约创业者社区「一人独角兽俱乐部」；以及研究工作、学习、创造力与人类自主性的 Life in AGI。",
+      en: "Jesse's selected work includes serving as a Senior Member of Technical Staff at Kamiwaza on enterprise AI products; Context Graph, a public technical thesis and reference model for agent-ready organizational context; Solo Unicorn Toolbox, a bilingual open-source technical radar; Solo Unicorn Club, a New York founder community; and Life in AGI, an editorial research project about work, learning, creativity, and human agency.",
+      zh: "Jesse 的代表性工作包括以 Senior Member of Technical Staff 身份参与 Kamiwaza 的企业 AI 产品；面向 Agent 组织上下文的公开技术论述与参考模型 Context Graph；双语开源技术雷达「一人独角兽工具箱」；纽约创业者社区「一人独角兽俱乐部」；以及研究工作、学习、创造力与人类自主性的 Life in AGI。",
     },
     followUps: {
       en: ["What is Context Graph?", "What is Solo Unicorn Club?"],

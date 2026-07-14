@@ -15,15 +15,17 @@ enterprise AI systems, and research into AI-native organizations.
 
 ## Current work
 
-Jesse's current work centers on enterprise AI infrastructure and product engineering at Kamiwaza.
-His technical focus includes ontology, context graphs, governed organizational context, RAG, and
-agent workflows. A recurring question behind his work is: what does an organization become when
-people and AI agents share context, make decisions, and act together?
+Jesse is a **Senior Member of Technical Staff at Kamiwaza**. His current work centers on enterprise
+AI infrastructure and product engineering, with a technical focus on ontology, context graphs,
+governed organizational context, RAG, and agent workflows. A recurring question behind his work is:
+what does an organization become when people and AI agents share context, make decisions, and act
+together?
 
 ## Selected public work
 
-- **Kamiwaza AI** — enterprise AI infrastructure and product work focused on deploying, governing,
-  and scaling AI around real organizational data and workflows. Public site:
+- **Kamiwaza AI** — Jesse works as a Senior Member of Technical Staff on enterprise AI infrastructure
+  and products focused on deploying, governing, and scaling AI around real organizational data and
+  workflows. Public site:
   https://www.kamiwaza.ai/
 - **Context Graph** — a public technical thesis and reference model for turning operational
   knowledge into governed, auditable, agent-ready context with relationships, provenance,

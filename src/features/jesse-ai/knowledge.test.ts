@@ -19,6 +19,13 @@ describe("answerJesseQuestion", () => {
     expect(result.answer).toContain("Solo Unicorn Club");
   });
 
+  it("states Jesse's current role at Kamiwaza", () => {
+    const result = answerJesseQuestion("What is Jesse's role at Kamiwaza?");
+
+    expect(result.kind).toBe("grounded");
+    expect(result.answer).toContain("Senior Member of Technical Staff at Kamiwaza");
+  });
+
   it("refuses requests for private contact details", () => {
     const result = answerJesseQuestion("What is Jesse's private phone number?");
 
