@@ -19,6 +19,13 @@ describe("answerJesseQuestion", () => {
     expect(result.answer).toContain("Solo Unicorn Club");
   });
 
+  it("states Jesse's current role at Kamiwaza", () => {
+    const result = answerJesseQuestion("What is Jesse's role at Kamiwaza?");
+
+    expect(result.kind).toBe("grounded");
+    expect(result.answer).toContain("Senior Member of Technical Staff at Kamiwaza");
+  });
+
   it("refuses requests for private contact details", () => {
     const result = answerJesseQuestion("What is Jesse's private phone number?");
 
@@ -33,5 +40,23 @@ describe("answerJesseQuestion", () => {
     expect(result.kind).toBe("grounded");
     expect(result.answer).toContain("罗格斯大学");
     expect(result.answer).toContain("人工智能");
+  });
+
+  it("presents SoloUnicorn as Jesse's original theory", () => {
+    const result = answerJesseQuestion("What is Jesse's SoloUnicorn theory?");
+
+    expect(result.kind).toBe("grounded");
+    expect(result.answer).toContain("Jesse's original SoloUnicorn theory");
+    expect(result.answer).toContain("AI-native organization");
+    expect(result.answer).toContain("not a promise of valuation");
+  });
+
+  it("connects context graphs to founder judgment in Chinese", () => {
+    const result = answerJesseQuestion("为什么一人独角兽需要上下文图谱？");
+
+    expect(result.kind).toBe("grounded");
+    expect(result.answer).toContain("决策轨迹");
+    expect(result.answer).toContain("创始人的判断");
+    expect(result.answer).toContain("组织记忆");
   });
 });

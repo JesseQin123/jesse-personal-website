@@ -39,6 +39,56 @@ const KNOWLEDGE: KnowledgeEntry[] = [
     },
   },
   {
+    id: "solo-unicorn-theory",
+    keywords: [
+      "solo unicorn",
+      "solounicorn",
+      "one-person company",
+      "one person company",
+      "ai-native organization",
+      "一人独角兽",
+      "一人公司",
+      "单人公司",
+      "ai-native 组织",
+    ],
+    topic: { en: "SoloUnicorn theory", zh: "一人独角兽理论" },
+    answer: {
+      en: "Jesse's original SoloUnicorn theory defines an AI-native organization: one founder retains intent, final judgment, and responsibility, while specialized agents perform bounded, auditable work and learn through shared context and real outcomes. The model connects agentic execution, judgment capital, portable organizational memory, context graphs, and the SoloUnicorn Club. Here, “unicorn” first means exceptional organizational leverage—not a promise of valuation.",
+      zh: "Jesse 原创的「一人独角兽」理论把它定义为一种 AI-native organization：一位创始人保留意图、最终判断与责任，由一组有边界、可审计的专业 Agent 执行工作，并通过共享上下文和真实结果持续学习。这套模型连接了 Agent 执行资本、判断资本、可迁移组织记忆、上下文图谱和一人独角兽俱乐部。这里的「独角兽」首先指极高的组织杠杆，而不是估值承诺。",
+    },
+    followUps: {
+      en: ["Why does a SoloUnicorn need a context graph?", "What is SoloUnicorn Club?"],
+      zh: ["为什么一人独角兽需要上下文图谱？", "一人独角兽俱乐部是什么？"],
+    },
+  },
+  {
+    id: "context-graph-theory",
+    keywords: [
+      "context graph",
+      "solo unicorn",
+      "ontology",
+      "decision trace",
+      "institutional intelligence",
+      "organizational memory",
+      "knowledge graph",
+      "上下文图谱",
+      "一人独角兽",
+      "本体",
+      "决策轨迹",
+      "组织记忆",
+      "知识图谱",
+    ],
+    topic: { en: "Ontology and context graphs", zh: "本体与上下文图谱" },
+    answer: {
+      en: "Jesse sees ontology as a machine-readable model of an organization's entities and relationships, and a context graph as the living decision layer built on top of it. It preserves decision traces, temporal validity, provenance, precedents, and outcomes so agents can understand not only what is true, but why a decision made sense at that time. For a SoloUnicorn, this shared graph turns founder judgment into reusable, auditable organizational memory across many agents.",
+      zh: "Jesse 把 ontology 看作组织实体与关系的机器可读模型，把 context graph 看作建立在其上的动态决策层。它保存决策轨迹、时间有效性、来源、先例和结果，让 Agent 不只知道什么是真的，也理解为什么某个决定在当时合理。对一人独角兽而言，共享上下文图谱能把创始人的判断转化为多个 Agent 可复用、可审计的组织记忆。",
+    },
+    followUps: {
+      en: ["What is a SoloUnicorn?", "How is a context graph different from a knowledge graph?"],
+      zh: ["什么是一人独角兽？", "上下文图谱和知识图谱有什么不同？"],
+    },
+  },
+  {
     id: "current-work",
     keywords: [
       "current work",
@@ -53,8 +103,8 @@ const KNOWLEDGE: KnowledgeEntry[] = [
     ],
     topic: { en: "Current work", zh: "当前工作" },
     answer: {
-      en: "Jesse's current work centers on enterprise AI infrastructure and products at Kamiwaza, with a technical focus on ontology, context graphs, and agent workflows. The recurring question behind the work is how organizations change when people and AI agents share context, make decisions, and act together.",
-      zh: "Jesse 目前的工作集中在 Kamiwaza 的企业 AI 基础设施与产品，技术重点包括本体、上下文图谱和 Agent 工作流。他持续探索的问题是：当人和 AI Agent 共享上下文、共同决策并采取行动时，组织会变成什么样。",
+      en: "Jesse is a Senior Member of Technical Staff at Kamiwaza. His work centers on enterprise AI infrastructure and products, with a technical focus on ontology, context graphs, and agent workflows. The recurring question behind the work is how organizations change when people and AI agents share context, make decisions, and act together.",
+      zh: "Jesse 目前在 Kamiwaza 担任 Senior Member of Technical Staff（高级技术人员）。他的工作集中在企业 AI 基础设施与产品，技术重点包括本体、上下文图谱和 Agent 工作流。他持续探索的问题是：当人和 AI Agent 共享上下文、共同决策并采取行动时，组织会变成什么样。",
     },
     followUps: {
       en: ["Why do context graphs matter?", "Tell me about Jesse's founder practice"],
@@ -117,8 +167,8 @@ const KNOWLEDGE: KnowledgeEntry[] = [
     ],
     topic: { en: "Projects", zh: "项目" },
     answer: {
-      en: "Jesse's selected work includes enterprise AI product engineering at Kamiwaza; Context Graph, a public technical thesis and reference model for agent-ready organizational context; Solo Unicorn Toolbox, a bilingual open-source technical radar; Solo Unicorn Club, a New York founder community; and Life in AGI, an editorial research project about work, learning, creativity, and human agency.",
-      zh: "Jesse 的代表性工作包括 Kamiwaza 的企业 AI 产品工程；面向 Agent 组织上下文的公开技术论述与参考模型 Context Graph；双语开源技术雷达「一人独角兽工具箱」；纽约创业者社区「一人独角兽俱乐部」；以及研究工作、学习、创造力与人类自主性的 Life in AGI。",
+      en: "Jesse's selected work includes serving as a Senior Member of Technical Staff at Kamiwaza on enterprise AI products; Context Graph, a public technical thesis and reference model for agent-ready organizational context; Solo Unicorn Toolbox, a bilingual open-source technical radar; Solo Unicorn Club, a New York founder community; and Life in AGI, an editorial research project about work, learning, creativity, and human agency.",
+      zh: "Jesse 的代表性工作包括以 Senior Member of Technical Staff 身份参与 Kamiwaza 的企业 AI 产品；面向 Agent 组织上下文的公开技术论述与参考模型 Context Graph；双语开源技术雷达「一人独角兽工具箱」；纽约创业者社区「一人独角兽俱乐部」；以及研究工作、学习、创造力与人类自主性的 Life in AGI。",
     },
     followUps: {
       en: ["What is Context Graph?", "What is Solo Unicorn Club?"],
@@ -245,6 +295,7 @@ export function answerJesseQuestion(question: string): JesseAnswer {
 export const STARTER_QUESTIONS = [
   "What is Jesse working on?",
   "What has Jesse built?",
+  "What is a SoloUnicorn?",
   "How can Jesse help my team?",
   "What does Jesse believe about AI?",
 ];
