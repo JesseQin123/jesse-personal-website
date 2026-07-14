@@ -21,17 +21,25 @@ Open the site and select **Talk to Jesse AI** in the lower-right corner. Choose 
 select **Start voice conversation** and allow microphone access. The text experience works in all
 modern browsers and remains available if ElevenLabs is not configured.
 
-## Knowledge source
+## Knowledge sources
 
-The reviewed preview knowledge lives in:
+Text mode uses the deterministic reviewed entries in:
 
 ```text
 src/features/jesse-ai/knowledge.ts
 ```
 
-Keep this content public-safe. Do not add private contact information, customer data, credentials,
-or facts that Jesse has not reviewed. Unknown questions intentionally receive a transparent
-fallback instead of a fabricated answer.
+The ElevenLabs voice Agent uses these versioned sources:
+
+```text
+docs/jesse-ai-knowledge.md
+docs/jesse-ai-agent-prompt.md
+```
+
+After changing either voice-Agent document, update the corresponding ElevenLabs knowledge-base
+document or Agent prompt through the dashboard/API before publishing. Keep all sources public-safe.
+Do not add private contact information, customer data, credentials, or facts that Jesse has not
+reviewed. Unknown questions should receive a transparent fallback instead of a fabricated answer.
 
 ## ElevenLabs production voice
 
