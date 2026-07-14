@@ -11,6 +11,7 @@ import StudentDashboard from "./pages/StudentDashboard";
 import NotFound from "./pages/NotFound";
 import Tutorials from "./pages/Tutorials";
 import TutorialReader from "./pages/TutorialReader";
+import JesseAIExperience from "./features/jesse-ai/JesseAIExperience";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ const App = () => (
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <JesseAIExperience />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
