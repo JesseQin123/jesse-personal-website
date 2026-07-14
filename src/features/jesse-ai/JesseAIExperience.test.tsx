@@ -7,6 +7,14 @@ import { MemoryRouter } from "react-router-dom";
 import JesseAIExperience from "./JesseAIExperience";
 
 const elevenLabs = vi.hoisted(() => ({
+  callbacks: undefined as
+    | {
+        onDisconnect?: (details: {
+          reason: "error" | "agent" | "user";
+          message?: string;
+        }) => void;
+      }
+    | undefined,
   endSession: vi.fn(),
   sendUserMessage: vi.fn(),
   startSession: vi.fn(),
@@ -14,12 +22,15 @@ const elevenLabs = vi.hoisted(() => ({
 
 vi.mock("@elevenlabs/react", () => ({
   ConversationProvider: ({ children }: { children: React.ReactNode }) => children,
-  useConversation: () => ({
-    ...elevenLabs,
-    isListening: false,
-    isSpeaking: false,
-    status: "disconnected",
-  }),
+  useConversation: (callbacks: typeof elevenLabs.callbacks) => {
+    elevenLabs.callbacks = callbacks;
+    return {
+      ...elevenLabs,
+      isListening: false,
+      isSpeaking: false,
+      status: "disconnected",
+    };
+  },
 }));
 
 beforeEach(() => {
@@ -102,6 +113,21 @@ describe("JesseAIExperience", () => {
         },
       });
     });
+  });
+
+  it("shows the ElevenLabs reason when a voice session is rejected", async () => {
+    renderExperience();
+
+    fireEvent.click(screen.getByRole("button", { name: /talk to jesse ai/i }));
+    fireEvent.click(screen.getByRole("button", { name: /^voice$/i }));
+    act(() => {
+      elevenLabs.callbacks?.onDisconnect?.({
+        reason: "error",
+        message: "Override for field 'language' is not allowed by config.",
+      });
+    });
+
+    expect(await screen.findByText(/override for field 'language' is not allowed/i)).toBeTruthy();
   });
 
   it("cancels a pending answer when the conversation is reset", () => {

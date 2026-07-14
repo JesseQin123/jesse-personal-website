@@ -48,6 +48,11 @@ const JesseAIExperienceContent = () => {
   const responseTimerRef = useRef<number>();
   const conversation = useConversation({
     onConnect: () => setVoiceError(null),
+    onDisconnect: (details) => {
+      if (details.reason === "error") {
+        setVoiceError(details.message || details.closeReason || "The voice session ended unexpectedly.");
+      }
+    },
     onError: (message) => setVoiceError(message || "Unable to connect to Jesse AI voice."),
     onMessage: ({ message, role }) => {
       const text = message.trim();
