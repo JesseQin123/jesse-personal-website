@@ -1,86 +1,71 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import { ArrowUpRight, Menu, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { primaryNavigation } from "@/data/site-navigation";
 import logo from "@/assets/jq_logo.png";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const navItems = [
-    { label: "About", href: "/#about" },
-    { label: "Services", href: "/#services" },
-    { label: "Pricing", href: "/#pricing" },
-    { label: "VibeCoding", href: "/projects" },
-    { label: "Tutorials", href: "/tutorials" },
-    { label: "Teaching", href: "/teaching" },
-    { label: "Contact", href: "/#contact" },
-  ];
-
   return (
-    <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
+    <nav className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-sm">
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2">
-            <img src={logo} alt="JAI Logo" className="w-10 h-10 rounded-lg" />
-            <span className="font-bold text-xl tracking-tight">Dr. Jesse Qin</span>
+        <div className="flex h-16 items-center justify-between">
+          <Link to="/" className="flex items-center gap-2" aria-label="Jesse Qin home">
+            <img src={logo} alt="Jesse Qin logo" className="h-10 w-10 rounded-lg" />
+            <span className="text-xl font-bold tracking-tight">Jesse Qin</span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-1">
-            {navItems.map((item) => (
+          <div className="hidden items-center gap-1 lg:flex">
+            {primaryNavigation.map((item) => (
               <a
                 key={item.label}
                 href={item.href}
-                target={item.newTab ? "_blank" : undefined}
-                rel={item.newTab ? "noopener noreferrer" : undefined}
-                className="px-4 py-2 text-sm font-medium text-foreground/80 hover:text-foreground transition-colors"
+                className="px-4 py-2 text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
               >
                 {item.label}
               </a>
             ))}
           </div>
 
-          {/* Desktop CTA */}
-          <div className="hidden lg:flex items-center gap-3">
+          <div className="hidden lg:flex">
             <Button variant="hero" size="default" asChild>
-              <Link to="/book-call">
-                Book Consultation <ArrowUpRight className="w-4 h-4" />
-              </Link>
+              <a href="mailto:jesseqin.office@gmail.com">
+                Start a conversation <ArrowUpRight className="h-4 w-4" />
+              </a>
             </Button>
           </div>
 
-          {/* Mobile Menu Button */}
           <button
-            className="lg:hidden p-2"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            type="button"
+            aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={mobileMenuOpen}
+            className="rounded-lg p-2 lg:hidden"
+            onClick={() => setMobileMenuOpen((open) => !open)}
           >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
 
-        {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="lg:hidden py-4 border-t border-border">
+          <div className="border-t border-border py-4 lg:hidden">
             <div className="flex flex-col gap-2">
-              {navItems.map((item) => (
+              {primaryNavigation.map((item) => (
                 <a
                   key={item.label}
                   href={item.href}
-                  target={item.newTab ? "_blank" : undefined}
-                  rel={item.newTab ? "noopener noreferrer" : undefined}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="px-4 py-3 text-sm font-medium text-foreground/80 hover:text-foreground hover:bg-muted rounded-lg transition-colors"
+                  className="rounded-lg px-4 py-3 text-sm font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
                 >
                   {item.label}
                 </a>
               ))}
-              <div className="mt-4 px-4">
+              <div className="mt-3 px-4">
                 <Button variant="hero" size="lg" className="w-full" asChild>
-                  <Link to="/book-call">
-                    Book Consultation <ArrowUpRight className="w-4 h-4" />
-                  </Link>
+                  <a href="mailto:jesseqin.office@gmail.com">
+                    Start a conversation <ArrowUpRight className="h-4 w-4" />
+                  </a>
                 </Button>
               </div>
             </div>

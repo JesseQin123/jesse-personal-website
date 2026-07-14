@@ -1,86 +1,52 @@
-import { useCountUp } from "@/animations";
+import { Building2, GraduationCap, Network, Users } from "lucide-react";
 
-// Component for animated stat numbers
-const StatNumber = ({ endValue, suffix, label }: { endValue: number; suffix: string; label: string }) => {
-  const ref = useCountUp<HTMLParagraphElement>({
-    endValue,
-    suffix,
-    duration: 2000,
-    threshold: 0.3,
-  });
+const signals = [
+  {
+    icon: Building2,
+    label: "Enterprise AI",
+    value: "Infrastructure and product work at Kamiwaza",
+  },
+  {
+    icon: Network,
+    label: "Technical focus",
+    value: "Ontology, context graphs, and agent workflows",
+  },
+  {
+    icon: GraduationCap,
+    label: "Research depth",
+    value: "PhD in Computer Engineering, Rutgers University",
+  },
+  {
+    icon: Users,
+    label: "Founder practice",
+    value: "Solo Unicorn Club and public AI-native systems",
+  },
+];
 
-  return (
-    <div className="text-center">
-      <p ref={ref} className="text-3xl md:text-4xl lg:text-6xl font-bold mb-1 md:mb-2">0</p>
-      <p className="text-background/70 text-sm md:text-base">{label}</p>
-    </div>
-  );
-};
-
-const CredibilitySection = () => {
-  const stats = [
-    { endValue: 12, suffix: "+", label: "Years in AI" },
-    { endValue: 3, suffix: "", label: "Startups Experiences" },
-    { endValue: 1000, suffix: "+", label: "AI Companies Analyzed" },
-    { endValue: 50, suffix: "+", label: "Enterprise Engagements" },
-  ];
-
-  const credentials = [{
-    type: "Education",
-    items: ["PhD in Computer Science (AI/ML focus)", "MSBAi, NYU Stern School of Business"]
-  }, {
-    type: "Experience",
-    items: ["3x startup founder in AI space", "Former ML researcher at Rutgers University", "Advised Fortune 500 companies on AI strategy"]
-  }, {
-    type: "Focus Areas",
-    items: ["Large Language Models & AI Agents", "Knowledge Graphs & RAG Systems", "AI Product Strategy & GTM", "Technical Due Diligence"]
-  }];
-
-  return (
-    <section className="py-12 lg:py-32 bg-foreground text-background">
-      <div className="container mx-auto px-4 lg:px-8">
-        {/* Stats */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 mb-10 md:mb-20">
-          {stats.map((stat, index) => (
-            <StatNumber key={index} endValue={stat.endValue} suffix={stat.suffix} label={stat.label} />
-          ))}
-        </div>
-
-        {/* Credentials Grid */}
-        <div className="grid md:grid-cols-3 gap-8">
-          {credentials.map((cred, index) => (
-            <div key={index}>
-              <h3 className="text-sm font-semibold uppercase tracking-wider text-background/50 mb-4">
-                {cred.type}
-              </h3>
-              <ul className="space-y-3">
-                {cred.items.map((item, idx) => (
-                  <li key={idx} className="flex items-start gap-3">
-                    <span className="w-1.5 h-1.5 bg-primary rounded-full mt-2 flex-shrink-0" />
-                    <span className="text-background/90">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-
-        {/* Unique Value Prop - hidden on mobile for density */}
-        <div className="mt-10 md:mt-20 hidden md:block">
-          <h3 className="text-2xl lg:text-3xl font-bold mb-6">
-            Why work with me?
-          </h3>
-          <p className="text-lg text-background/80 leading-relaxed mb-4">
-            I sit at the intersection of deep technical expertise and business acumen.
-            Most AI consultants are either too academic (great research, can't ship)
-            or too superficial (buzzwords, no substance).
-          </p>
-          <p className="text-lg text-background/80 leading-relaxed">
-            I've built production AI systems and analyzed nearly a thousand AI companies. I know what actually works—and I'll tell you the truth, even when it's not what you want to hear.
-          </p>
-        </div>
+const CredibilitySection = () => (
+  <section className="bg-foreground py-12 text-background lg:py-20">
+    <div className="container mx-auto px-4 lg:px-8">
+      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+        {signals.map((signal) => (
+          <article key={signal.label} className="border-l border-background/15 pl-5">
+            <signal.icon className="mb-5 h-6 w-6 text-primary" />
+            <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-background/50">
+              {signal.label}
+            </p>
+            <p className="leading-relaxed text-background/90">{signal.value}</p>
+          </article>
+        ))}
       </div>
-    </section>
-  );
-};
+
+      <div className="mt-12 max-w-5xl border-t border-background/15 pt-10 lg:mt-16 lg:pt-12">
+        <p className="text-sm font-medium uppercase tracking-wider text-primary">The question behind the work</p>
+        <h2 className="mt-4 text-2xl font-bold leading-tight lg:text-4xl">
+          What does an organization become when people and AI agents share context,
+          make decisions, and act together?
+        </h2>
+      </div>
+    </div>
+  </section>
+);
+
 export default CredibilitySection;

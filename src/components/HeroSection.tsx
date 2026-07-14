@@ -1,10 +1,17 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import { ArrowUpRight, MapPin } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import profileImage from "@/assets/jesse-profile.jpg";
 import { useHeroAnimation } from "@/animations";
-import { NeuralNetwork, AnimatedCircuitLines } from "@/components/animations";
+import { AnimatedCircuitLines, NeuralNetwork } from "@/components/animations";
+
+const proofSignals = [
+  "Enterprise AI at Kamiwaza",
+  "PhD in Computer Engineering",
+  "NYU Stern MSBAi",
+  "New York City",
+];
 
 const HeroSection = () => {
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -25,87 +32,93 @@ const HeroSection = () => {
   });
 
   return (
-    <section id="about" className="relative overflow-hidden">
-      {/* Background Grid Pattern */}
+    <section id="about" className="relative scroll-mt-20 overflow-hidden">
       <div className="absolute inset-0 grid-pattern opacity-50" />
+      <AnimatedCircuitLines className="left-0 top-0 hidden h-60 w-80 opacity-40 lg:block" />
 
-      {/* Animated Circuit Lines - Top Left (Desktop only) */}
-      <AnimatedCircuitLines className="top-0 left-0 w-80 h-60 opacity-40 hidden lg:block" />
-
-      <div className="container mx-auto px-4 lg:px-8 py-10 lg:py-24">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left Content */}
+      <div className="container mx-auto px-4 py-12 lg:px-8 lg:py-24">
+        <div className="grid items-center gap-12 lg:grid-cols-2">
           <div className="relative z-10">
-            <div className="flex items-center gap-2 mb-4">
-              <MapPin className="w-4 h-4 text-muted-foreground" />
-              <span className="text-sm text-muted-foreground">New York City</span>
+            <div className="mb-4 flex items-center gap-2 text-sm text-muted-foreground">
+              <MapPin className="h-4 w-4" />
+              <span>AI systems builder · New York City</span>
             </div>
 
             <h1
               ref={titleRef}
-              className="text-4xl lg:text-6xl font-bold tracking-tight mb-6 leading-tight"
+              className="mb-6 text-4xl font-bold leading-[1.08] tracking-tight lg:text-6xl"
             >
-              Your AI initiatives <br />
-              <span className="hero-gradient bg-clip-text text-transparent">stuck or stalled?</span>
+              I turn fragmented knowledge into systems
+              <span className="text-gradient"> people and AI agents can use.</span>
             </h1>
 
             <p
               ref={subtitleRef}
-              className="text-lg lg:text-xl text-muted-foreground mb-6 max-w-xl leading-relaxed"
+              className="mb-6 max-w-2xl text-lg leading-relaxed text-muted-foreground lg:text-xl"
             >
-              I help enterprises cut through AI hype, build systems that actually work,
-              and turn ambitious AI roadmaps into shipped products.
+              I design and build AI systems that connect data, decisions, relationships,
+              and permissions into usable, governed context.
             </p>
 
             <p
               ref={descriptionRef}
-              className="text-base text-foreground/80 mb-8 max-w-xl leading-relaxed border-l-2 border-primary pl-4"
+              className="mb-8 max-w-2xl border-l-2 border-primary pl-4 leading-relaxed text-foreground/80"
             >
-              <strong>Rutgers</strong> <strong>CS PhD</strong> backed by <strong>NYU Stern MSBAi</strong>. Bridging AI research with real-world execution at 3 startups.
-              Analyzed 1,000+ AI companies. I've seen what works—and what doesn't.
+              My work spans enterprise AI infrastructure, ontology, context graphs, and
+              agent workflows—from research and architecture to shipped products.
             </p>
 
             <div ref={ctaRef} className="flex flex-wrap gap-4">
               <Button variant="hero" size="lg" asChild>
-                <Link to="/book-call">
-                  Book a Call <ArrowUpRight className="w-4 h-4" />
+                <Link to="/projects">
+                  Explore selected work <ArrowUpRight className="h-4 w-4" />
                 </Link>
               </Button>
               <Button variant="heroOutline" size="lg" asChild>
-                <a href="#pricing">
-                  View Pricing <ArrowUpRight className="w-4 h-4" />
+                <a href="#contact">
+                  Start a conversation <ArrowUpRight className="h-4 w-4" />
                 </a>
               </Button>
             </div>
+
+            <div className="mt-8 flex flex-wrap gap-2">
+              {proofSignals.map((signal) => (
+                <span
+                  key={signal}
+                  className="rounded-full border border-border bg-background/80 px-3 py-1.5 text-xs font-medium text-foreground/75 backdrop-blur-sm"
+                >
+                  {signal}
+                </span>
+              ))}
+            </div>
           </div>
 
-          {/* Right - Profile Image */}
           <div className="relative flex justify-center lg:justify-end">
-            {/* Neural Network Animation - Behind the image (Desktop only) */}
-            <NeuralNetwork className="absolute -left-20 -top-10 w-[500px] h-[350px] opacity-30 hidden lg:block" />
+            <NeuralNetwork className="absolute -left-20 -top-10 hidden h-[350px] w-[500px] opacity-30 lg:block" />
 
             <div className="relative w-full lg:w-auto">
-              {/* Decorative elements - hidden on mobile */}
-              <div className="absolute -inset-4 hero-gradient rounded-3xl opacity-20 blur-2xl hidden lg:block" />
-              <div className="absolute -top-6 -right-6 w-24 h-24 border-2 border-primary/20 rounded-2xl hidden lg:block" />
-              <div className="absolute -bottom-6 -left-6 w-32 h-32 border-2 border-primary/20 rounded-2xl hidden lg:block" />
+              <div className="hero-gradient absolute -inset-4 hidden rounded-3xl opacity-20 blur-2xl lg:block" />
+              <div className="absolute -right-6 -top-6 hidden h-24 w-24 rounded-2xl border-2 border-primary/20 lg:block" />
+              <div className="absolute -bottom-6 -left-6 hidden h-32 w-32 rounded-2xl border-2 border-primary/20 lg:block" />
 
-              {/* Profile Image - full width square on mobile, fixed square on desktop */}
               <div
                 ref={imageRef}
-                className="relative w-full aspect-square lg:w-96 lg:h-96 rounded-2xl overflow-hidden shadow-2xl border border-border"
+                className="relative aspect-square w-full overflow-hidden rounded-2xl border border-border shadow-2xl lg:h-96 lg:w-96"
               >
-                <img src={profileImage} alt="Dr. Jesse Qin - AI Strategy Advisor" className="w-full h-full object-cover" />
+                <img
+                  src={profileImage}
+                  alt="Jesse Qin in New York City"
+                  className="h-full w-full object-cover"
+                />
               </div>
 
-              {/* Floating credential badge - hidden on mobile */}
               <div
                 ref={badgeRef}
-                className="absolute -bottom-4 -right-4 bg-background border border-border rounded-xl p-4 shadow-lg hidden lg:block"
+                className="absolute -bottom-4 -right-4 hidden rounded-xl border border-border bg-background p-4 shadow-lg lg:block"
               >
-                <p className="text-xs text-muted-foreground mb-1">Dr. Jesse Qin</p>
-                <p className="font-semibold text-sm">PhD, Computer Science</p>
-                <p className="text-sm text-muted-foreground">NYU Stern MSBAi</p>
+                <p className="mb-1 text-xs text-muted-foreground">Jesse Qin</p>
+                <p className="text-sm font-semibold">AI Systems Builder</p>
+                <p className="text-sm text-muted-foreground">Ontology · Context · Agents</p>
               </div>
             </div>
           </div>
@@ -114,4 +127,5 @@ const HeroSection = () => {
     </section>
   );
 };
+
 export default HeroSection;

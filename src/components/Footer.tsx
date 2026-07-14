@@ -1,99 +1,92 @@
 import { ArrowUpRight } from "lucide-react";
+import { primaryNavigation } from "@/data/site-navigation";
 import logo from "@/assets/jq_logo.png";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
+  const resources = [
+    { label: "Projects", href: "/projects" },
+    { label: "Tutorials", href: "/tutorials" },
+    { label: "Teaching", href: "/teaching" },
+  ];
+
+  const publicWork = [
+    { label: "Context Graph", href: "https://contextgraph.tech/" },
+    { label: "Solo Unicorn Club", href: "https://www.solounicorn.club/" },
+    { label: "Life in AGI", href: "https://www.lifeinagi.com/" },
+  ];
+
   return (
     <footer className="border-t border-border">
-      <div className="container mx-auto px-4 lg:px-8 py-12">
-        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8">
-          {/* Logo & Description */}
+      <div className="container mx-auto px-4 py-12 lg:px-8">
+        <div className="flex flex-col items-start justify-between gap-10 lg:flex-row">
           <div className="max-w-md">
-            <div className="flex items-center gap-2 mb-4">
-              <img src={logo} alt="JAI Logo" className="w-10 h-10 rounded-lg" />
-              <span className="font-bold text-xl">Dr. Jesse Qin</span>
+            <div className="mb-4 flex items-center gap-2">
+              <img src={logo} alt="Jesse Qin logo" className="h-10 w-10 rounded-lg" />
+              <span className="text-xl font-bold">Jesse Qin</span>
             </div>
-            <p className="text-sm text-muted-foreground">
-              AI Strategy Advisor & Fractional CTO based in New York City. 
-              Helping enterprises navigate the AI landscape with 12+ years of expertise.
+            <p className="text-sm leading-relaxed text-muted-foreground">
+              AI systems builder working across enterprise infrastructure, ontology,
+              context graphs, and agent workflows. Based in New York City.
             </p>
           </div>
 
-          {/* Quick Links */}
-          <div className="flex flex-wrap gap-8">
-            <div>
-              <h4 className="font-semibold mb-4">Navigate</h4>
-              <ul className="space-y-3">
-                {["About", "Services", "Pricing", "Contact"].map((link) => (
-                  <li key={link}>
-                    <a
-                      href={`#${link.toLowerCase().replace(" ", "-")}`}
-                      className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      {link}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Connect</h4>
-              <ul className="space-y-3">
-                {[
-                  { label: "LinkedIn", href: "https://www.linkedin.com/in/jesseqin-phd/" },
-                  { label: "Email", href: "mailto:jesse@daydayup.co" },
-                ].map((item) => (
-                  <li key={item.label}>
-                    <a
-                      href={item.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1 group"
-                    >
-                      {item.label}
-                      <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">My Ventures</h4>
-              <ul className="space-y-3">
-                {[
-                  { label: "Solo Unicorn Club", href: "https://www.solounicorn.club/" },
-                  { label: "Life in AGI", href: "https://www.lifeinagi.com/" },
-                ].map((item) => (
-                  <li key={item.label}>
-                    <a
-                      href={item.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1 group"
-                    >
-                      {item.label}
-                      <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          <div className="grid grid-cols-2 gap-x-10 gap-y-8 sm:grid-cols-4">
+            <FooterColumn title="Navigate" items={primaryNavigation.filter((item) => item.label !== "Connect")} />
+            <FooterColumn title="Resources" items={resources} />
+            <FooterColumn title="Public work" items={publicWork} external />
+            <FooterColumn
+              title="Connect"
+              items={[
+                { label: "LinkedIn", href: "https://www.linkedin.com/in/jesseqin-phd/" },
+                { label: "GitHub", href: "https://github.com/JesseQin123" },
+                { label: "Email", href: "mailto:jesseqin.office@gmail.com" },
+              ]}
+              external
+            />
           </div>
         </div>
 
-        {/* Bottom */}
-        <div className="flex flex-col lg:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-border">
-          <p className="text-sm text-muted-foreground">
-            © {currentYear} Dr. Jesse Qin. All rights reserved.
-          </p>
-          <p className="text-sm text-muted-foreground">
-            Based in New York City
-          </p>
+        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 text-sm text-muted-foreground lg:flex-row">
+          <p>© {currentYear} Jesse Qin. All rights reserved.</p>
+          <p>AI systems · organizational context · human–AI collaboration</p>
         </div>
       </div>
     </footer>
   );
 };
+
+const FooterColumn = ({
+  title,
+  items,
+  external = false,
+}: {
+  title: string;
+  items: readonly { label: string; href: string }[];
+  external?: boolean;
+}) => (
+  <div>
+    <h4 className="mb-4 font-semibold">{title}</h4>
+    <ul className="space-y-3">
+      {items.map((item) => {
+        const opensExternally = external && item.href.startsWith("http");
+        return (
+          <li key={item.label}>
+            <a
+              href={item.href}
+              target={opensExternally ? "_blank" : undefined}
+              rel={opensExternally ? "noopener noreferrer" : undefined}
+              className="group flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
+            >
+              {item.label}
+              {opensExternally && <ArrowUpRight className="h-3 w-3 opacity-0 transition-opacity group-hover:opacity-100" />}
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+);
 
 export default Footer;
