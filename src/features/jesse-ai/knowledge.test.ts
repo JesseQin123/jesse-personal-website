@@ -34,4 +34,22 @@ describe("answerJesseQuestion", () => {
     expect(result.answer).toContain("罗格斯大学");
     expect(result.answer).toContain("人工智能");
   });
+
+  it("explains Jesse's SoloUnicorn theory with source attribution", () => {
+    const result = answerJesseQuestion("What is Jesse's SoloUnicorn theory?");
+
+    expect(result.kind).toBe("grounded");
+    expect(result.answer).toContain("AI-native organization");
+    expect(result.answer).toContain("dashen's TSC");
+    expect(result.answer).toContain("not a promise of valuation");
+  });
+
+  it("connects context graphs to founder judgment in Chinese", () => {
+    const result = answerJesseQuestion("为什么一人独角兽需要上下文图谱？");
+
+    expect(result.kind).toBe("grounded");
+    expect(result.answer).toContain("决策轨迹");
+    expect(result.answer).toContain("创始人的判断");
+    expect(result.answer).toContain("组织记忆");
+  });
 });

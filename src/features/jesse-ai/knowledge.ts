@@ -39,6 +39,59 @@ const KNOWLEDGE: KnowledgeEntry[] = [
     },
   },
   {
+    id: "solo-unicorn-theory",
+    keywords: [
+      "solo unicorn",
+      "solounicorn",
+      "one-person company",
+      "one person company",
+      "ai-native organization",
+      "thin-shell company",
+      "tsc",
+      "一人独角兽",
+      "一人公司",
+      "单人公司",
+      "ai-native 组织",
+      "薄壳公司",
+    ],
+    topic: { en: "SoloUnicorn theory", zh: "一人独角兽理论" },
+    answer: {
+      en: "Jesse defines a SoloUnicorn as an AI-native organization: one founder retains intent, final judgment, and responsibility, while specialized agents perform bounded, auditable work and learn through shared context and real outcomes. The synthesis is informed by dashen's TSC / Thin-Shell Company whitepapers, but connects them to Jesse's own model of agentic execution, judgment capital, portable organizational memory, and the SoloUnicorn Club. Here, “unicorn” first means exceptional organizational leverage—not a promise of valuation.",
+      zh: "Jesse 把「一人独角兽」定义为一种 AI-native organization：一位创始人保留意图、最终判断与责任，由一组有边界、可审计的专业 Agent 执行工作，并通过共享上下文和真实结果持续学习。这套综合受到 dashen 的 TSC／薄壳公司白皮书启发，但进一步连接到 Jesse 对 Agent 执行资本、判断资本、可迁移组织记忆和一人独角兽俱乐部的理解。这里的「独角兽」首先指极高的组织杠杆，而不是估值承诺。",
+    },
+    followUps: {
+      en: ["Why does a SoloUnicorn need a context graph?", "What is SoloUnicorn Club?"],
+      zh: ["为什么一人独角兽需要上下文图谱？", "一人独角兽俱乐部是什么？"],
+    },
+  },
+  {
+    id: "context-graph-theory",
+    keywords: [
+      "context graph",
+      "solo unicorn",
+      "ontology",
+      "decision trace",
+      "institutional intelligence",
+      "organizational memory",
+      "knowledge graph",
+      "上下文图谱",
+      "一人独角兽",
+      "本体",
+      "决策轨迹",
+      "组织记忆",
+      "知识图谱",
+    ],
+    topic: { en: "Ontology and context graphs", zh: "本体与上下文图谱" },
+    answer: {
+      en: "Jesse sees ontology as a machine-readable model of an organization's entities and relationships, and a context graph as the living decision layer built on top of it. It preserves decision traces, temporal validity, provenance, precedents, and outcomes so agents can understand not only what is true, but why a decision made sense at that time. For a SoloUnicorn, this shared graph turns founder judgment into reusable, auditable organizational memory across many agents.",
+      zh: "Jesse 把 ontology 看作组织实体与关系的机器可读模型，把 context graph 看作建立在其上的动态决策层。它保存决策轨迹、时间有效性、来源、先例和结果，让 Agent 不只知道什么是真的，也理解为什么某个决定在当时合理。对一人独角兽而言，共享上下文图谱能把创始人的判断转化为多个 Agent 可复用、可审计的组织记忆。",
+    },
+    followUps: {
+      en: ["What is a SoloUnicorn?", "How is a context graph different from a knowledge graph?"],
+      zh: ["什么是一人独角兽？", "上下文图谱和知识图谱有什么不同？"],
+    },
+  },
+  {
     id: "current-work",
     keywords: [
       "current work",
@@ -245,6 +298,7 @@ export function answerJesseQuestion(question: string): JesseAnswer {
 export const STARTER_QUESTIONS = [
   "What is Jesse working on?",
   "What has Jesse built?",
+  "What is a SoloUnicorn?",
   "How can Jesse help my team?",
   "What does Jesse believe about AI?",
 ];
