@@ -127,6 +127,11 @@ const JesseAIExperience = () => {
     voice.startListening(voiceLanguage, ask);
   };
 
+  const selectMode = (nextMode: "text" | "voice") => {
+    if (nextMode === "text") voice.stopAll();
+    setMode(nextMode);
+  };
+
   const reset = () => {
     cancelPendingAnswer();
     voice.stopAll();
@@ -201,14 +206,14 @@ const JesseAIExperience = () => {
             <div className="flex rounded-full bg-background p-1 shadow-sm ring-1 ring-border">
               <button
                 type="button"
-                onClick={() => setMode("text")}
+                onClick={() => selectMode("text")}
                 className={cn("flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition", mode === "text" ? "bg-neutral-950 text-white" : "text-muted-foreground hover:text-foreground")}
               >
                 <MessageCircle className="h-3.5 w-3.5" /> Text
               </button>
               <button
                 type="button"
-                onClick={() => setMode("voice")}
+                onClick={() => selectMode("voice")}
                 className={cn("flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition", mode === "voice" ? "bg-neutral-950 text-white" : "text-muted-foreground hover:text-foreground")}
               >
                 <Mic className="h-3.5 w-3.5" /> Voice
