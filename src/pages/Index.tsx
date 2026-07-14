@@ -5,6 +5,7 @@ import SelectedWorkSection from "@/components/SelectedWorkSection";
 import IdeasSection from "@/components/IdeasSection";
 import JourneySection from "@/components/JourneySection";
 import TalksSection from "@/components/TalksSection";
+import PublicProofSection from "@/components/PublicProofSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 
@@ -18,6 +19,7 @@ const Index = () => (
       <IdeasSection />
       <JourneySection />
       <TalksSection />
+      <PublicProofSection />
       <ContactSection />
     </main>
     <Footer />
