@@ -1,12 +1,12 @@
 # Jesse AI experience
 
-The website includes a globally available Jesse AI preview. It is intentionally useful without
-external credentials:
+The website includes a globally available Jesse AI experience. Text mode remains useful without
+external credentials, while voice mode connects to a private ElevenLabs Agent when configured:
 
 - reviewed, deterministic answers based on public website content;
 - English and Chinese topic matching;
-- browser speech recognition for voice input when supported;
-- a browser-provided template voice for spoken replies;
+- private WebRTC voice conversations through ElevenLabs;
+- live bilingual transcription and agent replies in the custom chat UI;
 - an animated portrait that reflects idle, listening, thinking, and speaking states;
 - explicit AI disclosure, privacy boundaries, and a handoff to the real booking flow.
 
@@ -17,8 +17,9 @@ npm install
 npm run dev
 ```
 
-Open the site and select **Talk to Jesse AI** in the lower-right corner. Chrome or Safari provide
-the best browser voice-input support. The text experience works in all modern browsers.
+Open the site and select **Talk to Jesse AI** in the lower-right corner. Choose **Voice**, then
+select **Start voice conversation** and allow microphone access. The text experience works in all
+modern browsers and remains available if ElevenLabs is not configured.
 
 ## Knowledge source
 
@@ -35,7 +36,8 @@ fallback instead of a fabricated answer.
 ## ElevenLabs production voice
 
 The repository includes `POST /api/elevenlabs-token`, a server-only token exchange for a private
-ElevenLabs Agent. To enable it in a deployed environment, add:
+ElevenLabs Agent. Local Vite development and deployed serverless environments both use the same
+handler. To enable it, add:
 
 ```text
 ELEVENLABS_API_KEY=...
@@ -45,7 +47,7 @@ ELEVENLABS_AGENT_ID=...
 Never expose `ELEVENLABS_API_KEY` through a `VITE_` variable. `VITE_` values are shipped to every
 browser.
 
-Before connecting the production agent to the custom UI:
+Before publishing the production agent:
 
 1. Create a private ElevenLabs Agent.
 2. Add the public Jesse knowledge documents to its knowledge base.
@@ -56,5 +58,5 @@ Before connecting the production agent to the custom UI:
 6. Run adversarial tests for private-data requests, prompt injection, invented credentials, and
    attempts to make commitments on Jesse's behalf.
 
-The current preview does not call this endpoint. That keeps the branch fully runnable until the
-private Agent exists and its real conversation lifecycle can be tested end to end.
+Voice mode calls this endpoint on demand and gives the returned short-lived WebRTC token to the
+ElevenLabs React SDK. The API key never enters the browser bundle.

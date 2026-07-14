@@ -1,3 +1,4 @@
+import { ConversationProvider, useConversation } from "@elevenlabs/react";
 import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import {
   ArrowUp,
@@ -5,10 +6,8 @@ import {
   ExternalLink,
   MessageCircle,
   Mic,
+  PhoneOff,
   RotateCcw,
-  Square,
-  Volume2,
-  VolumeX,
   X,
 } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -18,7 +17,6 @@ import { cn } from "@/lib/utils";
 
 import { answerJesseQuestion, STARTER_QUESTIONS } from "./knowledge";
 import JesseAvatarStage, { type JesseAvatarActivity } from "./JesseAvatarStage";
-import { useBrowserVoice, type VoiceLocale } from "./useBrowserVoice";
 
 type ChatMessage = {
   id: number;
@@ -35,21 +33,34 @@ const INITIAL_MESSAGE: ChatMessage = {
   topic: "AI disclosure",
 };
 
-const languageFor = (text: string): VoiceLocale => (/[㐀-鿿]/.test(text) ? "zh-CN" : "en-US");
-
-const JesseAIExperience = () => {
+const JesseAIExperienceContent = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [mode, setMode] = useState<"text" | "voice">("text");
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([INITIAL_MESSAGE]);
   const [isThinking, setIsThinking] = useState(false);
-  const [autoSpeak, setAutoSpeak] = useState(true);
-  const [voiceLanguage, setVoiceLanguage] = useState<VoiceLocale>("en-US");
+  const [voiceError, setVoiceError] = useState<string | null>(null);
   const messageId = useRef(1);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const responseTimerRef = useRef<number>();
-  const voice = useBrowserVoice();
-  const stopAll = voice.stopAll;
+  const conversation = useConversation({
+    onConnect: () => setVoiceError(null),
+    onError: (message) => setVoiceError(message || "Unable to connect to Jesse AI voice."),
+    onMessage: ({ message, role }) => {
+      const text = message.trim();
+      if (!text) return;
+      setMessages((current) => [
+        ...current,
+        {
+          id: messageId.current++,
+          role: role === "agent" ? "assistant" : "user",
+          text,
+          topic: role === "agent" ? "Live ElevenLabs agent" : undefined,
+        },
+      ]);
+    },
+  });
+  const endVoiceSession = conversation.endSession;
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView?.({ behavior: "smooth" });
@@ -58,9 +69,9 @@ const JesseAIExperience = () => {
   useEffect(
     () => () => {
       if (responseTimerRef.current) window.clearTimeout(responseTimerRef.current);
-      stopAll();
+      endVoiceSession();
     },
-    [stopAll],
+    [endVoiceSession],
   );
 
   const cancelPendingAnswer = () => {
@@ -73,7 +84,7 @@ const JesseAIExperience = () => {
 
   const close = () => {
     cancelPendingAnswer();
-    voice.stopAll();
+    conversation.endSession();
     setIsOpen(false);
   };
 
@@ -81,7 +92,12 @@ const JesseAIExperience = () => {
     const question = rawQuestion.trim();
     if (!question || isThinking) return;
 
-    voice.stopSpeaking();
+    if (mode === "voice" && conversation.status === "connected") {
+      conversation.sendUserMessage(question);
+      setInput("");
+      return;
+    }
+
     setMessages((current) => [
       ...current,
       { id: messageId.current++, role: "user", text: question },
@@ -103,7 +119,6 @@ const JesseAIExperience = () => {
         },
       ]);
       setIsThinking(false);
-      if (mode === "voice" && autoSpeak) voice.speak(result.answer, languageFor(question));
     }, 420);
   };
 
@@ -119,33 +134,71 @@ const JesseAIExperience = () => {
     }
   };
 
-  const toggleListening = () => {
-    if (voice.isListening) {
-      voice.stopListening();
+  const startVoiceConversation = async () => {
+    setVoiceError(null);
+    try {
+      if (!navigator.mediaDevices?.getUserMedia) {
+        throw new Error("This browser cannot access a microphone.");
+      }
+
+      const permissionStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      permissionStream.getTracks?.().forEach((track) => track.stop());
+
+      const response = await fetch("/api/elevenlabs-token", { method: "POST" });
+      const payload = (await response.json()) as { error?: string; token?: string };
+      if (!response.ok || !payload.token) {
+        throw new Error(payload.error || "Unable to start an ElevenLabs conversation.");
+      }
+
+      conversation.startSession({
+        connectionType: "webrtc",
+        conversationToken: payload.token,
+      });
+    } catch (error) {
+      setVoiceError(error instanceof Error ? error.message : "Unable to start voice conversation.");
+    }
+  };
+
+  const toggleVoiceConversation = () => {
+    if (conversation.status === "connected" || conversation.status === "connecting") {
+      conversation.endSession();
       return;
     }
-    voice.startListening(voiceLanguage, ask);
+    void startVoiceConversation();
   };
 
   const selectMode = (nextMode: "text" | "voice") => {
-    if (nextMode === "text") voice.stopAll();
+    if (nextMode === "text") conversation.endSession();
+    setVoiceError(null);
     setMode(nextMode);
   };
 
   const reset = () => {
     cancelPendingAnswer();
-    voice.stopAll();
+    conversation.endSession();
     setMessages([INITIAL_MESSAGE]);
     setInput("");
+    setVoiceError(null);
   };
 
-  const activity: JesseAvatarActivity = voice.isListening
+  const activity: JesseAvatarActivity = mode === "voice" && conversation.isListening
     ? "listening"
-    : voice.isSpeaking
+    : mode === "voice" && conversation.isSpeaking
       ? "speaking"
       : isThinking
         ? "thinking"
         : "idle";
+
+  const voiceStatus =
+    conversation.status === "connected"
+      ? conversation.isSpeaking
+        ? "Jesse AI is speaking"
+        : "Live · listening"
+      : conversation.status === "connecting"
+        ? "Connecting securely…"
+        : conversation.status === "disconnecting"
+          ? "Ending conversation…"
+          : "ElevenLabs live agent";
 
   return (
     <div className="fixed bottom-0 right-0 z-[80] pointer-events-none">
@@ -220,44 +273,15 @@ const JesseAIExperience = () => {
               </button>
             </div>
             <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
-              {mode === "voice" ? "Browser voice preview" : "Grounded preview"}
+              {mode === "voice" ? voiceStatus : "Grounded preview"}
             </p>
           </div>
 
           {mode === "voice" && (
             <div className="flex shrink-0 items-center gap-2 border-b border-orange-200/60 bg-orange-50 px-4 py-2 text-[11px] text-orange-950">
-              <span className="min-w-0 flex-1">Local template voice. Mic starts only when tapped.</span>
-              <div className="flex shrink-0 rounded-full bg-white/80 p-0.5 ring-1 ring-orange-200">
-                <button
-                  type="button"
-                  aria-label="Use English voice input"
-                  aria-pressed={voiceLanguage === "en-US"}
-                  onClick={() => setVoiceLanguage("en-US")}
-                  className={cn("rounded-full px-2 py-1 text-[10px] font-semibold", voiceLanguage === "en-US" && "bg-orange-500 text-white")}
-                >
-                  EN
-                </button>
-                <button
-                  type="button"
-                  aria-label="Use Chinese voice input"
-                  aria-pressed={voiceLanguage === "zh-CN"}
-                  onClick={() => setVoiceLanguage("zh-CN")}
-                  className={cn("rounded-full px-2 py-1 text-[10px] font-semibold", voiceLanguage === "zh-CN" && "bg-orange-500 text-white")}
-                >
-                  中文
-                </button>
-              </div>
-              <button
-                type="button"
-                onClick={() => {
-                  setAutoSpeak((value) => !value);
-                  if (autoSpeak) voice.stopSpeaking();
-                }}
-                aria-label={autoSpeak ? "Mute spoken replies" : "Enable spoken replies"}
-                className="shrink-0 rounded-full p-1.5 hover:bg-orange-100"
-              >
-                {autoSpeak ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
-              </button>
+              <span className="min-w-0 flex-1">
+                Live bilingual voice. Your microphone starts only after you tap the button.
+              </span>
             </div>
           )}
 
@@ -308,17 +332,24 @@ const JesseAIExperience = () => {
             </div>
           </div>
 
-          {voice.error && <p className="mx-4 mb-2 rounded-lg bg-destructive/10 px-3 py-2 text-xs text-destructive">{voice.error}</p>}
+          {voiceError && <p className="mx-4 mb-2 rounded-lg bg-destructive/10 px-3 py-2 text-xs text-destructive">{voiceError}</p>}
 
           <div className="shrink-0 border-t bg-background p-3">
             {mode === "voice" && (
               <button
                 type="button"
-                onClick={toggleListening}
-                aria-label={voice.isListening ? "Stop listening" : "Start listening"}
-                className={cn("mb-2 flex w-full items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold transition", voice.isListening ? "bg-red-500 text-white" : "bg-neutral-950 text-white hover:bg-neutral-800")}
+                onClick={toggleVoiceConversation}
+                aria-label={conversation.status === "connected" ? "End voice conversation" : "Start voice conversation"}
+                disabled={conversation.status === "disconnecting"}
+                className={cn("mb-2 flex w-full items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold transition disabled:cursor-wait disabled:opacity-60", conversation.status === "connected" ? "bg-red-500 text-white" : "bg-neutral-950 text-white hover:bg-neutral-800")}
               >
-                {voice.isListening ? <><Square className="h-4 w-4 fill-current" /> Stop listening</> : <><Mic className="h-4 w-4" /> Start listening</>}
+                {conversation.status === "connected" ? (
+                  <><PhoneOff className="h-4 w-4" /> End voice conversation</>
+                ) : conversation.status === "connecting" ? (
+                  <>Connecting securely…</>
+                ) : (
+                  <><Mic className="h-4 w-4" /> Start voice conversation</>
+                )}
               </button>
             )}
 
@@ -353,5 +384,11 @@ const JesseAIExperience = () => {
     </div>
   );
 };
+
+const JesseAIExperience = () => (
+  <ConversationProvider>
+    <JesseAIExperienceContent />
+  </ConversationProvider>
+);
 
 export default JesseAIExperience;
