@@ -1,12 +1,15 @@
 // @vitest-environment jsdom
 
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
-import { afterEach, describe, expect, it } from "vitest";
+import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { MemoryRouter } from "react-router-dom";
 
 import JesseAIExperience from "./JesseAIExperience";
 
-afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+  vi.useRealTimers();
+});
 
 const renderExperience = () =>
   render(
@@ -46,5 +49,20 @@ describe("JesseAIExperience", () => {
     fireEvent.click(screen.getByRole("button", { name: /use chinese voice input/i }));
 
     expect(screen.getByRole("button", { name: /use chinese voice input/i }).getAttribute("aria-pressed")).toBe("true");
+  });
+
+  it("cancels a pending answer when the conversation is reset", () => {
+    vi.useFakeTimers();
+    renderExperience();
+
+    fireEvent.click(screen.getByRole("button", { name: /talk to jesse ai/i }));
+    fireEvent.change(screen.getByRole("textbox", { name: /message/i }), {
+      target: { value: "What is Jesse's background?" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: /send message/i }));
+    fireEvent.click(screen.getByRole("button", { name: /reset conversation/i }));
+    act(() => vi.advanceTimersByTime(500));
+
+    expect(screen.queryByText(/Rutgers University/i)).toBeNull();
   });
 });
