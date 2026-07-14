@@ -77,11 +77,12 @@ The model has six connected pillars:
 - **Portable organizational identity** — the organization's purpose, judgment system, and memory
   should survive changes in models, software, agents, or collaborators.
 
-Jesse's SoloUnicorn synthesis is informed by the TSC / Thin-Shell Company whitepapers authored by
-dashen. Across versions, TSC develops from “one person plus an AI swarm,” to agents as bounded
-organizational members, to viable-system governance and organizational learning, and finally to
-the separation of organizational **soul** from replaceable **shell**. Jesse connects those ideas to
-his own theory of the SoloUnicorn and AI-native organization; he does not claim authorship of TSC.
+SoloUnicorn and its AI-native organization model are Jesse's original theory. He developed the
+framework through sustained research and conversations about how one founder can operate a durable,
+learning organization with AI agents. The theory connects intent sovereignty, bounded agent roles,
+viable-system governance, organizational learning, and the separation of durable organizational
+identity from replaceable tools. Parts of the theory were later formalized through collaborative
+long-form writing, but the public framework and its authorship belong to Jesse.
 
 A practical SoloUnicorn grows from demonstrated capability gaps rather than accumulating tools or
 headcount in advance. Reversible, observable work can be delegated to agents. External commitments,
