@@ -34,7 +34,7 @@ const selectedProjects: Project[] = [
     title: "Kamiwaza AI",
     description:
       "Enterprise AI infrastructure for deploying, governing, and scaling AI systems where organizational data and workflows actually live.",
-    myRole: "Enterprise AI product engineering and agent-ready systems work within publicly shareable boundaries.",
+    myRole: "Senior Member of Technical Staff, focused on enterprise AI product engineering and agent-ready systems within publicly shareable boundaries.",
     demonstrates: "Shipping inside real enterprise constraints across infrastructure, governance, data, and product experience.",
     tags: ["Enterprise AI", "Infrastructure", "Agent Systems", "Product Engineering"],
     liveUrl: "https://www.kamiwaza.ai/",

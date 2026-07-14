@@ -5,9 +5,10 @@ import { Button } from "@/components/ui/button";
 import profileImage from "@/assets/jesse-profile.jpg";
 import { useHeroAnimation } from "@/animations";
 import { AnimatedCircuitLines, NeuralNetwork } from "@/components/animations";
+import HomeAiUsageWidget from "@/components/HomeAiUsageWidget";
 
 const proofSignals = [
-  "Enterprise AI at Kamiwaza",
+  "Senior Member of Technical Staff · Kamiwaza",
   "PhD in Computer Engineering",
   "NYU Stern MSBAi",
   "New York City",
@@ -37,8 +38,8 @@ const HeroSection = () => {
       <AnimatedCircuitLines className="left-0 top-0 hidden h-60 w-80 opacity-40 lg:block" />
 
       <div className="container mx-auto px-4 py-12 lg:px-8 lg:py-24">
-        <div className="grid items-center gap-12 lg:grid-cols-2">
-          <div className="relative z-10">
+        <div className="relative grid items-center gap-12 lg:grid-cols-2">
+          <div className="z-10">
             <div className="mb-4 flex items-center gap-2 text-sm text-muted-foreground">
               <MapPin className="h-4 w-4" />
               <span>AI systems builder · New York City</span>
@@ -81,7 +82,12 @@ const HeroSection = () => {
               </Button>
             </div>
 
-            <div className="mt-8 flex flex-wrap gap-2">
+            <HomeAiUsageWidget
+              variant="compact"
+              className="lg:absolute lg:right-0 lg:top-0 lg:z-20 lg:mt-0 lg:w-80 xl:w-96"
+            />
+
+            <div className="mt-5 flex flex-wrap gap-2">
               {proofSignals.map((signal) => (
                 <span
                   key={signal}

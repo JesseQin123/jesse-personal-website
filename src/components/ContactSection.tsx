@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button";
 
 const conversationPaths = [
   {
-    title: "Hiring",
-    description: "Senior AI systems, product engineering, and technical leadership conversations.",
+    title: "Join a Team",
+    description: "Conversations about senior AI systems, product engineering, and technical leadership roles where I can contribute.",
   },
   {
     title: "Building",
@@ -43,9 +43,9 @@ const ContactSection = () => (
                   <Linkedin className="h-4 w-4" /> LinkedIn <ArrowUpRight className="h-4 w-4" />
                 </a>
               </Button>
-              <Button variant="ghost" size="lg" className="text-background/80 hover:bg-background/10 hover:text-background" asChild>
+              <Button variant="outline" size="lg" className="border-primary/70 bg-primary/10 text-background hover:bg-primary hover:text-primary-foreground" asChild>
                 <a href="https://github.com/JesseQin123" target="_blank" rel="noopener noreferrer">
-                  <Github className="h-4 w-4" /> GitHub
+                  <Github className="h-4 w-4" /> View GitHub Projects <ArrowUpRight className="h-4 w-4" />
                 </a>
               </Button>
             </div>

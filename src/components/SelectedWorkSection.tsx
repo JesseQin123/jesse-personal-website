@@ -6,7 +6,7 @@ const work = [
   {
     featured: true,
     icon: Building2,
-    eyebrow: "Current work · Enterprise AI",
+    eyebrow: "Senior Member of Technical Staff · Enterprise AI",
     title: "Kamiwaza AI",
     question: "How can organizations deploy, govern, and scale AI where their data and workflows actually live?",
     contribution: "Enterprise AI infrastructure, product engineering, and agent-ready systems designed around real organizational constraints.",

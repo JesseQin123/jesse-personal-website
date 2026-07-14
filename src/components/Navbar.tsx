@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowUpRight, Menu, X } from "lucide-react";
+import { Activity, ArrowUpRight, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { primaryNavigation } from "@/data/site-navigation";
 import logo from "@/assets/jq_logo.png";
@@ -29,7 +29,12 @@ const Navbar = () => {
             ))}
           </div>
 
-          <div className="hidden lg:flex">
+          <div className="hidden items-center gap-2 lg:flex">
+            <Button variant="outline" size="default" asChild>
+              <Link to="/ai-usage">
+                <Activity className="h-4 w-4 text-primary" /> AI Usage
+              </Link>
+            </Button>
             <Button variant="hero" size="default" asChild>
               <a href="mailto:jesseqin.office@gmail.com">
                 Start a conversation <ArrowUpRight className="h-4 w-4" />
@@ -62,6 +67,11 @@ const Navbar = () => {
                 </a>
               ))}
               <div className="mt-3 px-4">
+                <Button variant="outline" size="lg" className="mb-3 w-full" asChild>
+                  <Link to="/ai-usage" onClick={() => setMobileMenuOpen(false)}>
+                    <Activity className="h-4 w-4 text-primary" /> AI Usage
+                  </Link>
+                </Button>
                 <Button variant="hero" size="lg" className="w-full" asChild>
                   <a href="mailto:jesseqin.office@gmail.com">
                     Start a conversation <ArrowUpRight className="h-4 w-4" />

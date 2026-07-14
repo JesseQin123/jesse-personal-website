@@ -4,7 +4,7 @@ const signals = [
   {
     icon: Building2,
     label: "Enterprise AI",
-    value: "Infrastructure and product work at Kamiwaza",
+    value: "Senior Member of Technical Staff at Kamiwaza",
   },
   {
     icon: Network,
