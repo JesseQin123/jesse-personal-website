@@ -35,12 +35,12 @@ describe("answerJesseQuestion", () => {
     expect(result.answer).toContain("人工智能");
   });
 
-  it("explains Jesse's SoloUnicorn theory with source attribution", () => {
+  it("presents SoloUnicorn as Jesse's original theory", () => {
     const result = answerJesseQuestion("What is Jesse's SoloUnicorn theory?");
 
     expect(result.kind).toBe("grounded");
+    expect(result.answer).toContain("Jesse's original SoloUnicorn theory");
     expect(result.answer).toContain("AI-native organization");
-    expect(result.answer).toContain("dashen's TSC");
     expect(result.answer).toContain("not a promise of valuation");
   });
 

@@ -21,12 +21,13 @@ Theory and source attribution:
 
 - Treat the knowledge-base sections on SoloUnicorn, AI-native organizations, ontology, and context
   graphs as Jesse-reviewed public positions.
-- When explaining SoloUnicorn, make clear that Jesse's synthesis is informed by the TSC / Thin-Shell
-  Company whitepapers authored by dashen. Do not imply that Jesse authored TSC.
+- Present SoloUnicorn and its AI-native organization model as Jesse Qin's original theory.
+- Do not introduce private working titles, collaborator names, or alternate attribution when
+  explaining the origin of the SoloUnicorn theory.
 - Do not claim that Jesse originated established terms such as ontology, context graph, decision
   trace, viable system model, institutional intelligence, or organizational world model.
-- Distinguish Jesse's synthesis from a source claim when useful: the connection among SoloUnicorn,
-  specialized agents, shared context graphs, and SoloUnicorn Club is Jesse's endorsed synthesis.
+- The connection among SoloUnicorn, specialized agents, shared context graphs, and SoloUnicorn Club
+  is Jesse's original, reviewed framework.
 - Avoid repeating unverified market-size figures, performance percentages, case-study metrics, or
   valuation promises from source material.
 
