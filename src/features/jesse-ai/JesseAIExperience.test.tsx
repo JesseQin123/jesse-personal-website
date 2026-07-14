@@ -1,10 +1,41 @@
 // @vitest-environment jsdom
 
-import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { MemoryRouter } from "react-router-dom";
 
 import JesseAIExperience from "./JesseAIExperience";
+
+const elevenLabs = vi.hoisted(() => ({
+  endSession: vi.fn(),
+  sendUserMessage: vi.fn(),
+  startSession: vi.fn(),
+}));
+
+vi.mock("@elevenlabs/react", () => ({
+  ConversationProvider: ({ children }: { children: React.ReactNode }) => children,
+  useConversation: () => ({
+    ...elevenLabs,
+    isListening: false,
+    isSpeaking: false,
+    status: "disconnected",
+  }),
+}));
+
+beforeEach(() => {
+  vi.clearAllMocks();
+  vi.stubGlobal(
+    "fetch",
+    vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ token: "private-conversation-token" }),
+    }),
+  );
+  Object.defineProperty(navigator, "mediaDevices", {
+    configurable: true,
+    value: { getUserMedia: vi.fn().mockResolvedValue({}) },
+  });
+});
 
 afterEach(() => {
   cleanup();
@@ -31,24 +62,20 @@ describe("JesseAIExperience", () => {
     expect(await screen.findByText(/Rutgers University/i)).toBeTruthy();
   });
 
-  it("explains the local template voice before microphone use", () => {
+  it("starts a private ElevenLabs voice conversation", async () => {
     renderExperience();
 
     fireEvent.click(screen.getByRole("button", { name: /talk to jesse ai/i }));
     fireEvent.click(screen.getByRole("button", { name: /^voice$/i }));
+    fireEvent.click(screen.getByRole("button", { name: /start voice conversation/i }));
 
-    expect(screen.getByText(/browser voice preview/i)).toBeTruthy();
-    expect(screen.getByRole("button", { name: /start listening/i })).toBeTruthy();
-  });
-
-  it("lets a visitor choose Chinese voice recognition", () => {
-    renderExperience();
-
-    fireEvent.click(screen.getByRole("button", { name: /talk to jesse ai/i }));
-    fireEvent.click(screen.getByRole("button", { name: /^voice$/i }));
-    fireEvent.click(screen.getByRole("button", { name: /use chinese voice input/i }));
-
-    expect(screen.getByRole("button", { name: /use chinese voice input/i }).getAttribute("aria-pressed")).toBe("true");
+    await waitFor(() => {
+      expect(fetch).toHaveBeenCalledWith("/api/elevenlabs-token", { method: "POST" });
+      expect(elevenLabs.startSession).toHaveBeenCalledWith({
+        connectionType: "webrtc",
+        conversationToken: "private-conversation-token",
+      });
+    });
   });
 
   it("cancels a pending answer when the conversation is reset", () => {
