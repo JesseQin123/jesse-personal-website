@@ -74,6 +74,32 @@ describe("JesseAIExperience", () => {
       expect(elevenLabs.startSession).toHaveBeenCalledWith({
         connectionType: "webrtc",
         conversationToken: "private-conversation-token",
+        overrides: {
+          agent: {
+            language: "en",
+          },
+        },
+      });
+    });
+  });
+
+  it("starts Chinese voice with the ElevenLabs Chinese language preset", async () => {
+    renderExperience();
+
+    fireEvent.click(screen.getByRole("button", { name: /talk to jesse ai/i }));
+    fireEvent.click(screen.getByRole("button", { name: /^voice$/i }));
+    fireEvent.click(screen.getByRole("button", { name: /use chinese voice/i }));
+    fireEvent.click(screen.getByRole("button", { name: /start voice conversation/i }));
+
+    await waitFor(() => {
+      expect(elevenLabs.startSession).toHaveBeenCalledWith({
+        connectionType: "webrtc",
+        conversationToken: "private-conversation-token",
+        overrides: {
+          agent: {
+            language: "zh",
+          },
+        },
       });
     });
   });
