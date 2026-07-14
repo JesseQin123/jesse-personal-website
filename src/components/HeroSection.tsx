@@ -7,7 +7,7 @@ import { useHeroAnimation } from "@/animations";
 import { AnimatedCircuitLines, NeuralNetwork } from "@/components/animations";
 
 const proofSignals = [
-  "Enterprise AI at Kamiwaza",
+  "Senior Member of Technical Staff at Kamiwaza",
   "PhD in Computer Engineering",
   "NYU Stern MSBAi",
   "New York City",

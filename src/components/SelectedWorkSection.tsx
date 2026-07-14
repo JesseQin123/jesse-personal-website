@@ -6,10 +6,10 @@ const work = [
   {
     featured: true,
     icon: Building2,
-    eyebrow: "Current work · Enterprise AI",
+    eyebrow: "Current work · Senior Member of Technical Staff",
     title: "Kamiwaza AI",
     question: "How can organizations deploy, govern, and scale AI where their data and workflows actually live?",
-    contribution: "Enterprise AI infrastructure, product engineering, and agent-ready systems designed around real organizational constraints.",
+    contribution: "Senior Member of Technical Staff working on enterprise AI infrastructure, product engineering, and agent-ready systems designed around real organizational constraints.",
     proof: ["Enterprise infrastructure", "Governed AI", "Shipped systems"],
     href: "https://www.kamiwaza.ai/",
     cta: "Visit Kamiwaza",
