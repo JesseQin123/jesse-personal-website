@@ -62,10 +62,12 @@ Before publishing the production agent:
 1. Create a private ElevenLabs Agent.
 2. Add the public Jesse knowledge documents to its knowledge base.
 3. Select a stock voice for initial testing, then replace it with Jesse's verified clone.
-4. Configure short spoken answers, bilingual behavior, interruption handling, and the same privacy
+4. Add the supported language presets and allow the Agent `language` conversation-config override;
+   keep prompt, knowledge-base, and voice overrides disabled for browser clients.
+5. Configure short spoken answers, bilingual behavior, interruption handling, and the same privacy
    boundaries as the local preview.
-5. Add rate limiting at the deployment edge and set transcript/audio retention explicitly.
-6. Run adversarial tests for private-data requests, prompt injection, invented credentials, and
+6. Add rate limiting at the deployment edge and set transcript/audio retention explicitly.
+7. Run adversarial tests for private-data requests, prompt injection, invented credentials, and
    attempts to make commitments on Jesse's behalf.
 
 Voice mode calls this endpoint on demand and gives the returned short-lived WebRTC token to the
