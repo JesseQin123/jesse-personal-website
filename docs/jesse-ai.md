@@ -18,8 +18,10 @@ npm run dev
 ```
 
 Open the site and select **Talk to Jesse AI** in the lower-right corner. Choose **Voice**, then
-select **Start voice conversation** and allow microphone access. The text experience works in all
-modern browsers and remains available if ElevenLabs is not configured.
+select **EN** or **中文** before **Start voice conversation**, and allow microphone access. Voice
+language is fixed for the session so ElevenLabs can use the matching TTS model; end and restart the
+session to switch languages. The text experience works in all modern browsers and remains available
+if ElevenLabs is not configured.
 
 ## Knowledge sources
 
