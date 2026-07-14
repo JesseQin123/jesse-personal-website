@@ -6,6 +6,7 @@ The public dashboard lives at `/ai-usage`. It keeps one Vercel Blob snapshot per
 
 - Every computer must have a unique `machine-id` such as `jesse-mbp` or `jesse-desktop`.
 - The collector creates a permanent random source identity in `~/.config/jesse-ai-usage/<machine-id>.source-id`. The server binds that identity to the machine ID. A second computer that accidentally reuses the same machine ID receives `409` instead of overwriting the first source.
+- API-managed snapshots live under the versioned `ai-usage/v2/machines/` namespace. Legacy jobs that write Blob directly target the old namespace and cannot overwrite or remove API-managed machine snapshots.
 - Synchronization is a sparse daily upsert. The collector compares local ccusage days with the stored source snapshot, then sends today, yesterday, missing dates, and dates whose values changed.
 - The server merges by date and preserves all unsent history. Retries are idempotent, and Blob ETags prevent concurrent runs from losing each other's updates.
 - Historical changes larger than 3x are blocked unless the operator explicitly passes `--allow-historical-rewrite` after inspecting the data. That flag performs a deliberate full-source replacement so stale dates and incorrectly confirmed-zero history are removed as part of the repair.

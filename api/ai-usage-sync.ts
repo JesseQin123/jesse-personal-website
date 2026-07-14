@@ -1,6 +1,7 @@
 import { timingSafeEqual } from "node:crypto";
 import { BlobNotFoundError, BlobPreconditionFailedError, get, head, put } from "@vercel/blob";
 import type { ApiRequest, ApiResponse } from "./_types.js";
+import { mergeUsageDays, usageSnapshotPath } from "./_ai-usage-storage.js";
 
 type UsageTotals = {
   inputTokens: number;
@@ -97,7 +98,7 @@ async function loadSnapshot(pathname: string): Promise<{ snapshot?: StoredSnapsh
     if (error instanceof BlobNotFoundError) return {};
     throw error;
   }
-  const result = await get(pathname, { access: "public", useCache: false });
+  const result = await get(pathname, { access: "private", useCache: false });
   if (!result) throw new Error("Blob disappeared after metadata lookup");
   if (result.statusCode !== 200) throw new Error(`Unable to read existing snapshot (${result.statusCode})`);
   const snapshot = await new Response(result.stream).json() as StoredSnapshot;
@@ -150,7 +151,7 @@ export default async function handler(request: ApiRequest, response: ApiResponse
     return response.status(400).json({ error: `All sources must use ${canonicalTimezone}` });
   }
 
-  const pathname = `ai-usage/machines/${payload.machineId}.json`;
+  const pathname = usageSnapshotPath(payload.machineId);
   let storedSnapshot: StoredSnapshot | undefined;
   let acceptedDays = 0;
   for (let attempt = 1; attempt <= 3; attempt += 1) {
@@ -163,9 +164,7 @@ export default async function handler(request: ApiRequest, response: ApiResponse
       });
     }
 
-    const existingDays = new Map(
-      (payload.allowHistoricalRewrite ? [] : existing?.days || []).map((day) => [day.date, day]),
-    );
+    const existingDays = new Map((existing?.days || []).map((day) => [day.date, day]));
     const suspiciousDates = payload.days
       .filter((day) => {
         const previous = existingDays.get(day.date);
@@ -181,12 +180,11 @@ export default async function handler(request: ApiRequest, response: ApiResponse
     }
 
     const stalePayload = Boolean(existing?.lastSyncedAt && payload.lastSyncedAt < existing.lastSyncedAt);
-    acceptedDays = 0;
-    for (const day of payload.days) {
-      if (stalePayload && existingDays.has(day.date)) continue;
-      existingDays.set(day.date, day);
-      acceptedDays += 1;
-    }
+    const mergedDays = mergeUsageDays(existing?.days || [], payload.days, {
+      replaceAll: payload.allowHistoricalRewrite,
+      preserveExisting: stalePayload,
+    });
+    acceptedDays = mergedDays.acceptedDays;
     const snapshot: StoredSnapshot = {
       schemaVersion: 1,
       sourceInstanceId: payload.sourceInstanceId,
@@ -198,12 +196,12 @@ export default async function handler(request: ApiRequest, response: ApiResponse
       reportedThrough: stalePayload ? existing!.reportedThrough : payload.reportedThrough,
       lastSyncedAt: stalePayload ? existing!.lastSyncedAt : payload.lastSyncedAt,
       ccusageVersion: stalePayload ? existing!.ccusageVersion : payload.ccusageVersion,
-      days: [...existingDays.values()].sort((left, right) => left.date.localeCompare(right.date)),
+      days: mergedDays.days,
     };
 
     try {
       await put(pathname, JSON.stringify(snapshot), {
-        access: "public",
+        access: "private",
         addRandomSuffix: false,
         allowOverwrite: Boolean(etag),
         cacheControlMaxAge: 60,
