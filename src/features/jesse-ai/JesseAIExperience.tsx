@@ -1,15 +1,11 @@
 import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import {
   ArrowUp,
-  AudioLines,
-  Bot,
   ChevronRight,
   ExternalLink,
   MessageCircle,
   Mic,
-  MicOff,
   RotateCcw,
-  Sparkles,
   Square,
   Volume2,
   VolumeX,
@@ -21,13 +17,15 @@ import profileImage from "@/assets/jesse-profile.jpg";
 import { cn } from "@/lib/utils";
 
 import { answerJesseQuestion, STARTER_QUESTIONS } from "./knowledge";
-import { useBrowserVoice } from "./useBrowserVoice";
+import JesseAvatarStage, { type JesseAvatarActivity } from "./JesseAvatarStage";
+import { useBrowserVoice, type VoiceLocale } from "./useBrowserVoice";
 
 type ChatMessage = {
   id: number;
   role: "assistant" | "user";
   text: string;
   topic?: string;
+  followUps?: string[];
 };
 
 const INITIAL_MESSAGE: ChatMessage = {
@@ -37,7 +35,7 @@ const INITIAL_MESSAGE: ChatMessage = {
   topic: "AI disclosure",
 };
 
-const languageFor = (text: string) => (/[㐀-鿿]/.test(text) ? "zh-CN" : "en-US");
+const languageFor = (text: string): VoiceLocale => (/[㐀-鿿]/.test(text) ? "zh-CN" : "en-US");
 
 const JesseAIExperience = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -46,13 +44,12 @@ const JesseAIExperience = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([INITIAL_MESSAGE]);
   const [isThinking, setIsThinking] = useState(false);
   const [autoSpeak, setAutoSpeak] = useState(true);
-  const [voiceLanguage, setVoiceLanguage] = useState<"en-US" | "zh-CN">("en-US");
+  const [voiceLanguage, setVoiceLanguage] = useState<VoiceLocale>("en-US");
   const messageId = useRef(1);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const responseTimerRef = useRef<number>();
   const voice = useBrowserVoice();
-  const stopListening = voice.stopListening;
-  const stopSpeaking = voice.stopSpeaking;
+  const stopAll = voice.stopAll;
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView?.({ behavior: "smooth" });
@@ -61,15 +58,22 @@ const JesseAIExperience = () => {
   useEffect(
     () => () => {
       if (responseTimerRef.current) window.clearTimeout(responseTimerRef.current);
-      stopListening();
-      stopSpeaking();
+      stopAll();
     },
-    [stopListening, stopSpeaking],
+    [stopAll],
   );
 
+  const cancelPendingAnswer = () => {
+    if (responseTimerRef.current) {
+      window.clearTimeout(responseTimerRef.current);
+      responseTimerRef.current = undefined;
+    }
+    setIsThinking(false);
+  };
+
   const close = () => {
-    voice.stopListening();
-    voice.stopSpeaking();
+    cancelPendingAnswer();
+    voice.stopAll();
     setIsOpen(false);
   };
 
@@ -86,6 +90,7 @@ const JesseAIExperience = () => {
     setIsThinking(true);
 
     responseTimerRef.current = window.setTimeout(() => {
+      responseTimerRef.current = undefined;
       const result = answerJesseQuestion(question);
       setMessages((current) => [
         ...current,
@@ -94,6 +99,7 @@ const JesseAIExperience = () => {
           role: "assistant",
           text: result.answer,
           topic: result.topic,
+          followUps: result.followUps,
         },
       ]);
       setIsThinking(false);
@@ -122,14 +128,19 @@ const JesseAIExperience = () => {
   };
 
   const reset = () => {
-    voice.stopListening();
-    voice.stopSpeaking();
+    cancelPendingAnswer();
+    voice.stopAll();
     setMessages([INITIAL_MESSAGE]);
     setInput("");
-    setIsThinking(false);
   };
 
-  const activity = voice.isListening ? "listening" : voice.isSpeaking ? "speaking" : isThinking ? "thinking" : "idle";
+  const activity: JesseAvatarActivity = voice.isListening
+    ? "listening"
+    : voice.isSpeaking
+      ? "speaking"
+      : isThinking
+        ? "thinking"
+        : "idle";
 
   return (
     <div className="fixed bottom-0 right-0 z-[80] pointer-events-none">
@@ -184,31 +195,7 @@ const JesseAIExperience = () => {
             </div>
           </header>
 
-          <div className="relative h-44 shrink-0 overflow-hidden bg-neutral-950">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(249,115,22,0.34),transparent_52%)]" />
-            <div className={cn("absolute left-1/2 top-1/2 h-28 w-28 -translate-x-1/2 -translate-y-1/2 rounded-full border border-primary/30 transition-all duration-500", activity !== "idle" && "scale-125 border-primary/60 opacity-80")} />
-            <div className={cn("absolute left-1/2 top-1/2 h-36 w-36 -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-white/10 transition-all duration-700", activity !== "idle" && "animate-spin [animation-duration:8s]")} />
-            <div className={cn("absolute left-1/2 top-1/2 h-24 w-24 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full ring-4 ring-white/10 shadow-2xl shadow-primary/30 transition", voice.isSpeaking && "scale-105 ring-primary/60")}>
-              <img src={profileImage} alt="Jesse AI portrait" className="h-full w-full object-cover" />
-              <div className="absolute inset-x-0 bottom-0 h-7 bg-gradient-to-t from-neutral-950/70 to-transparent" />
-            </div>
-
-            <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 items-end gap-1" aria-hidden="true">
-              {[8, 14, 22, 12, 26, 18, 10].map((height, index) => (
-                <span
-                  key={index}
-                  className={cn("w-1 rounded-full bg-primary/55 transition-all", activity !== "idle" && "animate-pulse")}
-                  style={{ height: activity === "idle" ? 3 : height, animationDelay: `${index * 90}ms` }}
-                />
-              ))}
-            </div>
-            <div className="absolute bottom-3 right-4 flex items-center gap-1.5 rounded-full bg-white/10 px-2 py-1 text-[10px] font-medium text-white/70 backdrop-blur">
-              {activity === "listening" && <><Mic className="h-3 w-3 text-emerald-300" /> Listening</>}
-              {activity === "speaking" && <><AudioLines className="h-3 w-3 text-orange-300" /> Speaking</>}
-              {activity === "thinking" && <><Sparkles className="h-3 w-3 text-orange-300" /> Thinking</>}
-              {activity === "idle" && <><Bot className="h-3 w-3 text-emerald-300" /> Ready</>}
-            </div>
-          </div>
+          <JesseAvatarStage activity={activity} />
 
           <div className="flex shrink-0 items-center justify-between border-b bg-muted/35 px-3 py-2">
             <div className="flex rounded-full bg-background p-1 shadow-sm ring-1 ring-border">
@@ -278,6 +265,20 @@ const JesseAIExperience = () => {
                       <p className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-primary">{message.topic}</p>
                     )}
                     <p>{message.text}</p>
+                    {message.followUps && (
+                      <div className="mt-3 flex flex-wrap gap-1.5">
+                        {message.followUps.map((followUp) => (
+                          <button
+                            key={followUp}
+                            type="button"
+                            onClick={() => ask(followUp)}
+                            className="rounded-full border border-primary/20 bg-orange-50 px-2.5 py-1 text-left text-[11px] font-medium text-orange-950 transition hover:border-primary/50"
+                          >
+                            {followUp}
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}

@@ -117,8 +117,8 @@ const KNOWLEDGE: KnowledgeEntry[] = [
     ],
     topic: { en: "Projects", zh: "项目" },
     answer: {
-      en: "Jesse builds practical AI-native products and public experiments. His published work includes Context Graph, a marketplace concept for enterprise context systems; Solo Unicorn Club, an NYC community for AI-powered one-person companies; Eat Well, an AI recipe app; Content Rewriter; Workout Timer; a community church PWA; and Life in AGI.",
-      zh: "Jesse 持续构建实用的 AI-native 产品和公开实验，包括面向企业上下文系统的 Context Graph、「一人独角兽」纽约社区、AI 食谱应用 Eat Well、Content Rewriter、Workout Timer、教会 PWA，以及探讨 AGI 时代生活的 Life in AGI。",
+      en: "Jesse's selected work includes enterprise AI product engineering at Kamiwaza; Context Graph, a public technical thesis and reference model for agent-ready organizational context; Solo Unicorn Toolbox, a bilingual open-source technical radar; Solo Unicorn Club, a New York founder community; and Life in AGI, an editorial research project about work, learning, creativity, and human agency.",
+      zh: "Jesse 的代表性工作包括 Kamiwaza 的企业 AI 产品工程；面向 Agent 组织上下文的公开技术论述与参考模型 Context Graph；双语开源技术雷达「一人独角兽工具箱」；纽约创业者社区「一人独角兽俱乐部」；以及研究工作、学习、创造力与人类自主性的 Life in AGI。",
     },
     followUps: {
       en: ["What is Context Graph?", "What is Solo Unicorn Club?"],

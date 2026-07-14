@@ -1,5 +1,7 @@
 import { useCallback, useRef, useState } from "react";
 
+export type VoiceLocale = "en-US" | "zh-CN";
+
 type RecognitionEvent = {
   results: ArrayLike<{ 0: { transcript: string } }>;
 };
@@ -26,7 +28,7 @@ function getRecognitionConstructor(): RecognitionConstructor | undefined {
   return voiceWindow.SpeechRecognition ?? voiceWindow.webkitSpeechRecognition;
 }
 
-function chooseTemplateVoice(voices: SpeechSynthesisVoice[], language: string) {
+function chooseTemplateVoice(voices: SpeechSynthesisVoice[], language: VoiceLocale) {
   const languagePrefix = language.startsWith("zh") ? "zh" : "en";
   const matching = voices.filter((voice) => voice.lang.toLowerCase().startsWith(languagePrefix));
   const preferredNames = ["Samantha", "Ava", "Aria", "Google", "Daniel"];
@@ -37,6 +39,7 @@ function chooseTemplateVoice(voices: SpeechSynthesisVoice[], language: string) {
 
 export function useBrowserVoice() {
   const recognitionRef = useRef<RecognitionInstance | null>(null);
+  const speechRequestRef = useRef(0);
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -51,7 +54,7 @@ export function useBrowserVoice() {
   }, []);
 
   const startListening = useCallback(
-    (language: string, onResult: (transcript: string) => void) => {
+    (language: VoiceLocale, onResult: (transcript: string) => void) => {
       const Recognition = getRecognitionConstructor();
       if (!Recognition) {
         setError("Voice input is not supported in this browser. Chrome and Safari work best.");
@@ -85,28 +88,60 @@ export function useBrowserVoice() {
 
   const stopSpeaking = useCallback(() => {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+    speechRequestRef.current += 1;
     window.speechSynthesis.cancel();
     setIsSpeaking(false);
   }, []);
 
+  const stopAll = useCallback(() => {
+    stopListening();
+    stopSpeaking();
+  }, [stopListening, stopSpeaking]);
+
   const speak = useCallback(
-    (text: string, language: string) => {
+    (text: string, language: VoiceLocale) => {
       if (!canSpeak) {
         setError("Spoken replies are not supported in this browser.");
         return;
       }
 
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = language;
-      utterance.rate = language.startsWith("zh") ? 1 : 1.02;
-      utterance.pitch = 0.96;
-      const voice = chooseTemplateVoice(window.speechSynthesis.getVoices(), language);
-      if (voice) utterance.voice = voice;
-      utterance.onstart = () => setIsSpeaking(true);
-      utterance.onend = () => setIsSpeaking(false);
-      utterance.onerror = () => setIsSpeaking(false);
-      window.speechSynthesis.speak(utterance);
+      const synthesis = window.speechSynthesis;
+      const requestId = ++speechRequestRef.current;
+      synthesis.cancel();
+      setError(null);
+
+      const play = (voices: SpeechSynthesisVoice[]) => {
+        if (speechRequestRef.current !== requestId) return;
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = language;
+        utterance.rate = language === "zh-CN" ? 1 : 1.02;
+        utterance.pitch = 0.96;
+        const templateVoice = chooseTemplateVoice(voices, language);
+        if (templateVoice) utterance.voice = templateVoice;
+        utterance.onstart = () => setIsSpeaking(true);
+        utterance.onend = () => setIsSpeaking(false);
+        utterance.onerror = () => setIsSpeaking(false);
+        synthesis.speak(utterance);
+      };
+
+      const availableVoices = synthesis.getVoices();
+      if (availableVoices.length > 0) {
+        play(availableVoices);
+        return;
+      }
+
+      let hasPlayed = false;
+      const playWhenLoaded = () => {
+        if (hasPlayed) return;
+        hasPlayed = true;
+        play(synthesis.getVoices());
+      };
+      synthesis.addEventListener("voiceschanged", playWhenLoaded, { once: true });
+      window.setTimeout(() => {
+        if (hasPlayed) return;
+        synthesis.removeEventListener("voiceschanged", playWhenLoaded);
+        playWhenLoaded();
+      }, 250);
     },
     [canSpeak],
   );
@@ -119,6 +154,7 @@ export function useBrowserVoice() {
     isSpeaking,
     speak,
     startListening,
+    stopAll,
     stopListening,
     stopSpeaking,
   };
