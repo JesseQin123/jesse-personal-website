@@ -26,6 +26,8 @@ type ChatMessage = {
   followUps?: string[];
 };
 
+type VoiceLanguage = "en" | "zh";
+
 const INITIAL_MESSAGE: ChatMessage = {
   id: 0,
   role: "assistant",
@@ -39,6 +41,7 @@ const JesseAIExperienceContent = () => {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([INITIAL_MESSAGE]);
   const [isThinking, setIsThinking] = useState(false);
+  const [voiceLanguage, setVoiceLanguage] = useState<VoiceLanguage>("en");
   const [voiceError, setVoiceError] = useState<string | null>(null);
   const messageId = useRef(1);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -153,6 +156,11 @@ const JesseAIExperienceContent = () => {
       conversation.startSession({
         connectionType: "webrtc",
         conversationToken: payload.token,
+        overrides: {
+          agent: {
+            language: voiceLanguage,
+          },
+        },
       });
     } catch (error) {
       setVoiceError(error instanceof Error ? error.message : "Unable to start voice conversation.");
@@ -278,10 +286,38 @@ const JesseAIExperienceContent = () => {
           </div>
 
           {mode === "voice" && (
-            <div className="flex shrink-0 items-center gap-2 border-b border-orange-200/60 bg-orange-50 px-4 py-2 text-[11px] text-orange-950">
+            <div className="flex shrink-0 items-center gap-3 border-b border-orange-200/60 bg-orange-50 px-4 py-2 text-[11px] text-orange-950">
               <span className="min-w-0 flex-1">
-                Live bilingual voice. Your microphone starts only after you tap the button.
+                Choose a voice language before starting. Your microphone starts only after you tap the button.
               </span>
+              <div className="flex shrink-0 rounded-full bg-white/80 p-0.5 ring-1 ring-orange-200" aria-label="Voice language">
+                <button
+                  type="button"
+                  aria-label="Use English voice"
+                  aria-pressed={voiceLanguage === "en"}
+                  disabled={conversation.status !== "disconnected"}
+                  onClick={() => setVoiceLanguage("en")}
+                  className={cn(
+                    "rounded-full px-2 py-1 font-semibold transition disabled:cursor-not-allowed disabled:opacity-60",
+                    voiceLanguage === "en" ? "bg-neutral-950 text-white" : "text-orange-950 hover:bg-orange-100",
+                  )}
+                >
+                  EN
+                </button>
+                <button
+                  type="button"
+                  aria-label="Use Chinese voice"
+                  aria-pressed={voiceLanguage === "zh"}
+                  disabled={conversation.status !== "disconnected"}
+                  onClick={() => setVoiceLanguage("zh")}
+                  className={cn(
+                    "rounded-full px-2 py-1 font-semibold transition disabled:cursor-not-allowed disabled:opacity-60",
+                    voiceLanguage === "zh" ? "bg-neutral-950 text-white" : "text-orange-950 hover:bg-orange-100",
+                  )}
+                >
+                  中文
+                </button>
+              </div>
             </div>
           )}
 
