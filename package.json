@@ -11,7 +11,7 @@
     "preview": "vite preview",
     "sync:ai-usage": "node scripts/sync-ai-usage.mjs",
     "test": "vitest run",
-    "test:ai-usage": "node --experimental-strip-types --test api/_ai-usage-storage.node-test.mjs",
+    "test:ai-usage": "node --experimental-strip-types --test api/_ai-usage-storage.node-test.mjs scripts/ai-usage-sync-helpers.node-test.mjs",
     "test:watch": "vitest"
   },
   "dependencies": {

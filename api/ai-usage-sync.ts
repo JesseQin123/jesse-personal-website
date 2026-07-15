@@ -5,6 +5,7 @@ import { mergeUsageDays, usageSnapshotPath } from "./_ai-usage-storage.js";
 import {
   incrementalUsagePayloadSchema,
   machineUsageSnapshotSchema,
+  type IncrementalUsagePayload,
   type StoredMachineUsageSnapshot,
 } from "./ai-usage-schema.js";
 
@@ -88,7 +89,7 @@ export default async function handler(request: ApiRequest, response: ApiResponse
 
   const parsedPayload = incrementalUsagePayloadSchema.safeParse(payload);
   if (!parsedPayload.success) return response.status(400).json({ error: "Invalid incremental usage payload" });
-  const usagePayload = parsedPayload.data;
+  const usagePayload = parsedPayload.data as IncrementalUsagePayload;
 
   const canonicalTimezone = process.env.AI_USAGE_TIMEZONE || "America/New_York";
   if (usagePayload.timezone !== canonicalTimezone) {

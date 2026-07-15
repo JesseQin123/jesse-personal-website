@@ -14,7 +14,7 @@ vi.mock("@vercel/blob", () => ({
   put: blobMocks.put,
 }));
 
-import handler from "./ai-usage-sync";
+import handler from "./ai-usage-sync.js";
 
 const totals = (totalTokens = 10_000_000) => ({
   inputTokens: totalTokens,

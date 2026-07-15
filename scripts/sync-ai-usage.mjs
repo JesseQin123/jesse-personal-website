@@ -5,6 +5,7 @@ import { randomUUID } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, resolve } from "node:path";
+import { sameUsageDay } from "./ai-usage-sync-helpers.mjs";
 
 const CCUSAGE_VERSION = "20.0.17";
 const dryRun = process.argv.includes("--dry-run");
@@ -151,10 +152,6 @@ async function loadRemoteSnapshot(endpoint, machineId, secret) {
   }
 }
 
-function sameDay(left, right) {
-  return Boolean(left && right && JSON.stringify(left) === JSON.stringify(right));
-}
-
 const configPath = argument("config") || resolve(homedir(), ".config", "jesse-ai-usage.json");
 const fileConfig = readJson(configPath);
 const localEnv = readDotEnv(resolve(process.cwd(), ".env.local"));
@@ -220,7 +217,7 @@ const remoteDays = new Map((remoteSnapshot?.days || []).map((day) => [day.date, 
 const alwaysRefreshFrom = shiftDate(today, -1);
 const changedDays = allowHistoricalRewrite
   ? days
-  : days.filter((day) => day.date >= alwaysRefreshFrom || !sameDay(remoteDays.get(day.date), day));
+  : days.filter((day) => day.date >= alwaysRefreshFrom || !sameUsageDay(remoteDays.get(day.date), day));
 
 const payload = {
   schemaVersion: 2,

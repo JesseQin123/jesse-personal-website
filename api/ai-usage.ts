@@ -1,6 +1,6 @@
 import { get, list } from "@vercel/blob";
 import type { ApiRequest, ApiResponse } from "./_types.js";
-import { aggregateSnapshots, machineUsageSnapshotSchema } from "./ai-usage-schema.js";
+import { aggregateSnapshots, machineUsageSnapshotSchema, type StoredMachineUsageSnapshot } from "./ai-usage-schema.js";
 import { AI_USAGE_SNAPSHOT_PREFIX, latestSnapshotsByMachine } from "./_ai-usage-storage.js";
 
 type ListedBlob = Awaited<ReturnType<typeof list>>["blobs"][number];
@@ -26,7 +26,7 @@ async function readSnapshot(blob: ListedBlob) {
   }
 
   const parsed = machineUsageSnapshotSchema.safeParse(value);
-  return parsed.success ? parsed.data : null;
+  return parsed.success ? parsed.data as StoredMachineUsageSnapshot : null;
 }
 
 export default async function handler(request: ApiRequest, response: ApiResponse) {
