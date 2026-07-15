@@ -2,92 +2,19 @@ import { timingSafeEqual } from "node:crypto";
 import { BlobNotFoundError, BlobPreconditionFailedError, get, head, put } from "@vercel/blob";
 import type { ApiRequest, ApiResponse } from "./_types.js";
 import { mergeUsageDays, usageSnapshotPath } from "./_ai-usage-storage.js";
+import {
+  incrementalUsagePayloadSchema,
+  machineUsageSnapshotSchema,
+  type StoredMachineUsageSnapshot,
+} from "./ai-usage-schema.js";
 
-type UsageTotals = {
-  inputTokens: number;
-  outputTokens: number;
-  cacheCreationTokens: number;
-  cacheReadTokens: number;
-  totalTokens: number;
-  totalCost: number;
-};
-
-type UsageDay = {
-  date: string;
-  status: "finalized" | "reported_zero" | "provisional";
-  totals: UsageTotals;
-  agents: Array<UsageTotals & { agent: string; modelsUsed: string[] }>;
-};
-
-type StoredSnapshot = {
-  schemaVersion: 1;
-  sourceInstanceId?: string;
-  machineId: string;
-  machineLabel: string;
-  timezone: string;
-  trackingStartedOn: string;
-  confirmZeroFrom: string;
-  reportedThrough: string;
-  lastSyncedAt: string;
-  ccusageVersion: string;
-  days: UsageDay[];
-};
-
-type UsagePayload = Omit<StoredSnapshot, "schemaVersion" | "days"> & {
-  schemaVersion: 2;
-  sourceInstanceId: string;
-  allowHistoricalRewrite?: boolean;
-  days: UsageDay[];
-};
-
-const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
-const MACHINE_PATTERN = /^[a-z0-9][a-z0-9-]{1,62}[a-z0-9]$/;
-const SOURCE_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-const TOTAL_KEYS: Array<keyof UsageTotals> = ["inputTokens", "outputTokens", "cacheCreationTokens", "cacheReadTokens", "totalTokens", "totalCost"];
+type StoredSnapshot = StoredMachineUsageSnapshot & { sourceInstanceId?: string };
+type UsageDay = StoredMachineUsageSnapshot["days"][number];
 
 function secureEqual(received: string, expected: string) {
   const left = Buffer.from(received);
   const right = Buffer.from(expected);
   return left.length === right.length && timingSafeEqual(left, right);
-}
-
-function validTotals(value: unknown): value is UsageTotals {
-  if (!value || typeof value !== "object") return false;
-  const totals = value as Partial<UsageTotals>;
-  return TOTAL_KEYS.every((key) => typeof totals[key] === "number" && Number.isFinite(totals[key]) && totals[key]! >= 0);
-}
-
-function validDay(value: unknown): value is UsageDay {
-  if (!value || typeof value !== "object") return false;
-  const day = value as Partial<UsageDay>;
-  return Boolean(
-    typeof day.date === "string" && DATE_PATTERN.test(day.date) &&
-      ["finalized", "reported_zero", "provisional"].includes(day.status || "") &&
-      validTotals(day.totals) &&
-      Array.isArray(day.agents) && day.agents.every((agent) =>
-        agent && typeof agent.agent === "string" && Array.isArray(agent.modelsUsed) && agent.modelsUsed.every((model) => typeof model === "string") && validTotals(agent),
-      )
-  );
-}
-
-function validPayload(value: unknown): value is UsagePayload {
-  if (!value || typeof value !== "object") return false;
-  const payload = value as Partial<UsagePayload>;
-  const structurallyValid = Boolean(
-    payload.schemaVersion === 2 &&
-      typeof payload.sourceInstanceId === "string" && SOURCE_PATTERN.test(payload.sourceInstanceId) &&
-      typeof payload.machineId === "string" && MACHINE_PATTERN.test(payload.machineId) &&
-      typeof payload.machineLabel === "string" && payload.machineLabel.length > 0 && payload.machineLabel.length <= 100 &&
-      typeof payload.timezone === "string" &&
-      typeof payload.trackingStartedOn === "string" && DATE_PATTERN.test(payload.trackingStartedOn) &&
-      typeof payload.confirmZeroFrom === "string" && DATE_PATTERN.test(payload.confirmZeroFrom) &&
-      typeof payload.reportedThrough === "string" && DATE_PATTERN.test(payload.reportedThrough) &&
-      typeof payload.lastSyncedAt === "string" && !Number.isNaN(Date.parse(payload.lastSyncedAt)) &&
-      typeof payload.ccusageVersion === "string" &&
-      Array.isArray(payload.days) && payload.days.length <= 5000 && payload.days.every(validDay)
-  );
-  if (!structurallyValid || !payload.days) return false;
-  return new Set(payload.days.map((day) => day.date)).size === payload.days.length;
 }
 
 async function loadSnapshot(pathname: string): Promise<{ snapshot?: StoredSnapshot; etag?: string }> {
@@ -115,18 +42,23 @@ function isSuspiciousHistoricalRewrite(previous: UsageDay, next: UsageDay, repor
   return ratio > 3 || ratio < 1 / 3;
 }
 export default async function handler(request: ApiRequest, response: ApiResponse) {
-  if (request.method !== "POST") {
-    response.setHeader("Allow", "POST");
+  if (request.method !== "GET" && request.method !== "POST") {
+    response.setHeader("Allow", "GET, POST");
     return response.status(405).json({ error: "Method not allowed" });
   }
 
   let payload: unknown;
-  try {
-    payload = typeof request.body === "string" ? JSON.parse(request.body) : request.body;
-  } catch {
-    return response.status(400).json({ error: "Request body must be valid JSON" });
+  if (request.method === "POST") {
+    try {
+      payload = typeof request.body === "string" ? JSON.parse(request.body) : request.body;
+    } catch {
+      return response.status(400).json({ error: "Request body must be valid JSON" });
+    }
   }
-  const claimedMachineId = payload && typeof payload === "object" && "machineId" in payload ? String(payload.machineId) : "";
+  const queryMachineId = Array.isArray(request.query?.machine) ? request.query.machine[0] : request.query?.machine;
+  const claimedMachineId = request.method === "GET"
+    ? queryMachineId || ""
+    : payload && typeof payload === "object" && "machineId" in payload ? String(payload.machineId) : "";
   let sourceSecrets: Record<string, string> = {};
   try {
     sourceSecrets = process.env.AI_USAGE_SOURCE_SECRETS ? JSON.parse(process.env.AI_USAGE_SOURCE_SECRETS) : {};
@@ -140,38 +72,50 @@ export default async function handler(request: ApiRequest, response: ApiResponse
     return response.status(401).json({ error: "Invalid sync secret" });
   }
 
-  if (!validPayload(payload)) return response.status(400).json({ error: "Invalid incremental usage payload" });
-
   const allowedMachines = process.env.AI_USAGE_MACHINE_IDS?.split(",").map((id) => id.trim()).filter(Boolean);
-  if (allowedMachines?.length && !allowedMachines.includes(payload.machineId)) {
+  if (allowedMachines?.length && !allowedMachines.includes(claimedMachineId)) {
     return response.status(403).json({ error: "Machine is not allowed" });
   }
+
+  if (request.method === "GET") {
+    if (!machineUsageSnapshotSchema.shape.machineId.safeParse(claimedMachineId).success) {
+      return response.status(400).json({ error: "Invalid machine ID" });
+    }
+    const { snapshot } = await loadSnapshot(usageSnapshotPath(claimedMachineId));
+    if (!snapshot) return response.status(404).json({ error: "Machine snapshot not found" });
+    return response.status(200).json(snapshot);
+  }
+
+  const parsedPayload = incrementalUsagePayloadSchema.safeParse(payload);
+  if (!parsedPayload.success) return response.status(400).json({ error: "Invalid incremental usage payload" });
+  const usagePayload = parsedPayload.data;
+
   const canonicalTimezone = process.env.AI_USAGE_TIMEZONE || "America/New_York";
-  if (payload.timezone !== canonicalTimezone) {
+  if (usagePayload.timezone !== canonicalTimezone) {
     return response.status(400).json({ error: `All sources must use ${canonicalTimezone}` });
   }
 
-  const pathname = usageSnapshotPath(payload.machineId);
+  const pathname = usageSnapshotPath(usagePayload.machineId);
   let storedSnapshot: StoredSnapshot | undefined;
   let acceptedDays = 0;
   for (let attempt = 1; attempt <= 3; attempt += 1) {
     const { snapshot: existing, etag } = await loadSnapshot(pathname);
-    if (existing?.sourceInstanceId && existing.sourceInstanceId !== payload.sourceInstanceId) {
+    if (existing?.sourceInstanceId && existing.sourceInstanceId !== usagePayload.sourceInstanceId) {
       return response.status(409).json({
         error: "Machine ID is already claimed by another source",
-        machineId: payload.machineId,
+        machineId: usagePayload.machineId,
         action: "Choose a unique machineId for this computer.",
       });
     }
 
     const existingDays = new Map((existing?.days || []).map((day) => [day.date, day]));
-    const suspiciousDates = payload.days
+    const suspiciousDates = usagePayload.days
       .filter((day) => {
         const previous = existingDays.get(day.date);
-        return previous && isSuspiciousHistoricalRewrite(previous, day, payload.reportedThrough);
+        return previous && isSuspiciousHistoricalRewrite(previous, day, usagePayload.reportedThrough);
       })
       .map((day) => day.date);
-    if (suspiciousDates.length && !payload.allowHistoricalRewrite) {
+    if (suspiciousDates.length && usagePayload.allowHistoricalRewrite !== true) {
       return response.status(409).json({
         error: "Suspicious historical rewrite blocked",
         dates: suspiciousDates,
@@ -179,23 +123,30 @@ export default async function handler(request: ApiRequest, response: ApiResponse
       });
     }
 
-    const stalePayload = Boolean(existing?.lastSyncedAt && payload.lastSyncedAt < existing.lastSyncedAt);
-    const mergedDays = mergeUsageDays(existing?.days || [], payload.days, {
-      replaceAll: payload.allowHistoricalRewrite,
+    const stalePayload = Boolean(existing?.lastSyncedAt && Date.parse(usagePayload.lastSyncedAt) < Date.parse(existing.lastSyncedAt));
+    if (stalePayload && usagePayload.allowHistoricalRewrite === true) {
+      return response.status(409).json({
+        error: "Stale historical repair blocked",
+        machineId: usagePayload.machineId,
+        action: "Rerun the repair from the current source state.",
+      });
+    }
+    const mergedDays = mergeUsageDays(existing?.days || [], usagePayload.days, {
+      replaceAll: usagePayload.allowHistoricalRewrite === true,
       preserveExisting: stalePayload,
     });
     acceptedDays = mergedDays.acceptedDays;
     const snapshot: StoredSnapshot = {
       schemaVersion: 1,
-      sourceInstanceId: payload.sourceInstanceId,
-      machineId: payload.machineId,
-      machineLabel: stalePayload ? existing!.machineLabel : payload.machineLabel,
-      timezone: stalePayload ? existing!.timezone : payload.timezone,
-      trackingStartedOn: stalePayload ? existing!.trackingStartedOn : payload.trackingStartedOn,
-      confirmZeroFrom: stalePayload ? existing!.confirmZeroFrom : payload.confirmZeroFrom,
-      reportedThrough: stalePayload ? existing!.reportedThrough : payload.reportedThrough,
-      lastSyncedAt: stalePayload ? existing!.lastSyncedAt : payload.lastSyncedAt,
-      ccusageVersion: stalePayload ? existing!.ccusageVersion : payload.ccusageVersion,
+      sourceInstanceId: usagePayload.sourceInstanceId,
+      machineId: usagePayload.machineId,
+      machineLabel: stalePayload ? existing!.machineLabel : usagePayload.machineLabel,
+      timezone: stalePayload ? existing!.timezone : usagePayload.timezone,
+      trackingStartedOn: stalePayload ? existing!.trackingStartedOn : usagePayload.trackingStartedOn,
+      confirmZeroFrom: stalePayload ? existing!.confirmZeroFrom : usagePayload.confirmZeroFrom,
+      reportedThrough: stalePayload ? existing!.reportedThrough : usagePayload.reportedThrough,
+      lastSyncedAt: stalePayload ? existing!.lastSyncedAt : usagePayload.lastSyncedAt,
+      ccusageVersion: stalePayload ? existing!.ccusageVersion : usagePayload.ccusageVersion,
       days: mergedDays.days,
     };
 
@@ -220,8 +171,8 @@ export default async function handler(request: ApiRequest, response: ApiResponse
 
   return response.status(200).json({
     ok: true,
-    machineId: payload.machineId,
-    reportedThrough: payload.reportedThrough,
+    machineId: usagePayload.machineId,
+    reportedThrough: usagePayload.reportedThrough,
     daysUpdated: acceptedDays,
     daysStored: storedSnapshot.days.length,
   });

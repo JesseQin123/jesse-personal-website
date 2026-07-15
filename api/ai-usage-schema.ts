@@ -2,6 +2,7 @@ import { z } from "zod";
 
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 const MACHINE_PATTERN = /^[a-z0-9][a-z0-9-]{1,62}[a-z0-9]$/;
+const SOURCE_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 export const usageTotalsSchema = z.object({
   inputTokens: z.number().finite().nonnegative(),
@@ -46,6 +47,14 @@ export const machineUsageSnapshotSchema = z.object({
 });
 
 export type StoredMachineUsageSnapshot = z.infer<typeof machineUsageSnapshotSchema>;
+
+export const incrementalUsagePayloadSchema = machineUsageSnapshotSchema.omit({ schemaVersion: true }).extend({
+  schemaVersion: z.literal(2),
+  sourceInstanceId: z.string().regex(SOURCE_PATTERN),
+  allowHistoricalRewrite: z.boolean().optional(),
+});
+
+export type IncrementalUsagePayload = z.infer<typeof incrementalUsagePayloadSchema>;
 
 const emptyTotals = () => ({
   inputTokens: 0,

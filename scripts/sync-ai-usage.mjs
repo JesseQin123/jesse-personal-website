@@ -135,15 +135,16 @@ async function uploadWithRetry(endpoint, secret, payload) {
   throw lastError;
 }
 
-async function loadRemoteSnapshot(endpoint, machineId) {
-  const readEndpoint = argument("read-endpoint") || endpoint.replace(/\/api\/ai-usage-sync\/?$/, "/api/ai-usage");
+async function loadRemoteSnapshot(endpoint, machineId, secret) {
+  const readEndpoint = argument("read-endpoint") || endpoint;
   try {
     const response = await fetch(`${readEndpoint}?machine=${encodeURIComponent(machineId)}&sync=${Date.now()}`, {
-      headers: { "Cache-Control": "no-cache" },
+      headers: { Authorization: `Bearer ${secret}`, "Cache-Control": "no-cache" },
     });
     if (!response.ok) throw new Error(`${response.status} ${await response.text()}`);
     const body = await response.json();
-    return Array.isArray(body.machines) ? body.machines.find((machine) => machine.machineId === machineId) : undefined;
+    if (body?.machineId === machineId) return body;
+    return Array.isArray(body?.machines) ? body.machines.find((machine) => machine.machineId === machineId) : undefined;
   } catch (error) {
     console.warn(`[ai-usage] Could not compare with the remote snapshot; uploading all locally observed dates (${error.message}).`);
     return undefined;
@@ -211,7 +212,7 @@ const days = dateRange(settings.startDate, today).flatMap((date) => {
   }];
 });
 
-const remoteSnapshot = await loadRemoteSnapshot(settings.endpoint, settings.machineId);
+const remoteSnapshot = await loadRemoteSnapshot(settings.endpoint, settings.machineId, settings.syncSecret);
 if (remoteSnapshot?.sourceInstanceId && remoteSnapshot.sourceInstanceId !== settings.sourceInstanceId) {
   fail(`machineId ${settings.machineId} belongs to a different computer. Choose a unique machineId for this source.`);
 }
