@@ -1,7 +1,14 @@
 import { get, list } from "@vercel/blob";
 import type { ApiRequest, ApiResponse } from "./_types.js";
-import { aggregateSnapshots, machineUsageSnapshotSchema, type StoredMachineUsageSnapshot } from "./ai-usage-schema.js";
-import { AI_USAGE_SNAPSHOT_PREFIX, latestSnapshotsByMachine } from "./_ai-usage-storage.js";
+import {
+  aggregateSnapshots,
+  aggregateUsageSnapshotSchema,
+  machineUsageSnapshotSchema,
+  overlayAggregateBaseline,
+  type AggregateUsageSnapshot,
+  type StoredMachineUsageSnapshot,
+} from "./ai-usage-schema.js";
+import { AI_USAGE_BASELINE_PATH, AI_USAGE_SNAPSHOT_PREFIX, latestSnapshotsByMachine } from "./_ai-usage-storage.js";
 
 type ListedBlob = Awaited<ReturnType<typeof list>>["blobs"][number];
 
@@ -29,6 +36,17 @@ async function readSnapshot(blob: ListedBlob) {
   return parsed.success ? parsed.data as StoredMachineUsageSnapshot : null;
 }
 
+async function readBaseline() {
+  try {
+    const result = await get(AI_USAGE_BASELINE_PATH, { access: "private", useCache: false });
+    if (!result?.stream) return null;
+    const parsed = aggregateUsageSnapshotSchema.safeParse(JSON.parse(await new Response(result.stream).text()));
+    return parsed.success ? parsed.data as AggregateUsageSnapshot : null;
+  } catch {
+    return null;
+  }
+}
+
 export default async function handler(request: ApiRequest, response: ApiResponse) {
   if (request.method !== "GET") {
     response.setHeader("Allow", "GET");
@@ -42,8 +60,14 @@ export default async function handler(request: ApiRequest, response: ApiResponse
       .filter((snapshot) => snapshot !== null)
       .filter((snapshot) => !allowedMachineIds?.length || allowedMachineIds.includes(snapshot.machineId)),
   );
-  const aggregate = aggregateSnapshots(snapshots);
-  const expectedSourceCount = allowedMachineIds?.length || snapshots.length || 1;
+  const baseline = await readBaseline();
+  if (!baseline) {
+    response.setHeader("Cache-Control", "no-store");
+    return response.status(503).json({ error: "Aggregate baseline unavailable" });
+  }
+  const aggregate = overlayAggregateBaseline(aggregateSnapshots(snapshots), baseline);
+  const baselineSourceCount = Math.max(0, ...baseline.days.map((day) => day.coverage));
+  const expectedSourceCount = Math.max(2, allowedMachineIds?.length || 0, snapshots.length, baselineSourceCount);
 
   response.setHeader("Cache-Control", "public, max-age=60");
   response.setHeader("CDN-Cache-Control", "public, s-maxage=60, stale-while-revalidate=120");
