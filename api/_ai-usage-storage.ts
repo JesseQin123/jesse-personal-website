@@ -1,5 +1,6 @@
 export const LEGACY_AI_USAGE_SNAPSHOT_PREFIX = "ai-usage/machines/";
 export const AI_USAGE_SNAPSHOT_PREFIX = "ai-usage/v2/machines/";
+export const AI_USAGE_BASELINE_PATH = "ai-usage/v2/baseline/aggregate.json";
 
 export function usageSnapshotPath(machineId: string) {
   return `${AI_USAGE_SNAPSHOT_PREFIX}${machineId}.json`;

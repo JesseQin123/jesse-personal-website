@@ -39,6 +39,13 @@ export type IncrementalUsagePayload = Omit<StoredMachineUsageSnapshot, "schemaVe
   allowHistoricalRewrite?: boolean;
 };
 
+export type AggregateUsageDay = MachineUsageDay & { coverage: number };
+
+export type AggregateUsageSnapshot = Omit<StoredMachineUsageSnapshot, "machineId" | "days"> & {
+  machineId: "aggregate";
+  days: AggregateUsageDay[];
+};
+
 export const usageTotalsSchema = z.object({
   inputTokens: z.number().finite().nonnegative(),
   outputTokens: z.number().finite().nonnegative(),
@@ -58,6 +65,10 @@ const machineUsageDaySchema = z.object({
   status: z.enum(["finalized", "reported_zero", "provisional"]),
   totals: usageTotalsSchema,
   agents: z.array(agentUsageSchema).max(100),
+});
+
+const aggregateUsageDaySchema = machineUsageDaySchema.extend({
+  coverage: z.number().int().nonnegative(),
 });
 
 export const machineUsageSnapshotSchema = z.object({
@@ -87,6 +98,19 @@ export const incrementalUsagePayloadSchema = machineUsageSnapshotSchema.omit({ s
   allowHistoricalRewrite: z.boolean().optional(),
 });
 
+export const aggregateUsageSnapshotSchema = machineUsageSnapshotSchema.omit({ machineId: true, days: true }).extend({
+  machineId: z.literal("aggregate"),
+  days: z.array(aggregateUsageDaySchema).max(5000).superRefine((days, context) => {
+    const dates = new Set<string>();
+    days.forEach((day, index) => {
+      if (dates.has(day.date)) {
+        context.addIssue({ code: z.ZodIssueCode.custom, message: "Duplicate usage date", path: [index, "date"] });
+      }
+      dates.add(day.date);
+    });
+  }),
+});
+
 const emptyTotals = () => ({
   inputTokens: 0,
   outputTokens: 0,
@@ -105,7 +129,7 @@ function addTotals(target: ReturnType<typeof emptyTotals>, source: ReturnType<ty
   target.totalCost += source.totalCost;
 }
 
-export function aggregateSnapshots(snapshots: StoredMachineUsageSnapshot[]) {
+export function aggregateSnapshots(snapshots: StoredMachineUsageSnapshot[]): AggregateUsageSnapshot | null {
   if (!snapshots.length) return null;
 
   const days = new Map<string, {
@@ -159,5 +183,36 @@ export function aggregateSnapshots(snapshots: StoredMachineUsageSnapshot[]) {
       totals: day.totals,
       agents: [...day.agents.entries()].map(([agent, totals]) => ({ agent, modelsUsed: [], ...totals })),
     })),
+  };
+}
+
+export function overlayAggregateBaseline(
+  live: AggregateUsageSnapshot | null,
+  baseline: AggregateUsageSnapshot | null,
+): AggregateUsageSnapshot | null {
+  if (!baseline) return live;
+  if (!live) return baseline;
+
+  const baselineCutoff = baseline.days.at(-1)?.date || baseline.reportedThrough;
+  const days = new Map(
+    baseline.days
+      .filter((day) => day.date <= baselineCutoff)
+      .map((day) => [day.date, day]),
+  );
+  for (const day of live.days) {
+    if (day.date > baselineCutoff) days.set(day.date, day);
+  }
+
+  return {
+    schemaVersion: 1,
+    machineId: "aggregate",
+    machineLabel: "Aggregated sources",
+    timezone: live.timezone,
+    trackingStartedOn: [baseline.trackingStartedOn, live.trackingStartedOn].sort()[0],
+    confirmZeroFrom: [baseline.confirmZeroFrom, live.confirmZeroFrom].sort().at(-1)!,
+    reportedThrough: [baseline.reportedThrough, live.reportedThrough].sort().at(-1)!,
+    lastSyncedAt: [baseline.lastSyncedAt, live.lastSyncedAt].sort().at(-1)!,
+    ccusageVersion: "aggregated",
+    days: [...days.values()].sort((left, right) => left.date.localeCompare(right.date)),
   };
 }
