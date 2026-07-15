@@ -1,6 +1,7 @@
 import { get, list } from "@vercel/blob";
 import type { ApiRequest, ApiResponse } from "./_types.js";
 import { aggregateSnapshots, machineUsageSnapshotSchema } from "./ai-usage-schema.js";
+import { AI_USAGE_SNAPSHOT_PREFIX, latestSnapshotsByMachine } from "./_ai-usage-storage.js";
 
 type ListedBlob = Awaited<ReturnType<typeof list>>["blobs"][number];
 
@@ -34,16 +35,18 @@ export default async function handler(request: ApiRequest, response: ApiResponse
     return response.status(405).json({ error: "Method not allowed" });
   }
 
-  const { blobs } = await list({ prefix: "ai-usage/machines/", limit: 100 });
+  const { blobs } = await list({ prefix: AI_USAGE_SNAPSHOT_PREFIX, limit: 100 });
   const allowedMachineIds = process.env.AI_USAGE_MACHINE_IDS?.split(",").map((id) => id.trim()).filter(Boolean);
-  const snapshots = (await Promise.all(blobs.map(readSnapshot)))
-    .filter((snapshot) => snapshot !== null)
-    .filter((snapshot) => !allowedMachineIds?.length || allowedMachineIds.includes(snapshot.machineId));
+  const snapshots = latestSnapshotsByMachine(
+    (await Promise.all(blobs.map(readSnapshot)))
+      .filter((snapshot) => snapshot !== null)
+      .filter((snapshot) => !allowedMachineIds?.length || allowedMachineIds.includes(snapshot.machineId)),
+  );
   const aggregate = aggregateSnapshots(snapshots);
   const expectedSourceCount = allowedMachineIds?.length || snapshots.length || 1;
 
   response.setHeader("Cache-Control", "public, max-age=60");
-  response.setHeader("CDN-Cache-Control", "public, s-maxage=900, stale-while-revalidate=3600");
+  response.setHeader("CDN-Cache-Control", "public, s-maxage=60, stale-while-revalidate=120");
   return response.status(200).json({
     generatedAt: new Date().toISOString(),
     expectedMachineIds: ["aggregate"],

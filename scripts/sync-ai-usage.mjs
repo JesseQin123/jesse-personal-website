@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 
 import { execFileSync } from "node:child_process";
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { randomUUID } from "node:crypto";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
-import { resolve } from "node:path";
+import { dirname, resolve } from "node:path";
 
 const CCUSAGE_VERSION = "20.0.17";
 const dryRun = process.argv.includes("--dry-run");
+const allowHistoricalRewrite = process.argv.includes("--allow-historical-rewrite");
 
 function argument(name) {
   return process.argv.find((value) => value.startsWith(`--${name}=`))?.slice(name.length + 3);
@@ -34,6 +36,17 @@ function readDotEnv(path) {
         return [key, value];
       }),
   );
+}
+
+function loadOrCreateSourceInstanceId(machineId, configuredId) {
+  if (configuredId) return configuredId;
+  const path = argument("source-id-file") || resolve(homedir(), ".config", "jesse-ai-usage", `${machineId}.source-id`);
+  if (existsSync(path)) return readFileSync(path, "utf8").trim();
+  const sourceInstanceId = randomUUID();
+  mkdirSync(dirname(path), { recursive: true, mode: 0o700 });
+  writeFileSync(path, `${sourceInstanceId}\n`, { mode: 0o600 });
+  console.log(`[ai-usage] Created a persistent source identity for ${machineId}.`);
+  return sourceInstanceId;
 }
 
 function fail(message) {
@@ -122,6 +135,26 @@ async function uploadWithRetry(endpoint, secret, payload) {
   throw lastError;
 }
 
+async function loadRemoteSnapshot(endpoint, machineId, secret) {
+  const readEndpoint = argument("read-endpoint") || endpoint;
+  try {
+    const response = await fetch(`${readEndpoint}?machine=${encodeURIComponent(machineId)}&sync=${Date.now()}`, {
+      headers: { Authorization: `Bearer ${secret}`, "Cache-Control": "no-cache" },
+    });
+    if (!response.ok) throw new Error(`${response.status} ${await response.text()}`);
+    const body = await response.json();
+    if (body?.machineId === machineId) return body;
+    return Array.isArray(body?.machines) ? body.machines.find((machine) => machine.machineId === machineId) : undefined;
+  } catch (error) {
+    console.warn(`[ai-usage] Could not compare with the remote snapshot; uploading all locally observed dates (${error.message}).`);
+    return undefined;
+  }
+}
+
+function sameDay(left, right) {
+  return Boolean(left && right && JSON.stringify(left) === JSON.stringify(right));
+}
+
 const configPath = argument("config") || resolve(homedir(), ".config", "jesse-ai-usage.json");
 const fileConfig = readJson(configPath);
 const localEnv = readDotEnv(resolve(process.cwd(), ".env.local"));
@@ -133,6 +166,7 @@ const settings = {
   machineLabel: argument("machine-label") || process.env.AI_USAGE_MACHINE_LABEL || fileConfig.machineLabel,
   startDate: argument("start-date") || process.env.AI_USAGE_START_DATE || fileConfig.startDate || "2026-01-01",
   confirmZeroFrom: argument("confirm-zero-from") || process.env.AI_USAGE_CONFIRM_ZERO_FROM || fileConfig.confirmZeroFrom || today,
+  sourceInstanceId: argument("source-id") || process.env.AI_USAGE_SOURCE_INSTANCE_ID || fileConfig.sourceInstanceId,
   syncSecret: process.env.AI_USAGE_SYNC_SECRET || localEnv.AI_USAGE_SYNC_SECRET || fileConfig.syncSecret,
   timezone,
 };
@@ -144,6 +178,10 @@ if (!/^\d{4}-\d{2}-\d{2}$/.test(settings.startDate) || !/^\d{4}-\d{2}-\d{2}$/.te
   fail("startDate and confirmZeroFrom must use YYYY-MM-DD.");
 }
 if (!/^[a-z0-9][a-z0-9-]{1,62}[a-z0-9]$/.test(settings.machineId)) fail("Invalid machineId.");
+settings.sourceInstanceId = loadOrCreateSourceInstanceId(settings.machineId, settings.sourceInstanceId);
+if (!/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(settings.sourceInstanceId)) {
+  fail("sourceInstanceId must be a UUID. Remove the source-id file to regenerate it.");
+}
 
 console.log(`[ai-usage] Scanning ${settings.machineLabel} from ${settings.startDate} through ${today}…`);
 let report;
@@ -174,8 +212,19 @@ const days = dateRange(settings.startDate, today).flatMap((date) => {
   }];
 });
 
+const remoteSnapshot = await loadRemoteSnapshot(settings.endpoint, settings.machineId, settings.syncSecret);
+if (remoteSnapshot?.sourceInstanceId && remoteSnapshot.sourceInstanceId !== settings.sourceInstanceId) {
+  fail(`machineId ${settings.machineId} belongs to a different computer. Choose a unique machineId for this source.`);
+}
+const remoteDays = new Map((remoteSnapshot?.days || []).map((day) => [day.date, day]));
+const alwaysRefreshFrom = shiftDate(today, -1);
+const changedDays = allowHistoricalRewrite
+  ? days
+  : days.filter((day) => day.date >= alwaysRefreshFrom || !sameDay(remoteDays.get(day.date), day));
+
 const payload = {
-  schemaVersion: 1,
+  schemaVersion: 2,
+  sourceInstanceId: settings.sourceInstanceId,
   machineId: settings.machineId,
   machineLabel: settings.machineLabel,
   timezone: settings.timezone,
@@ -184,24 +233,27 @@ const payload = {
   reportedThrough: shiftDate(today, -1),
   lastSyncedAt: new Date().toISOString(),
   ccusageVersion: CCUSAGE_VERSION,
-  days,
+  allowHistoricalRewrite,
+  days: changedDays,
 };
 
 const placeholders = dateRange(settings.startDate, shiftDate(today, -1)).length - days.filter((day) => day.date < today).length;
-console.log(`[ai-usage] Prepared ${days.length} reported days; ${Math.max(0, placeholders)} historical dates remain placeholders.`);
+const backfilledDates = changedDays.filter((day) => day.date < alwaysRefreshFrom && !remoteDays.has(day.date)).length;
+console.log(`[ai-usage] Found ${days.length} local reported days; ${changedDays.length} need upsert (${backfilledDates} missing historical dates).`);
+console.log(`[ai-usage] ${Math.max(0, placeholders)} historical dates remain placeholders on this source.`);
 const outputPath = argument("output");
 if (outputPath) {
   writeFileSync(resolve(outputPath), `${JSON.stringify(payload, null, 2)}\n`, { mode: 0o600 });
   console.log(`[ai-usage] Wrote payload to ${resolve(outputPath)}.`);
 }
 if (dryRun) {
-  console.log(`[ai-usage] Dry run complete. Latest total: ${days.at(-1)?.totals.totalTokens.toLocaleString() || 0} tokens.`);
+  console.log(`[ai-usage] Dry run complete. ${changedDays.length} dates would be uploaded; latest total: ${days.at(-1)?.totals.totalTokens.toLocaleString() || 0} tokens.`);
   process.exit(0);
 }
 
 try {
   const result = await uploadWithRetry(settings.endpoint, settings.syncSecret, payload);
-  console.log(`[ai-usage] Synced ${result.daysStored ?? days.length} days through ${result.reportedThrough}.`);
+  console.log(`[ai-usage] Upserted ${result.daysUpdated ?? changedDays.length} dates; ${result.daysStored ?? days.length} dates stored through ${result.reportedThrough}.`);
 } catch (error) {
   fail(`Upload failed after 3 attempts: ${error.message}`);
 }
