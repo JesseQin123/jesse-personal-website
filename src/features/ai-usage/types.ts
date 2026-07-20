@@ -16,6 +16,7 @@ export type MachineUsageDay = {
   date: string;
   status: "finalized" | "reported_zero" | "provisional";
   coverage?: number;
+  expectedCoverage?: number;
   totals: UsageTotals;
   agents: AgentUsage[];
 };

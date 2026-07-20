@@ -46,7 +46,7 @@ function StatCard({ icon: Icon, label, value, detail }: { icon: typeof Activity;
   );
 }
 
-function ActivityCalendar({ days, sourceCount, today, year }: { days: DailyUsage[]; sourceCount: number; today: string; year: string }) {
+function ActivityCalendar({ days, today, year }: { days: DailyUsage[]; today: string; year: string }) {
   const [metric, setMetric] = useState<"tokens" | "cost">("tokens");
   const gridRef = useRef<HTMLDivElement>(null);
   const observedDays = days.filter((day) => day.coverage > 0);
@@ -79,7 +79,7 @@ function ActivityCalendar({ days, sourceCount, today, year }: { days: DailyUsage
     const daysFromStart = Math.round((new Date(`${date}T12:00:00Z`).getTime() - new Date(`${gridStart}T12:00:00Z`).getTime()) / 86_400_000);
     return { label: new Intl.DateTimeFormat("en-US", { month: "short", timeZone: "UTC" }).format(new Date(`${date}T12:00:00Z`)), column: Math.floor(daysFromStart / 7) + 2 };
   });
-  const statusFor = (day?: DailyUsage) => !day || day.coverage === 0 ? "Pending" : day.coverage >= sourceCount ? "Complete" : "Partial";
+  const statusFor = (day?: DailyUsage) => !day || day.coverage === 0 ? "Pending" : day.coverage >= day.expectedCoverage ? "Complete" : "Partial";
   const fresh = selected ? selected.inputTokens + selected.outputTokens : 0;
 
   useEffect(() => {
@@ -207,14 +207,14 @@ export default function AiUsageDashboard() {
         <section className="border-y border-border bg-secondary/40">
           <div className="container mx-auto px-4 py-12 lg:px-8 lg:py-16">
             <div className="flex flex-wrap items-end justify-between gap-5"><div><p className="text-xs font-semibold uppercase tracking-wider text-primary">Activity calendar</p><h2 className="mt-2 text-3xl font-bold tracking-tight">Jesse's AI activity, day by day</h2><p className="mt-3 max-w-2xl text-muted-foreground">A GitHub-style view of daily token throughput and estimated cost. Source names stay private and all values are aggregated before publication.</p></div><div className="flex items-center gap-2 text-sm text-muted-foreground"><RefreshCw className={`h-4 w-4 ${query.isFetching ? "animate-spin" : ""}`} />{query.isError ? "Data currently unavailable" : "Refreshes every 15 minutes"}</div></div>
-            <ActivityCalendar days={model.daily} sourceCount={model.sourceCount} today={model.today} year={model.reportingYear} />
+            <ActivityCalendar days={model.daily} today={model.today} year={model.reportingYear} />
           </div>
         </section>
 
         <section className="container mx-auto px-4 py-12 lg:px-8 lg:py-16">
           <div className="flex flex-wrap items-center justify-between gap-4"><div><p className="text-xs font-semibold uppercase tracking-wider text-primary">Daily ledger</p><h2 className="mt-2 text-3xl font-bold tracking-tight">{showAllDays ? "All observed days" : "Recent observed days"}</h2></div><button className="inline-flex items-center gap-2 rounded-lg border border-border bg-background px-4 py-2 text-sm font-semibold transition-colors hover:border-primary/40 hover:text-primary" onClick={() => setShowAllDays((value) => !value)} type="button"><CalendarDays className="h-4 w-4" />{showAllDays ? "Recent only" : "All days"}</button></div>
           <div className="mt-7 overflow-x-auto rounded-xl border border-border">
-            <table className="w-full min-w-[780px] text-sm"><thead className="bg-secondary/60 text-left text-xs uppercase tracking-wider text-muted-foreground"><tr><th className="p-4">Date</th><th className="p-4">Coverage</th><th className="p-4 text-right">Input</th><th className="p-4 text-right">Output</th><th className="p-4 text-right">Cache read</th><th className="p-4 text-right">Total</th><th className="p-4 text-right">Cost</th></tr></thead><tbody>{displayedRows.map((day) => <tr className="border-t border-border" key={day.date}><td className="p-4 font-medium">{day.date}</td><td className="p-4"><span className="rounded-full bg-secondary px-2.5 py-1 text-xs">{day.coverage}/{model.sourceCount}</span></td><td className="p-4 text-right text-muted-foreground">{compact(day.inputTokens)}</td><td className="p-4 text-right text-muted-foreground">{compact(day.outputTokens)}</td><td className="p-4 text-right text-muted-foreground">{compact(day.cacheReadTokens)}</td><td className="p-4 text-right font-semibold">{compact(day.totalTokens)}</td><td className="p-4 text-right">{money(day.totalCost)}</td></tr>)}</tbody></table>
+            <table className="w-full min-w-[780px] text-sm"><thead className="bg-secondary/60 text-left text-xs uppercase tracking-wider text-muted-foreground"><tr><th className="p-4">Date</th><th className="p-4">Coverage</th><th className="p-4 text-right">Input</th><th className="p-4 text-right">Output</th><th className="p-4 text-right">Cache read</th><th className="p-4 text-right">Total</th><th className="p-4 text-right">Cost</th></tr></thead><tbody>{displayedRows.map((day) => <tr className="border-t border-border" key={day.date}><td className="p-4 font-medium">{day.date}</td><td className="p-4"><span className="rounded-full bg-secondary px-2.5 py-1 text-xs">{day.coverage}/{day.expectedCoverage}</span></td><td className="p-4 text-right text-muted-foreground">{compact(day.inputTokens)}</td><td className="p-4 text-right text-muted-foreground">{compact(day.outputTokens)}</td><td className="p-4 text-right text-muted-foreground">{compact(day.cacheReadTokens)}</td><td className="p-4 text-right font-semibold">{compact(day.totalTokens)}</td><td className="p-4 text-right">{money(day.totalCost)}</td></tr>)}</tbody></table>
             {!displayedRows.length && <div className="flex items-center justify-center gap-2 p-12 text-sm text-muted-foreground"><Clock3 className="h-4 w-4" />Waiting for the first sync.</div>}
           </div>
         </section>
