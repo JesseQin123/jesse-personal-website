@@ -39,7 +39,10 @@ export type IncrementalUsagePayload = Omit<StoredMachineUsageSnapshot, "schemaVe
   allowHistoricalRewrite?: boolean;
 };
 
-export type AggregateUsageDay = MachineUsageDay & { coverage: number };
+export type AggregateUsageDay = MachineUsageDay & {
+  coverage: number;
+  expectedCoverage?: number;
+};
 
 export type AggregateUsageSnapshot = Omit<StoredMachineUsageSnapshot, "machineId" | "days"> & {
   machineId: "aggregate";
@@ -69,6 +72,7 @@ const machineUsageDaySchema = z.object({
 
 const aggregateUsageDaySchema = machineUsageDaySchema.extend({
   coverage: z.number().int().nonnegative(),
+  expectedCoverage: z.number().int().positive().optional(),
 });
 
 export const machineUsageSnapshotSchema = z.object({
@@ -132,6 +136,13 @@ function addTotals(target: ReturnType<typeof emptyTotals>, source: ReturnType<ty
 export function aggregateSnapshots(snapshots: StoredMachineUsageSnapshot[]): AggregateUsageSnapshot | null {
   if (!snapshots.length) return null;
 
+  const expectedFrom = snapshots.map((snapshot) => (
+    snapshot.days.reduce<string | undefined>(
+      (earliest, day) => !earliest || day.date < earliest ? day.date : earliest,
+      undefined,
+    ) || snapshot.trackingStartedOn
+  ));
+
   const days = new Map<string, {
     coverage: number;
     status: "finalized" | "reported_zero" | "provisional";
@@ -179,6 +190,7 @@ export function aggregateSnapshots(snapshots: StoredMachineUsageSnapshot[]): Agg
     days: [...days.entries()].sort(([left], [right]) => left.localeCompare(right)).map(([date, day]) => ({
       date,
       coverage: day.coverage,
+      expectedCoverage: Math.max(day.coverage, expectedFrom.filter((start) => start <= date).length),
       status: day.status,
       totals: day.totals,
       agents: [...day.agents.entries()].map(([agent, totals]) => ({ agent, modelsUsed: [], ...totals })),
@@ -186,33 +198,40 @@ export function aggregateSnapshots(snapshots: StoredMachineUsageSnapshot[]): Agg
   };
 }
 
-export function overlayAggregateBaseline(
-  live: AggregateUsageSnapshot | null,
+export function restoreBaselineOwnerSnapshot(
+  snapshots: StoredMachineUsageSnapshot[],
   baseline: AggregateUsageSnapshot | null,
-): AggregateUsageSnapshot | null {
-  if (!baseline) return live;
-  if (!live) return baseline;
+  baselineMachineId: string,
+): StoredMachineUsageSnapshot[] {
+  if (!baseline) return snapshots;
 
   const baselineCutoff = baseline.days.at(-1)?.date || baseline.reportedThrough;
-  const days = new Map(
-    baseline.days
-      .filter((day) => day.date <= baselineCutoff)
-      .map((day) => [day.date, day]),
-  );
-  for (const day of live.days) {
-    if (day.date > baselineCutoff) days.set(day.date, day);
-  }
+  const liveOwner = snapshots.find((snapshot) => snapshot.machineId === baselineMachineId);
+  const historicalDays = baseline.days
+    .filter((day) => day.date <= baselineCutoff)
+    .map((day) => ({
+      date: day.date,
+      status: day.status,
+      totals: day.totals,
+      agents: day.agents,
+    }));
+  const currentDays = (liveOwner?.days || []).filter((day) => day.date > baselineCutoff);
 
-  return {
+  const restoredOwner: StoredMachineUsageSnapshot = {
     schemaVersion: 1,
-    machineId: "aggregate",
-    machineLabel: "Aggregated sources",
-    timezone: live.timezone,
-    trackingStartedOn: [baseline.trackingStartedOn, live.trackingStartedOn].sort()[0],
-    confirmZeroFrom: [baseline.confirmZeroFrom, live.confirmZeroFrom].sort().at(-1)!,
-    reportedThrough: [baseline.reportedThrough, live.reportedThrough].sort().at(-1)!,
-    lastSyncedAt: [baseline.lastSyncedAt, live.lastSyncedAt].sort().at(-1)!,
-    ccusageVersion: "aggregated",
-    days: [...days.values()].sort((left, right) => left.date.localeCompare(right.date)),
+    machineId: baselineMachineId,
+    machineLabel: liveOwner?.machineLabel || "Migrated source",
+    timezone: liveOwner?.timezone || baseline.timezone,
+    trackingStartedOn: baseline.trackingStartedOn,
+    confirmZeroFrom: [baseline.confirmZeroFrom, liveOwner?.confirmZeroFrom].filter(Boolean).sort().at(-1)!,
+    reportedThrough: [baseline.reportedThrough, liveOwner?.reportedThrough].filter(Boolean).sort().at(-1)!,
+    lastSyncedAt: [baseline.lastSyncedAt, liveOwner?.lastSyncedAt].filter(Boolean).sort().at(-1)!,
+    ccusageVersion: liveOwner?.ccusageVersion || baseline.ccusageVersion,
+    days: [...historicalDays, ...currentDays],
   };
+
+  return [
+    ...snapshots.filter((snapshot) => snapshot.machineId !== baselineMachineId),
+    restoredOwner,
+  ];
 }

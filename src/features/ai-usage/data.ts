@@ -3,6 +3,7 @@ import type { AiUsageResponse, MachineUsageDay, UsageTotals } from "@/features/a
 export type DailyUsage = UsageTotals & {
   date: string;
   coverage: number;
+  expectedCoverage: number;
   claude: number;
   codex: number;
   hermes: number;
@@ -52,11 +53,12 @@ export function buildUsageModel(response: AiUsageResponse) {
   const reportingYear = today.slice(0, 4);
   const start = `${reportingYear}-01-01`;
   const daily = datesBetween(start, today).map<DailyUsage>((date) => {
-    const item: DailyUsage = { date, coverage: 0, claude: 0, codex: 0, hermes: 0, other: 0, ...EMPTY };
+    const item: DailyUsage = { date, coverage: 0, expectedCoverage: 0, claude: 0, codex: 0, hermes: 0, other: 0, ...EMPTY };
     for (const machine of response.machines) {
       const day = machine.days.find((candidate) => candidate.date === date);
       if (!day) continue;
       item.coverage += day.coverage ?? 1;
+      item.expectedCoverage = Math.max(item.expectedCoverage, day.expectedCoverage || 0);
       add(item, day.totals);
       for (const agent of day.agents) {
         if (agent.agent === "claude") item.claude += agent.totalTokens;
@@ -65,6 +67,7 @@ export function buildUsageModel(response: AiUsageResponse) {
         else item.other += agent.totalTokens;
       }
     }
+    if (item.expectedCoverage === 0) item.expectedCoverage = sourceCount;
     return item;
   });
   const observed = daily.filter((day) => day.coverage > 0);

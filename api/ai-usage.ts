@@ -4,7 +4,7 @@ import {
   aggregateSnapshots,
   aggregateUsageSnapshotSchema,
   machineUsageSnapshotSchema,
-  overlayAggregateBaseline,
+  restoreBaselineOwnerSnapshot,
   type AggregateUsageSnapshot,
   type StoredMachineUsageSnapshot,
 } from "./ai-usage-schema.js";
@@ -65,9 +65,9 @@ export default async function handler(request: ApiRequest, response: ApiResponse
     response.setHeader("Cache-Control", "no-store");
     return response.status(503).json({ error: "Aggregate baseline unavailable" });
   }
-  const aggregate = overlayAggregateBaseline(aggregateSnapshots(snapshots), baseline);
-  const baselineSourceCount = Math.max(0, ...baseline.days.map((day) => day.coverage));
-  const expectedSourceCount = Math.max(2, allowedMachineIds?.length || 0, snapshots.length, baselineSourceCount);
+  const baselineMachineId = process.env.AI_USAGE_BASELINE_MACHINE_ID || "jesse-desktop";
+  const aggregate = aggregateSnapshots(restoreBaselineOwnerSnapshot(snapshots, baseline, baselineMachineId));
+  const expectedSourceCount = Math.max(1, ...(aggregate?.days.map((day) => day.expectedCoverage || day.coverage) || []));
 
   response.setHeader("Cache-Control", "public, max-age=60");
   response.setHeader("CDN-Cache-Control", "public, s-maxage=60, stale-while-revalidate=120");
