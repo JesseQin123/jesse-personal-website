@@ -1,4 +1,5 @@
 import { ArrowUpRight, BookOpen, Github, Mic2, Newspaper } from "lucide-react";
+import { recruiterFacts } from "@/data/recruiter-profile";
 
 const publishing = [
   {
@@ -22,12 +23,12 @@ const publishing = [
 ];
 
 const TalksSection = () => (
-  <section id="talks" className="scroll-mt-20 bg-muted/30 py-16 lg:py-28">
+  <section id="writing" aria-labelledby="writing-heading" className="scroll-mt-20 bg-muted/30 py-16 lg:py-24">
     <div className="container mx-auto px-4 lg:px-8">
       <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
         <div>
-          <p className="mb-4 text-sm font-medium uppercase tracking-wider text-primary">Talks & writing</p>
-          <h2 className="mb-5 text-3xl font-bold lg:text-5xl">Thinking in public.</h2>
+          <p className="mb-4 text-sm font-semibold uppercase tracking-wider text-brand-dark">Talks & writing</p>
+          <h2 id="writing-heading" className="mb-5 text-3xl font-bold lg:text-5xl">Thinking in public.</h2>
           <p className="mb-8 text-lg leading-relaxed text-muted-foreground">
             Speaking and writing are how I pressure-test ideas, make complex systems legible,
             and connect engineering decisions to the way organizations actually work.
@@ -40,16 +41,16 @@ const TalksSection = () => (
               </div>
               <span className="text-xs font-semibold uppercase tracking-wider text-background/50">Featured speaking</span>
             </div>
-            <p className="text-sm font-semibold text-primary">May 2026 · Cornell Tech, New York</p>
-            <h3 className="mt-3 text-2xl font-bold">Knowledge Graph Conference 2026</h3>
+            <p className="text-sm font-semibold text-orange-300">{recruiterFacts.conference.date} · {recruiterFacts.conference.location}</p>
+            <h3 className="mt-3 text-2xl font-bold">Presented at {recruiterFacts.conference.title}</h3>
             <p className="mt-4 leading-relaxed text-background/70">
-              Sharing practical ideas on knowledge graphs, enterprise context, and the systems required for more useful AI agents.
+              A public talk on knowledge graphs, enterprise context, and the systems required for more useful AI agents.
             </p>
             <a
               href="https://www.knowledgegraph.tech/"
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-primary"
+              className="mt-6 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-orange-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-300"
             >
               View the conference <ArrowUpRight className="h-4 w-4" />
             </a>
@@ -65,16 +66,16 @@ const TalksSection = () => (
                 href={item.href}
                 target={external ? "_blank" : undefined}
                 rel={external ? "noopener noreferrer" : undefined}
-                className="group grid grid-cols-[auto_1fr_auto] items-center gap-4 border-b border-border py-7"
+                className="group grid min-h-11 grid-cols-[auto_1fr_auto] items-center gap-4 border-b border-border py-7 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10">
-                  <item.icon className="h-5 w-5 text-primary" />
+                  <item.icon className="h-5 w-5 text-brand-dark" />
                 </div>
                 <div>
-                  <h3 className="font-bold transition-colors group-hover:text-primary">{item.title}</h3>
+                  <h3 className="font-bold transition-colors group-hover:text-brand-dark">{item.title}</h3>
                   <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{item.description}</p>
                 </div>
-                <ArrowUpRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary" />
+                <ArrowUpRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-brand-dark" />
               </a>
             );
           })}

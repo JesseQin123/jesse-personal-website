@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -15,9 +15,9 @@
     --popover: 0 0% 100%;
     --popover-foreground: 20 10% 10%;
 
-    /* Hermès Orange as primary accent */
+    /* Jesse's original vivid orange, paired with dark ink for readable controls. */
     --primary: 24 95% 53%;
-    --primary-foreground: 0 0% 100%;
+    --primary-foreground: 20 10% 10%;
 
     --secondary: 30 20% 96%;
     --secondary-foreground: 20 10% 10%;
@@ -26,7 +26,7 @@
     --muted-foreground: 20 5% 45%;
 
     --accent: 24 95% 53%;
-    --accent-foreground: 0 0% 100%;
+    --accent-foreground: 20 10% 10%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
@@ -40,7 +40,21 @@
     /* Brand orange palette */
     --brand-orange: 24 95% 53%;
     --brand-orange-light: 28 100% 95%;
-    --brand-orange-dark: 20 90% 45%;
+    --brand-orange-dark: 18 88% 40%;
+
+    /* Editorial profile and public telemetry surfaces */
+    --profile-ink: 24 10% 6%;
+    --profile-ink-muted: 28 7% 36%;
+    --profile-ink-inverse: 36 33% 97%;
+    --profile-surface: 36 30% 94%;
+    --profile-surface-elevated: 36 33% 98%;
+    --profile-surface-technical: 24 10% 7%;
+    --profile-sidebar: 33 28% 91%;
+    --profile-border: 31 17% 82%;
+    --profile-border-control: 28 9% 55%;
+    --profile-accent: 24 95% 53%;
+    --profile-accent-hover: 18 88% 40%;
+    --profile-teal: 176 69% 31%;
 
     /* Announcement bar - subtle warm gradient */
     --announcement-gradient: linear-gradient(90deg, 
@@ -76,7 +90,7 @@
     --popover-foreground: 30 20% 95%;
 
     --primary: 24 95% 53%;
-    --primary-foreground: 0 0% 100%;
+    --primary-foreground: 20 10% 10%;
 
     --secondary: 20 10% 15%;
     --secondary-foreground: 30 20% 95%;
@@ -85,7 +99,7 @@
     --muted-foreground: 30 10% 65%;
 
     --accent: 24 95% 53%;
-    --accent-foreground: 0 0% 100%;
+    --accent-foreground: 20 10% 10%;
 
     --destructive: 0 62% 30%;
     --destructive-foreground: 30 20% 95%;
@@ -104,6 +118,10 @@
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-family: 'Inter', sans-serif;
+  }
+
+  :focus-visible {
+    scroll-margin: 6rem;
   }
 }
 
@@ -138,6 +156,21 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+
+  .profile-serif {
+    font-family: "DM Serif Display", serif;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 

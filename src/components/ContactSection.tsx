@@ -1,63 +1,49 @@
-import { ArrowUpRight, Github, Linkedin, Mail } from "lucide-react";
+import { ArrowUpRight, FileText, Github, Linkedin, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const conversationPaths = [
-  {
-    title: "Join a Team",
-    description: "Conversations about senior AI systems, product engineering, and technical leadership roles where I can contribute.",
-  },
-  {
-    title: "Building",
-    description: "Enterprise context, knowledge systems, agent workflows, and selected partnerships.",
-  },
-  {
-    title: "Speaking",
-    description: "Knowledge graphs, enterprise AI, context engineering, and AI-native work.",
-  },
-  {
-    title: "Research",
-    description: "Ontology, organizational knowledge, agent systems, and future-of-work collaborations.",
-  },
-];
-
 const ContactSection = () => (
-  <section id="contact" className="scroll-mt-20 bg-background py-16 lg:py-28">
+  <section id="contact" aria-labelledby="contact-heading" className="scroll-mt-20 bg-background pb-20 pt-8 lg:pb-28 lg:pt-12">
     <div className="container mx-auto px-4 lg:px-8">
-      <div className="rounded-3xl border border-border bg-foreground p-6 text-background lg:p-12">
-        <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
+      <div className="rounded-3xl border border-border bg-brand-light p-6 sm:p-8 lg:p-12">
+        <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-end lg:gap-16">
           <div>
-            <p className="mb-4 text-sm font-medium uppercase tracking-wider text-primary">Connect</p>
-            <h2 className="mb-6 text-3xl font-bold lg:text-5xl">Let&apos;s talk about systems, ideas, and what comes next.</h2>
-            <p className="mb-8 max-w-xl text-lg leading-relaxed text-background/70">
-              If you are building around fragmented knowledge, organizational context,
-              agent workflows, or new ways for people and AI to work together, I would like to hear about it.
+            <p className="mb-4 text-sm font-semibold uppercase tracking-wider text-brand-dark">Open to the right team</p>
+            <h2 id="contact-heading" className="max-w-4xl text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
+              I&apos;m interested in senior and staff-level roles building governed AI systems,
+              context infrastructure, and agent workflows.
+            </h2>
+            <p className="mt-6 max-w-3xl text-lg leading-relaxed text-muted-foreground">
+              Based in New York City. The most useful first message includes the problem space,
+              team mandate, role level, and what the organization needs this person to own.
             </p>
-            <div className="flex flex-wrap gap-3">
-              <Button variant="hero" size="lg" asChild>
+          </div>
+
+          <div>
+            <div className="flex flex-col gap-3">
+              <Button variant="hero" size="lg" className="w-full" asChild>
                 <a href="mailto:jesseqin.office@gmail.com">
                   <Mail className="h-4 w-4" /> Email Jesse
                 </a>
               </Button>
-              <Button variant="outline" size="lg" className="border-background/25 bg-transparent text-background hover:bg-background hover:text-foreground" asChild>
+              <Button variant="heroOutline" size="lg" className="w-full" asChild>
+                <a href="/resume/Jesse_Yubo_Qin_Resume.pdf" target="_blank" rel="noopener noreferrer">
+                  <FileText className="h-4 w-4" /> View résumé <ArrowUpRight className="h-4 w-4" />
+                </a>
+              </Button>
+              <Button variant="heroOutline" size="lg" className="w-full" asChild>
                 <a href="https://www.linkedin.com/in/jesseqin-phd/" target="_blank" rel="noopener noreferrer">
                   <Linkedin className="h-4 w-4" /> LinkedIn <ArrowUpRight className="h-4 w-4" />
                 </a>
               </Button>
-              <Button variant="outline" size="lg" className="border-primary/70 bg-primary/10 text-background hover:bg-primary hover:text-primary-foreground" asChild>
+              <Button variant="ghost" size="lg" className="w-full text-foreground/75" asChild>
                 <a href="https://github.com/JesseQin123" target="_blank" rel="noopener noreferrer">
-                  <Github className="h-4 w-4" /> View GitHub Projects <ArrowUpRight className="h-4 w-4" />
+                  <Github className="h-4 w-4" /> GitHub
                 </a>
               </Button>
             </div>
-          </div>
-
-          <div className="grid gap-4 sm:grid-cols-2">
-            {conversationPaths.map((path) => (
-              <article key={path.title} className="rounded-xl border border-background/15 bg-background/5 p-5">
-                <h3 className="font-bold text-background">{path.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-background/60">{path.description}</p>
-              </article>
-            ))}
+            <p className="mt-4 text-center text-xs leading-relaxed text-muted-foreground">
+              Public résumé omits phone number; email is the preferred first contact.
+            </p>
           </div>
         </div>
       </div>

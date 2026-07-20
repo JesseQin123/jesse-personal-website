@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowLeft, ArrowUpRight, Boxes, ExternalLink } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Navbar from "@/components/Navbar";
@@ -34,7 +34,7 @@ const selectedProjects: Project[] = [
     title: "Kamiwaza AI",
     description:
       "Enterprise AI infrastructure for deploying, governing, and scaling AI systems where organizational data and workflows actually live.",
-    myRole: "Senior Member of Technical Staff, focused on enterprise AI product engineering and agent-ready systems within publicly shareable boundaries.",
+    myRole: "Senior Member of Technical Staff working on enterprise AI product engineering and agent-ready systems within publicly shareable boundaries.",
     demonstrates: "Shipping inside real enterprise constraints across infrastructure, governance, data, and product experience.",
     tags: ["Enterprise AI", "Infrastructure", "Agent Systems", "Product Engineering"],
     liveUrl: "https://www.kamiwaza.ai/",
@@ -178,10 +178,9 @@ const ProjectCard = ({ project, compact = false }: { project: Project; compact?:
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (
-          <div className="grid-pattern flex h-full w-full items-center justify-center bg-gradient-to-br from-primary/10 via-background to-primary/5">
-            <div className="flex h-20 w-20 items-center justify-center rounded-2xl border border-primary/20 bg-background/80 shadow-sm">
-              <Boxes className="h-10 w-10 text-primary" />
-            </div>
+          <div className="grid-pattern flex h-full w-full flex-col justify-end bg-foreground p-6 text-background lg:p-8">
+            <span className="text-xs font-semibold uppercase tracking-[0.16em] text-orange-300">Public system case</span>
+            <span className="mt-2 text-3xl font-bold tracking-tight lg:text-4xl">{project.title}</span>
           </div>
         )}
       </a>
