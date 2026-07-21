@@ -1,6 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 import { primaryNavigation } from "@/data/site-navigation";
-import logo from "@/assets/jq_logo.png";
+import logo from "@/assets/brand/jq-search-monogram.png";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -23,8 +23,8 @@ const Footer = () => {
       <div className="container mx-auto px-4 py-12 lg:px-8">
         <div className="flex flex-col items-start justify-between gap-10 lg:flex-row">
           <div className="max-w-md">
-            <div className="mb-4 flex items-center gap-2">
-              <img src={logo} alt="Jesse Qin logo" className="h-10 w-10 rounded-lg" />
+            <div className="mb-4 flex items-center gap-3">
+              <img src={logo} alt="" className="h-9 w-auto object-contain" />
               <span className="text-xl font-bold">Jesse Qin</span>
             </div>
             <p className="text-sm leading-relaxed text-muted-foreground">
