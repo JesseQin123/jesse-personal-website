@@ -28,13 +28,13 @@ const Footer = () => {
               <span className="text-xl font-bold">Jesse Qin</span>
             </div>
             <p className="text-sm leading-relaxed text-muted-foreground">
-              AI systems builder working across enterprise infrastructure, ontology,
-              context graphs, and agent workflows. Based in New York City.
+              Senior/Staff AI systems engineer working across enterprise infrastructure,
+              ontology, context graphs, RAG, and agent workflows. Based in New York City.
             </p>
           </div>
 
           <div className="grid grid-cols-2 gap-x-10 gap-y-8 sm:grid-cols-4">
-            <FooterColumn title="Navigate" items={primaryNavigation.filter((item) => item.label !== "Connect")} />
+            <FooterColumn title="Navigate" items={primaryNavigation.filter((item) => item.label !== "Contact")} />
             <FooterColumn title="Resources" items={resources} />
             <FooterColumn title="Public work" items={publicWork} external />
             <FooterColumn

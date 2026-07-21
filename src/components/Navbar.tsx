@@ -37,7 +37,7 @@ const Navbar = () => {
             </Button>
             <Button variant="hero" size="default" asChild>
               <a href="mailto:jesseqin.office@gmail.com">
-                Start a conversation <ArrowUpRight className="h-4 w-4" />
+                Email Jesse <ArrowUpRight className="h-4 w-4" />
               </a>
             </Button>
           </div>
@@ -74,7 +74,7 @@ const Navbar = () => {
                 </Button>
                 <Button variant="hero" size="lg" className="w-full" asChild>
                   <a href="mailto:jesseqin.office@gmail.com">
-                    Start a conversation <ArrowUpRight className="h-4 w-4" />
+                    Email Jesse <ArrowUpRight className="h-4 w-4" />
                   </a>
                 </Button>
               </div>

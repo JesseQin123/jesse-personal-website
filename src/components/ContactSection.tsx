@@ -3,16 +3,16 @@ import { Button } from "@/components/ui/button";
 
 const conversationPaths = [
   {
-    title: "Join a Team",
-    description: "Conversations about senior AI systems, product engineering, and technical leadership roles where I can contribute.",
+    title: "Senior / Staff roles",
+    description: "AI infrastructure, product engineering, knowledge systems, and technical leadership roles with meaningful ownership.",
   },
   {
-    title: "Building",
-    description: "Enterprise context, knowledge systems, agent workflows, and selected partnerships.",
+    title: "Enterprise AI systems",
+    description: "Architecture and product conversations around governed context, data, ontology, RAG, and agent workflows.",
   },
   {
     title: "Speaking",
-    description: "Knowledge graphs, enterprise AI, context engineering, and AI-native work.",
+    description: "Knowledge graphs, enterprise AI, context engineering, and the design of AI-native work.",
   },
   {
     title: "Research",
@@ -26,11 +26,12 @@ const ContactSection = () => (
       <div className="rounded-3xl border border-border bg-foreground p-6 text-background lg:p-12">
         <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
           <div>
-            <p className="mb-4 text-sm font-medium uppercase tracking-wider text-primary">Connect</p>
-            <h2 className="mb-6 text-3xl font-bold lg:text-5xl">Let&apos;s talk about systems, ideas, and what comes next.</h2>
+            <p className="mb-4 text-sm font-medium uppercase tracking-wider text-primary">Contact</p>
+            <h2 className="mb-6 text-3xl font-bold lg:text-5xl">Let&apos;s build AI systems that can operate inside real organizations.</h2>
             <p className="mb-8 max-w-xl text-lg leading-relaxed text-background/70">
-              If you are building around fragmented knowledge, organizational context,
-              agent workflows, or new ways for people and AI to work together, I would like to hear about it.
+              If your work involves fragmented knowledge, organizational context, governed
+              agent workflows, or new ways for people and AI to make decisions together,
+              I would like to hear about it.
             </p>
             <div className="flex flex-wrap gap-3">
               <Button variant="hero" size="lg" asChild>

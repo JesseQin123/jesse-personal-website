@@ -1,117 +1,134 @@
-import { ArrowUpRight, Boxes, Building2, Network, Users } from "lucide-react";
+import { ArrowUpRight, Boxes, Building2, Network } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
-const work = [
+const caseStudies = [
   {
-    featured: true,
     icon: Building2,
-    eyebrow: "Senior Member of Technical Staff · Enterprise AI",
+    category: "Enterprise AI infrastructure",
     title: "Kamiwaza AI",
-    question: "How can organizations deploy, govern, and scale AI where their data and workflows actually live?",
-    contribution: "Senior Member of Technical Staff working on enterprise AI infrastructure, product engineering, and agent-ready systems designed around real organizational constraints.",
-    proof: ["Enterprise infrastructure", "Governed AI", "Shipped systems"],
+    status: "Current role · Jul 2025–Present",
+    problem:
+      "Organizations need to deploy and govern AI around distributed data and real workflows without losing control of security, context, or usability.",
+    role:
+      "Senior Member of Technical Staff working across enterprise AI infrastructure, product engineering, ontology, context graphs, RAG, and agent workflows.",
+    shipped:
+      "Publicly shareable scope includes platform and product work around deployment, governance, distributed data, and agent-ready systems.",
+    evidence:
+      "Kamiwaza's public product and 1.0 milestone can be inspected. Customer, revenue, performance, and feature-level ownership remain confidential.",
     href: "https://www.kamiwaza.ai/",
-    cta: "Visit Kamiwaza",
+    proofLabel: "Company and product",
   },
   {
     icon: Network,
-    eyebrow: "Public technical thesis",
+    category: "Independent research prototype",
     title: "Context Graph",
-    question: "How do agents retrieve decisions, evidence, ownership, and permissions—not just documents?",
-    contribution: "A reference model for turning operational knowledge into governed, auditable context for people and agents.",
-    proof: ["Ontology", "Provenance", "Agent context"],
+    status: "Public thesis · research prototype live",
+    problem:
+      "Enterprise agents can retrieve documents yet still miss decisions, evidence, exceptions, ownership, provenance, and permission boundaries.",
+    role:
+      "Research synthesis, ontology design, product framing, and a reference architecture for governed context shared by people and agents.",
+    shipped:
+      "A public thesis, reference architecture, ontology concepts, learning pages, and an explorable prototype.",
+    evidence:
+      "The thesis and prototype are public. This work is presented as research—not as marketplace adoption, customer traction, or a production deployment.",
     href: "https://contextgraph.tech/",
-    cta: "Read the thesis",
+    proofLabel: "Read the public thesis",
   },
   {
     icon: Boxes,
-    eyebrow: "Open-source knowledge system",
+    category: "Open-source knowledge system",
     title: "Solo Unicorn Toolbox",
-    question: "How can a fast-moving AI ecosystem become a useful technical map instead of another static tool list?",
-    contribution: "A bilingual, continuously updated taxonomy of agent systems, context tools, infrastructure, and reusable workflows.",
-    proof: ["500+ repositories", "Bilingual", "Automated sync"],
+    status: "Actively maintained · checked Jul 20, 2026",
+    problem:
+      "Fast-moving AI infrastructure and agent projects are difficult to evaluate when they are scattered across bookmarks, feeds, and static lists.",
+    role:
+      "Designed the bilingual taxonomy, enrichment scripts, repository workflow, and automated synchronization process.",
+    shipped:
+      "A public catalog of 604 repositories across 12 categories, with bilingual documentation and weekly GitHub Actions synchronization.",
+    evidence:
+      "The repository and update workflow are public. The numbers describe catalog scope and maintenance—not user adoption or commercial traction.",
     href: "https://github.com/JesseQin123/solo_unicorn_toolbox",
-    cta: "Inspect the repository",
+    proofLabel: "Inspect the repository",
   },
-  {
-    icon: Users,
-    eyebrow: "Founder · Community experiment",
-    title: "Solo Unicorn Club",
-    question: "Can one person design and operate an AI-native organization without building a traditional team first?",
-    contribution: "A New York community where founders test workflows, critique real work, and turn repeated needs into reusable systems.",
-    proof: ["AI-native work", "Founder community", "Public field notes"],
-    href: "https://www.solounicorn.club/",
-    cta: "Visit the club",
-  },
-];
+] as const;
+
+const details = [
+  ["Problem", "problem"],
+  ["My role", "role"],
+  ["What I shipped", "shipped"],
+  ["Public evidence", "evidence"],
+] as const;
 
 const SelectedWorkSection = () => (
-  <section id="work" className="scroll-mt-20 bg-background py-16 lg:py-28">
+  <section id="work" aria-labelledby="work-heading" className="scroll-mt-20 bg-background py-16 lg:py-28">
     <div className="container mx-auto px-4 lg:px-8">
       <div className="mb-12 flex flex-col justify-between gap-6 lg:mb-16 lg:flex-row lg:items-end">
         <div className="max-w-3xl">
-          <p className="mb-4 text-sm font-medium uppercase tracking-wider text-primary">Selected work</p>
-          <h2 className="mb-5 text-3xl font-bold lg:text-5xl">Ideas become systems, products, and communities.</h2>
+          <p className="mb-4 text-sm font-medium uppercase tracking-wider text-primary">Selected case studies</p>
+          <h2 id="work-heading" className="mb-5 text-3xl font-bold tracking-tight lg:text-5xl">
+            Three systems. Clear role. Public evidence.
+          </h2>
           <p className="text-lg leading-relaxed text-muted-foreground">
-            I work in public where I can. Each project below is evidence of the same practice:
-            make hidden structure explicit, connect it to a real workflow, and ship something people can use.
+            These cases are the work most relevant to senior AI systems roles. Each separates
+            the problem, my contribution, what shipped, and what can be inspected publicly.
           </p>
         </div>
         <Button variant="outline" size="lg" asChild>
-          <Link to="/projects">View the full work archive <ArrowUpRight className="h-4 w-4" /></Link>
+          <Link to="/projects">View the project archive <ArrowUpRight className="h-4 w-4" /></Link>
         </Button>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
-        {work.map((item) => {
-          const featured = "featured" in item && item.featured;
-
+      <div className="space-y-6">
+        {caseStudies.map((study, index) => {
+          const featured = index === 0;
           return (
             <article
-              key={item.title}
-              className={`group rounded-2xl border p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg lg:p-8 ${
-                featured ? "border-foreground bg-foreground text-background" : "border-border bg-card hover:border-primary/40"
+              key={study.title}
+              className={`overflow-hidden rounded-2xl border ${
+                featured ? "border-foreground bg-foreground text-background" : "border-border bg-card"
               }`}
             >
-              <div className="mb-6 flex items-start justify-between gap-4">
-                <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${featured ? "bg-primary" : "bg-primary/10"}`}>
-                  <item.icon className={`h-6 w-6 ${featured ? "text-primary-foreground" : "text-primary"}`} />
-                </div>
-                <span className={`text-right text-xs font-semibold uppercase tracking-wider ${featured ? "text-background/50" : "text-muted-foreground"}`}>
-                  {item.eyebrow}
-                </span>
-              </div>
-
-              <h3 className="mb-4 text-2xl font-bold">{item.title}</h3>
-              <p className={`mb-4 text-lg font-medium leading-relaxed ${featured ? "text-background/90" : "text-foreground"}`}>
-                {item.question}
-              </p>
-              <p className={`mb-6 leading-relaxed ${featured ? "text-background/65" : "text-muted-foreground"}`}>
-                {item.contribution}
-              </p>
-
-              <div className="mb-7 flex flex-wrap gap-2">
-                {item.proof.map((proof) => (
-                  <span
-                    key={proof}
-                    className={`rounded-full border px-3 py-1 text-xs ${
-                      featured ? "border-background/20 bg-background/5 text-background/80" : "border-border bg-muted/50 text-foreground/75"
-                    }`}
+              <div className="grid gap-8 p-6 lg:grid-cols-[0.7fr_1.3fr] lg:p-9">
+                <div>
+                  <div className={`mb-6 flex h-12 w-12 items-center justify-center rounded-xl ${featured ? "bg-primary" : "bg-primary/10"}`}>
+                    <study.icon className={`h-6 w-6 ${featured ? "text-primary-foreground" : "text-primary"}`} />
+                  </div>
+                  <p className={`text-xs font-semibold uppercase tracking-[0.14em] ${featured ? "text-orange-300" : "text-primary"}`}>
+                    {study.category}
+                  </p>
+                  <h3 className="mt-3 text-3xl font-bold tracking-tight">{study.title}</h3>
+                  <p className={`mt-3 text-sm leading-relaxed ${featured ? "text-background/55" : "text-muted-foreground"}`}>
+                    {study.status}
+                  </p>
+                  <a
+                    href={study.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`mt-6 inline-flex min-h-11 items-center gap-2 text-sm font-semibold underline decoration-current/30 underline-offset-4 ${featured ? "text-orange-300" : "text-foreground hover:text-primary"}`}
                   >
-                    {proof}
-                  </span>
-                ))}
-              </div>
+                    {study.proofLabel} <ArrowUpRight className="h-4 w-4" />
+                  </a>
+                </div>
 
-              <a
-                href={item.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`inline-flex items-center gap-2 text-sm font-semibold ${featured ? "text-primary" : "text-foreground hover:text-primary"}`}
-              >
-                {item.cta} <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-              </a>
+                <dl className={`grid border-t lg:grid-cols-2 ${featured ? "border-background/15" : "border-border"}`}>
+                  {details.map(([label, key], detailIndex) => (
+                    <div
+                      key={label}
+                      className={`border-b py-5 lg:px-6 ${featured ? "border-background/15" : "border-border"} ${
+                        detailIndex % 2 === 0 ? "lg:border-r" : ""
+                      }`}
+                    >
+                      <dt className={`text-[11px] font-semibold uppercase tracking-[0.12em] ${featured ? "text-background/45" : "text-muted-foreground"}`}>
+                        {label}
+                      </dt>
+                      <dd className={`mt-2 text-sm leading-6 ${featured ? "text-background/80" : "text-foreground/80"}`}>
+                        {study[key]}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
             </article>
           );
         })}
