@@ -1,6 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 import { primaryNavigation } from "@/data/site-navigation";
-import logo from "@/assets/jq_logo.png";
+import logo from "@/assets/brand/jq-search-monogram.png";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -23,18 +23,18 @@ const Footer = () => {
       <div className="container mx-auto px-4 py-12 lg:px-8">
         <div className="flex flex-col items-start justify-between gap-10 lg:flex-row">
           <div className="max-w-md">
-            <div className="mb-4 flex items-center gap-2">
-              <img src={logo} alt="Jesse Qin logo" className="h-10 w-10 rounded-lg" />
+            <div className="mb-4 flex items-center gap-3">
+              <img src={logo} alt="" className="h-9 w-auto object-contain" />
               <span className="text-xl font-bold">Jesse Qin</span>
             </div>
             <p className="text-sm leading-relaxed text-muted-foreground">
-              AI systems builder working across enterprise infrastructure, ontology,
-              context graphs, and agent workflows. Based in New York City.
+              Senior/Staff AI systems engineer working across enterprise infrastructure,
+              ontology, context graphs, RAG, and agent workflows. Based in New York City.
             </p>
           </div>
 
           <div className="grid grid-cols-2 gap-x-10 gap-y-8 sm:grid-cols-4">
-            <FooterColumn title="Navigate" items={primaryNavigation.filter((item) => item.label !== "Connect")} />
+            <FooterColumn title="Navigate" items={primaryNavigation.filter((item) => item.label !== "Contact")} />
             <FooterColumn title="Resources" items={resources} />
             <FooterColumn title="Public work" items={publicWork} external />
             <FooterColumn

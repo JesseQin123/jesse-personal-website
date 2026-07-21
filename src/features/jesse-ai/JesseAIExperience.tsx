@@ -220,13 +220,13 @@ const JesseAIExperienceContent = () => {
           type="button"
           aria-label="Talk to Jesse AI"
           onClick={() => setIsOpen(true)}
-          className="group pointer-events-auto fixed bottom-5 right-4 flex items-center gap-3 rounded-full border border-white/20 bg-neutral-950 py-2 pl-2 pr-4 text-white shadow-2xl shadow-orange-500/20 transition hover:-translate-y-1 hover:border-primary/60 sm:bottom-7 sm:right-7"
+          className="group pointer-events-auto fixed bottom-4 right-4 flex h-14 w-14 items-center justify-center rounded-full border border-white/20 bg-neutral-950 p-1.5 text-white shadow-2xl shadow-orange-500/20 transition hover:-translate-y-1 hover:border-primary/60 sm:bottom-7 sm:right-7 sm:h-auto sm:w-auto sm:gap-3 sm:py-2 sm:pl-2 sm:pr-4"
         >
-          <span className="relative block h-12 w-12 overflow-hidden rounded-full ring-2 ring-primary/60">
+          <span className="relative block h-11 w-11 overflow-hidden rounded-full ring-2 ring-primary/60 sm:h-12 sm:w-12">
             <img src={profileImage} alt="" className="h-full w-full object-cover" />
             <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-neutral-950 bg-emerald-400" />
           </span>
-          <span className="text-left">
+          <span className="hidden text-left sm:block">
             <span className="block text-[10px] font-semibold uppercase tracking-[0.18em] text-primary">Interactive AI</span>
             <span className="flex items-center gap-1 text-sm font-semibold">
               Talk to Jesse AI <ChevronRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" />

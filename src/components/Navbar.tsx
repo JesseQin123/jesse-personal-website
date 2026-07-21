@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Activity, ArrowUpRight, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { primaryNavigation } from "@/data/site-navigation";
-import logo from "@/assets/jq_logo.png";
+import logo from "@/assets/brand/jq-search-monogram.png";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -13,7 +13,7 @@ const Navbar = () => {
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <Link to="/" className="flex items-center gap-2" aria-label="Jesse Qin home">
-            <img src={logo} alt="Jesse Qin logo" className="h-10 w-10 rounded-lg" />
+            <img src={logo} alt="" className="h-9 w-auto object-contain" />
             <span className="text-xl font-bold tracking-tight">Jesse Qin</span>
           </Link>
 
@@ -37,7 +37,7 @@ const Navbar = () => {
             </Button>
             <Button variant="hero" size="default" asChild>
               <a href="mailto:jesseqin.office@gmail.com">
-                Start a conversation <ArrowUpRight className="h-4 w-4" />
+                Email Jesse <ArrowUpRight className="h-4 w-4" />
               </a>
             </Button>
           </div>
@@ -74,7 +74,7 @@ const Navbar = () => {
                 </Button>
                 <Button variant="hero" size="lg" className="w-full" asChild>
                   <a href="mailto:jesseqin.office@gmail.com">
-                    Start a conversation <ArrowUpRight className="h-4 w-4" />
+                    Email Jesse <ArrowUpRight className="h-4 w-4" />
                   </a>
                 </Button>
               </div>

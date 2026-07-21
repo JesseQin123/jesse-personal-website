@@ -1,6 +1,5 @@
 import { useRef } from "react";
-import { Link } from "react-router-dom";
-import { ArrowUpRight, MapPin } from "lucide-react";
+import { ArrowUpRight, FileText, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import profileImage from "@/assets/jesse-profile.jpg";
 import { useHeroAnimation } from "@/animations";
@@ -33,7 +32,7 @@ const HeroSection = () => {
   });
 
   return (
-    <section id="about" className="relative scroll-mt-20 overflow-hidden">
+    <section className="relative overflow-hidden" aria-labelledby="hero-heading">
       <div className="absolute inset-0 grid-pattern opacity-50" />
       <AnimatedCircuitLines className="left-0 top-0 hidden h-60 w-80 opacity-40 lg:block" />
 
@@ -42,42 +41,43 @@ const HeroSection = () => {
           <div className="z-10">
             <div className="mb-4 flex items-center gap-2 text-sm text-muted-foreground">
               <MapPin className="h-4 w-4" />
-              <span>AI systems builder · New York City</span>
+              <span>Senior / Staff AI Systems Engineer · New York City</span>
             </div>
 
             <h1
+              id="hero-heading"
               ref={titleRef}
               className="mb-6 text-4xl font-bold leading-[1.08] tracking-tight lg:text-6xl"
             >
-              I turn fragmented knowledge into systems
-              <span className="text-gradient"> people and AI agents can use.</span>
+              I turn fragmented enterprise knowledge into governed context
+              <span className="text-gradient"> for people and AI agents.</span>
             </h1>
 
             <p
               ref={subtitleRef}
               className="mb-6 max-w-2xl text-lg leading-relaxed text-muted-foreground lg:text-xl"
             >
-              I design and build AI systems that connect data, decisions, relationships,
-              and permissions into usable, governed context.
+              I design and ship AI infrastructure, ontology, context graphs, RAG, and agent
+              workflows—from architecture and research to production.
             </p>
 
             <p
               ref={descriptionRef}
               className="mb-8 max-w-2xl border-l-2 border-primary pl-4 leading-relaxed text-foreground/80"
             >
-              My work spans enterprise AI infrastructure, ontology, context graphs, and
-              agent workflows—from research and architecture to shipped products.
+              I work where infrastructure, machine-readable knowledge, governance, and
+              product delivery meet.
             </p>
 
             <div ref={ctaRef} className="flex flex-wrap gap-4">
               <Button variant="hero" size="lg" asChild>
-                <Link to="/projects">
-                  Explore selected work <ArrowUpRight className="h-4 w-4" />
-                </Link>
+                <a href="#work">
+                  View selected work <ArrowUpRight className="h-4 w-4" />
+                </a>
               </Button>
               <Button variant="heroOutline" size="lg" asChild>
-                <a href="#contact">
-                  Start a conversation <ArrowUpRight className="h-4 w-4" />
+                <a href="/resume/Jesse_Yubo_Qin_Resume.pdf" target="_blank" rel="noopener noreferrer">
+                  <FileText className="h-4 w-4" /> View résumé
                 </a>
               </Button>
             </div>
@@ -123,8 +123,8 @@ const HeroSection = () => {
                 className="absolute -bottom-4 -right-4 hidden rounded-xl border border-border bg-background p-4 shadow-lg lg:block"
               >
                 <p className="mb-1 text-xs text-muted-foreground">Jesse Qin</p>
-                <p className="text-sm font-semibold">AI Systems Builder</p>
-                <p className="text-sm text-muted-foreground">Ontology · Context · Agents</p>
+                <p className="text-sm font-semibold">Staff-level AI systems builder</p>
+                <p className="text-sm text-muted-foreground">Infrastructure · Ontology · Agents</p>
               </div>
             </div>
           </div>
