@@ -63,7 +63,7 @@ const VoicesWall = () => {
 
   return (
     <section aria-labelledby="voices-heading" className="bg-[#080808] pt-24 font-hero text-white sm:pt-32">
-      <div className="px-5 sm:px-[8vw]">
+      <div className="mx-auto w-full max-w-[1080px] px-5 sm:px-10">
         <p className="text-[16px] text-white/50">Not just me</p>
         <h2 id="voices-heading" className="mt-3 max-w-[44rem] text-[36px] font-medium leading-[1.05] tracking-[-0.02em] sm:text-[56px]">
           The people building AI are saying it too
@@ -73,7 +73,7 @@ const VoicesWall = () => {
         </p>
       </div>
 
-      <ul className="mt-14 grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6">
+      <ul className="mx-auto mt-14 grid max-w-[1440px] grid-cols-3 sm:grid-cols-4 lg:grid-cols-6">
         {voices.map((voice) => (
           <li key={voice.id}>
             <button

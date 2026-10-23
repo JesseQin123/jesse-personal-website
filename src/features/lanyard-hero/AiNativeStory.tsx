@@ -25,11 +25,11 @@ function StoryLink({ href, children }: { href: string; children: ReactNode }) {
 
 function Chapter({ index, label, title, children }: { index: string; label: string; title: string; children: ReactNode }) {
   return (
-    <li className="grid gap-4 border-b border-[#ECEAF0] py-12 sm:grid-cols-[12rem_minmax(0,1fr)] sm:gap-10 sm:py-16">
+    <li className="grid gap-4 border-b border-[#ECEAF0] py-12 sm:grid-cols-[11rem_minmax(0,1fr)] sm:gap-10 sm:py-16">
       <p className="text-[15px] text-[#8A8792]">
         <span className="tabular-nums">{index}</span> · {label}
       </p>
-      <div className="max-w-[40rem]">
+      <div className="max-w-[44rem]">
         <h3 className="text-[32px] font-medium leading-[1.08] tracking-[-0.02em] sm:text-[44px]">{title}</h3>
         <div className="mt-5 text-[17px] leading-[1.6] text-[#5B5864]">{children}</div>
       </div>
@@ -82,7 +82,8 @@ const milestones = [
 ];
 
 const AiNativeStory = () => (
-  <section id="story" aria-labelledby="story-heading" className="bg-white px-5 pt-24 font-hero text-[#080808] sm:px-[8vw] sm:pt-32">
+  <section id="story" aria-labelledby="story-heading" className="bg-white pt-24 font-hero text-[#080808] sm:pt-32">
+    <div className="mx-auto w-full max-w-[1080px] px-5 sm:px-10">
     <p className="text-[16px] text-[#8A8792]">Going AI-native</p>
     <h2 id="story-heading" className="mt-3 max-w-[46rem] text-[40px] font-medium leading-[1.02] tracking-[-0.025em] sm:text-[64px]">
       I&apos;m rebuilding how I work and live around AI.
@@ -136,6 +137,7 @@ const AiNativeStory = () => (
         </ul>
       </Chapter>
     </ol>
+    </div>
   </section>
 );
 
