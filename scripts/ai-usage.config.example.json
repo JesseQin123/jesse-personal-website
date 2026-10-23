@@ -1,0 +1,8 @@
+{
+  "endpoint": "https://YOUR-DOMAIN.com/api/ai-usage-sync",
+  "machineId": "jesse-mbp",
+  "machineLabel": "Jesse's MacBook Pro",
+  "startDate": "2026-07-10",
+  "timezone": "America/New_York",
+  "syncSecret": "PASTE_THE_SAME_AI_USAGE_SYNC_SECRET_USED_IN_VERCEL"
+}

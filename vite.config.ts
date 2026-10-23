@@ -40,6 +40,12 @@ export default defineConfig(({ mode }) => {
     server: {
       host: "::",
       port: 8080,
+      proxy: {
+        "^/api/ai-usage$": {
+          target: "https://www.jesseqin.me",
+          changeOrigin: true,
+        },
+      },
     },
     plugins: [
       react(),

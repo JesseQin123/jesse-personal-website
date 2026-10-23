@@ -144,4 +144,43 @@ describe("JesseAIExperience", () => {
 
     expect(screen.queryByText(/Rutgers University/i)).toBeNull();
   });
+
+  it("closes with Escape and returns focus to the mobile-safe trigger", async () => {
+    renderExperience();
+
+    const trigger = screen.getByRole("button", { name: /talk to jesse ai/i });
+    fireEvent.click(trigger);
+
+    const closeButton = screen.getByRole("button", { name: /close jesse ai/i });
+    await waitFor(() => expect(document.activeElement).toBe(closeButton));
+
+    fireEvent.keyDown(window, { key: "Escape" });
+
+    await waitFor(() => {
+      expect(screen.queryByRole("dialog", { name: /jesse ai conversation/i })).toBeNull();
+      expect(document.activeElement).toBe(screen.getByRole("button", { name: /talk to jesse ai/i }));
+    });
+  });
+
+  it("returns focus to the page control that opened Jesse AI", async () => {
+    render(
+      <>
+        <button
+          type="button"
+          onClick={(event) => window.dispatchEvent(new CustomEvent("open-jesse-ai", { detail: { opener: event.currentTarget } }))}
+        >
+          Open from page
+        </button>
+        <MemoryRouter>
+          <JesseAIExperience />
+        </MemoryRouter>
+      </>,
+    );
+
+    const pageOpener = screen.getByRole("button", { name: /open from page/i });
+    fireEvent.click(pageOpener);
+    fireEvent.click(await screen.findByRole("button", { name: /close jesse ai/i }));
+
+    await waitFor(() => expect(document.activeElement).toBe(pageOpener));
+  });
 });
