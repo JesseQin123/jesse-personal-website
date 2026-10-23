@@ -7,7 +7,7 @@ import researchToProductIcon from "@/assets/brand/icons/inverse/research-to-prod
 const signals = [
   {
     iconSrc: enterpriseDeploymentIcon,
-    label: "Current role",
+    label: "Previous role",
     value: `${recruiterFacts.currentRole.title} at ${recruiterFacts.currentRole.organization}`,
     detail: `${recruiterFacts.currentRole.period} · ${recruiterFacts.currentRole.summary}`,
   },

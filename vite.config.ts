@@ -4,6 +4,7 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 
 import elevenLabsTokenHandler from "./api/elevenlabs-token";
+import { seo } from "./vite/seo";
 
 const elevenLabsLocalApi = (): Plugin => ({
   name: "elevenlabs-local-api",
@@ -51,6 +52,7 @@ export default defineConfig(({ mode }) => {
       react(),
       mode === "development" && componentTagger(),
       elevenLabsLocalApi(),
+      seo(),
     ].filter(Boolean),
     resolve: {
       alias: {
