@@ -44,3 +44,4 @@ describe("AI usage view model", () => {
     ]);
   });
 });
+

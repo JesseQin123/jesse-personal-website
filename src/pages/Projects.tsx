@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowLeft, ArrowUpRight, Boxes, ExternalLink } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Navbar from "@/components/Navbar";
@@ -7,10 +7,12 @@ import Footer from "@/components/Footer";
 import eatWellPoster from "@/assets/projects/eat-well-app-poster.png";
 import contentRewriterPoster from "@/assets/projects/content_rewriter_poster.png";
 import jtimerPoster from "@/assets/projects/jtimer_poster.png";
-import contextGraphPoster from "@/assets/projects/contextgraph_poster.png";
 import churchAppPoster from "@/assets/projects/church_app_poster.png";
 import lifeInAgiPoster from "@/assets/projects/life_in_agi_poster.png";
 import soloUnicornPoster from "@/assets/projects/solounicorn_club_poster.png";
+import kamiwazaInfrastructureCover from "@/assets/brand/case-studies/kamiwaza-infrastructure.webp";
+import contextGraphCover from "@/assets/brand/case-studies/context-graph.webp";
+import soloUnicornToolboxCover from "@/assets/brand/case-studies/solo-unicorn-toolbox.webp";
 
 type ProjectStatus = "live" | "active" | "open-source";
 
@@ -34,11 +36,12 @@ const selectedProjects: Project[] = [
     title: "Kamiwaza AI",
     description:
       "Enterprise AI infrastructure for deploying, governing, and scaling AI systems where organizational data and workflows actually live.",
-    myRole: "Senior Member of Technical Staff, focused on enterprise AI product engineering and agent-ready systems within publicly shareable boundaries.",
+    myRole: "Senior Member of Technical Staff working on enterprise AI product engineering and agent-ready systems within publicly shareable boundaries.",
     demonstrates: "Shipping inside real enterprise constraints across infrastructure, governance, data, and product experience.",
     tags: ["Enterprise AI", "Infrastructure", "Agent Systems", "Product Engineering"],
     liveUrl: "https://www.kamiwaza.ai/",
     linkLabel: "Visit Kamiwaza",
+    imageUrl: kamiwazaInfrastructureCover,
     status: "active",
   },
   {
@@ -52,7 +55,7 @@ const selectedProjects: Project[] = [
     tags: ["Ontology", "Knowledge Graph", "Enterprise AI", "Agents"],
     liveUrl: "https://contextgraph.tech/",
     linkLabel: "Read the thesis",
-    imageUrl: contextGraphPoster,
+    imageUrl: contextGraphCover,
     status: "active",
   },
   {
@@ -66,6 +69,7 @@ const selectedProjects: Project[] = [
     tags: ["Python", "Taxonomy", "GitHub Actions", "Bilingual"],
     liveUrl: "https://github.com/JesseQin123/solo_unicorn_toolbox",
     linkLabel: "Inspect the repository",
+    imageUrl: soloUnicornToolboxCover,
     status: "open-source",
   },
   {
@@ -178,10 +182,9 @@ const ProjectCard = ({ project, compact = false }: { project: Project; compact?:
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (
-          <div className="grid-pattern flex h-full w-full items-center justify-center bg-gradient-to-br from-primary/10 via-background to-primary/5">
-            <div className="flex h-20 w-20 items-center justify-center rounded-2xl border border-primary/20 bg-background/80 shadow-sm">
-              <Boxes className="h-10 w-10 text-primary" />
-            </div>
+          <div className="grid-pattern flex h-full w-full flex-col justify-end bg-foreground p-6 text-background lg:p-8">
+            <span className="text-xs font-semibold uppercase tracking-[0.16em] text-orange-300">Public system case</span>
+            <span className="mt-2 text-3xl font-bold tracking-tight lg:text-4xl">{project.title}</span>
           </div>
         )}
       </a>
@@ -269,7 +272,7 @@ const Projects = () => (
 
         <div className="mt-16 text-center">
           <Button variant="hero" size="lg" asChild>
-            <a href="mailto:jesseqin.office@gmail.com">
+            <a href="mailto:jesse@solounicorn.club">
               Start a conversation <ArrowUpRight className="h-4 w-4" />
             </a>
           </Button>

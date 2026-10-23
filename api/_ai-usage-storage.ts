@@ -39,3 +39,4 @@ export function mergeUsageDays<T extends { date: string }>(
     days: [...daysByDate.values()].sort((left, right) => left.date.localeCompare(right.date)),
   };
 }
+

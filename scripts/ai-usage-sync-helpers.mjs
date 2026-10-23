@@ -9,3 +9,4 @@ function canonicalize(value) {
 export function sameUsageDay(left, right) {
   return Boolean(left && right && JSON.stringify(canonicalize(left)) === JSON.stringify(canonicalize(right)));
 }
+

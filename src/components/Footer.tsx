@@ -7,9 +7,9 @@ const Footer = () => {
 
   const resources = [
     { label: "Projects", href: "/projects" },
+    { label: "AI Token Usage", href: "/ai-usage" },
     { label: "Tutorials", href: "/tutorials" },
     { label: "Teaching", href: "/teaching" },
-    { label: "AI Usage", href: "/ai-usage" },
   ];
 
   const publicWork = [
@@ -28,8 +28,8 @@ const Footer = () => {
               <span className="text-xl font-bold">Jesse Qin</span>
             </div>
             <p className="text-sm leading-relaxed text-muted-foreground">
-              Senior/Staff AI systems engineer working across enterprise infrastructure,
-              ontology, context graphs, RAG, and agent workflows. Based in New York City.
+              Staff-level AI systems builder working across enterprise infrastructure, ontology,
+              context graphs, and agent workflows. Based in New York City.
             </p>
           </div>
 
@@ -42,7 +42,7 @@ const Footer = () => {
               items={[
                 { label: "LinkedIn", href: "https://www.linkedin.com/in/jesseqin-phd/" },
                 { label: "GitHub", href: "https://github.com/JesseQin123" },
-                { label: "Email", href: "mailto:jesseqin.office@gmail.com" },
+                { label: "Email", href: "mailto:jesse@solounicorn.club" },
               ]}
               external
             />
@@ -78,7 +78,7 @@ const FooterColumn = ({
               href={item.href}
               target={opensExternally ? "_blank" : undefined}
               rel={opensExternally ? "noopener noreferrer" : undefined}
-              className="group flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
+              className="group flex min-h-11 items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               {item.label}
               {opensExternally && <ArrowUpRight className="h-3 w-3 opacity-0 transition-opacity group-hover:opacity-100" />}

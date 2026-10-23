@@ -1,13 +1,10 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import {
-  Activity,
   CalendarDays,
-  CheckCircle2,
   CircleDollarSign,
   Clock3,
   RefreshCw,
-  Sparkles,
-  Zap,
+  type LucideIcon,
 } from "lucide-react";
 import {
   Bar,
@@ -24,6 +21,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { UsageTotals } from "@/features/ai-usage/types";
 import { buildUsageModel, compact, datesBetween, shiftDate, shortDate, totalsForDays, type DailyUsage } from "@/features/ai-usage/data";
 import { EMPTY_AI_USAGE_RESPONSE, useAiUsage } from "@/features/ai-usage/useAiUsage";
+import cacheReuseIcon from "@/assets/brand/icons/light/cache-reuse.png";
+import governanceEvaluationInverseIcon from "@/assets/brand/icons/inverse/governance-evaluation.png";
+import informationRetrievalIcon from "@/assets/brand/icons/light/information-retrieval.png";
+import tokenThroughputIcon from "@/assets/brand/icons/light/token-throughput.png";
 
 function money(value: number) {
   return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value);
@@ -33,12 +34,15 @@ function cacheRate(totals: UsageTotals) {
   return totals.totalTokens ? (totals.cacheReadTokens / totals.totalTokens) * 100 : 0;
 }
 
-function StatCard({ icon: Icon, label, value, detail }: { icon: typeof Activity; label: string; value: string; detail: string }) {
+function StatCard({ icon: Icon, iconSrc, label, value, detail }: { icon?: LucideIcon; iconSrc?: string; label: string; value: string; detail: string }) {
   return (
     <Card className="relative overflow-hidden border-border/80 shadow-sm">
       <div className="absolute inset-x-0 top-0 h-1 hero-gradient" />
       <CardContent className="p-6">
-        <div className="flex items-center justify-between"><p className="text-sm font-medium text-muted-foreground">{label}</p><Icon className="h-4 w-4 text-primary" /></div>
+        <div className="flex items-center justify-between">
+          <p className="text-sm font-medium text-muted-foreground">{label}</p>
+          {iconSrc ? <img src={iconSrc} alt="" aria-hidden="true" className="h-6 w-6 object-contain" /> : Icon ? <Icon className="h-4 w-4 text-primary" /> : null}
+        </div>
         <p className="mt-4 text-3xl font-bold tracking-tight">{value}</p>
         <p className="mt-2 text-xs text-muted-foreground">{detail}</p>
       </CardContent>
@@ -165,7 +169,7 @@ export default function AiUsageDashboard() {
           <div className="container relative mx-auto px-4 py-14 lg:px-8 lg:py-20">
             <div className="grid items-end gap-10 lg:grid-cols-[1.2fr_0.8fr]">
               <div>
-                <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1.5 text-xs font-semibold text-primary"><Sparkles className="h-3.5 w-3.5" />PUBLIC AI ACTIVITY</div>
+                <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1.5 text-xs font-semibold text-primary"><img src={informationRetrievalIcon} alt="" aria-hidden="true" className="h-5 w-5 object-contain" />PUBLIC AI ACTIVITY</div>
                 <h1 className="max-w-3xl text-4xl font-bold leading-tight tracking-tight lg:text-6xl">How much AI does Jesse use?</h1>
                 <p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">A transparent daily record of Jesse's AI-assisted workflows—measured in tokens processed, fresh input/output, cache reuse, and estimated cost.</p>
               </div>
@@ -180,9 +184,9 @@ export default function AiUsageDashboard() {
 
         <section className="container mx-auto px-4 py-10 lg:px-8 lg:py-14">
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            <StatCard icon={Activity} label="Latest processed" value={model.latest.totalTokens ? compact(model.latest.totalTokens) : "—"} detail={`${compact(latestFresh)} fresh I/O · ${cacheRate(model.latest).toFixed(1)}% cache`} />
+            <StatCard iconSrc={cacheReuseIcon} label="Latest processed" value={model.latest.totalTokens ? compact(model.latest.totalTokens) : "—"} detail={`${compact(latestFresh)} fresh I/O · ${cacheRate(model.latest).toFixed(1)}% cache`} />
             <StatCard icon={CircleDollarSign} label="Latest estimated cost" value={model.latest.totalCost ? money(model.latest.totalCost) : "—"} detail={`Observed on ${shortDate(model.latest.date)}`} />
-            <StatCard icon={Zap} label="This month processed" value={monthTotals.totalTokens ? compact(monthTotals.totalTokens) : "—"} detail="Across all connected sources" />
+            <StatCard iconSrc={tokenThroughputIcon} label="This month processed" value={monthTotals.totalTokens ? compact(monthTotals.totalTokens) : "—"} detail="Across all connected sources" />
             <StatCard icon={CircleDollarSign} label="This month estimated cost" value={monthTotals.totalCost ? money(monthTotals.totalCost) : "—"} detail="Based on ccusage model pricing" />
           </div>
 
@@ -198,7 +202,7 @@ export default function AiUsageDashboard() {
                 <div><p className="text-sm text-background/60">Total tokens processed</p><p className="mt-2 text-4xl font-bold">{model.yearTotals.totalTokens ? compact(model.yearTotals.totalTokens) : "—"}</p></div>
                 <div className="border-t border-background/15 pt-6"><p className="text-sm text-background/60">Total estimated cost</p><p className="mt-2 break-words text-3xl font-bold tabular-nums text-primary 2xl:text-4xl">{model.yearTotals.totalCost ? money(model.yearTotals.totalCost) : "—"}</p></div>
                 <div className="grid grid-cols-2 gap-5 border-t border-background/15 pt-6"><div><p className="text-xs text-background/50">Fresh input</p><p className="mt-1 text-xl font-semibold">{compact(model.yearTotals.inputTokens)}</p></div><div><p className="text-xs text-background/50">Generated output</p><p className="mt-1 text-xl font-semibold">{compact(model.yearTotals.outputTokens)}</p></div></div>
-                <div className="rounded-xl bg-background/10 p-4 text-sm leading-6 text-background/70"><CheckCircle2 className="mb-2 h-4 w-4 text-primary" />Only usage metadata is uploaded. Machine-level details remain private; the public API publishes aggregates.</div>
+                <div className="rounded-xl bg-background/10 p-4 text-sm leading-6 text-background/70"><img src={governanceEvaluationInverseIcon} alt="" aria-hidden="true" className="mb-2 h-7 w-7 object-contain" />Only usage metadata is uploaded. Machine-level details remain private; the public API publishes aggregates.</div>
               </CardContent>
             </Card>
           </div>

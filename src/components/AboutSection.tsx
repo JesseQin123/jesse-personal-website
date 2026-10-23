@@ -5,9 +5,9 @@ const AboutSection = () => (
     <div className="container mx-auto px-4 lg:px-8">
       <div className="grid gap-8 border-y border-border py-10 lg:grid-cols-[0.55fr_1.45fr] lg:gap-16 lg:py-14">
         <div>
-          <p className="text-sm font-medium uppercase tracking-wider text-primary">About</p>
+          <p className="text-sm font-semibold uppercase tracking-wider text-brand-dark">About</p>
           <div className="mt-5 flex items-center gap-2 text-sm text-muted-foreground">
-            <MapPin className="h-4 w-4 text-primary" /> New York City
+            <MapPin className="h-4 w-4 text-brand-dark" /> New York City
           </div>
         </div>
         <div>
@@ -25,7 +25,7 @@ const AboutSection = () => (
             href="https://jesse-qin.medium.com/"
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-6 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-foreground underline decoration-primary/40 underline-offset-4 transition-colors hover:text-primary"
+            className="mt-6 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-brand-dark underline decoration-brand-dark/30 underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             Read Jesse&apos;s writing <ArrowUpRight className="h-4 w-4" />
           </a>

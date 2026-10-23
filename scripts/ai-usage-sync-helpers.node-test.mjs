@@ -25,3 +25,4 @@ test("day comparison still detects a changed token total", () => {
 
   assert.equal(sameUsageDay(left, right), false);
 });
+

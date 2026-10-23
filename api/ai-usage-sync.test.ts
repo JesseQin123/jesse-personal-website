@@ -158,3 +158,4 @@ describe("AI usage sync contract", () => {
     expect(result.body).toMatchObject({ machineId: "jesse-mbp", schemaVersion: 1 });
   });
 });
+

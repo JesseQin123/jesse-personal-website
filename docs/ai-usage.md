@@ -68,3 +68,4 @@ For every additional computer:
 Add `--dry-run` to inspect the scan without uploading.
 
 Add `--output=/path/to/payload.json` to write the incremental API payload for inspection. The file is created with owner-only permissions because it contains machine-level usage metadata. Upload through `/api/ai-usage-sync`; do not write directly to Blob because direct writes bypass source binding, merge protection, and historical sanity checks.
+

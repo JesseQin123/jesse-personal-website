@@ -28,7 +28,7 @@ export type MachineUsageSnapshot = {
   machineLabel: string;
   timezone: string;
   trackingStartedOn: string;
-  confirmZeroFrom: string;
+  confirmZeroFrom?: string;
   reportedThrough: string;
   lastSyncedAt: string;
   ccusageVersion: string;

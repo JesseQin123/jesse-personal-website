@@ -103,3 +103,4 @@ export function dayStatus(day?: MachineUsageDay) {
   if (day.status === "provisional") return "provisional" as const;
   return "reported" as const;
 }
+

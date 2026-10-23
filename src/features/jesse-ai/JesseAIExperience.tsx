@@ -1,5 +1,5 @@
 import { ConversationProvider, useConversation } from "@elevenlabs/react";
-import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, KeyboardEvent, useCallback, useEffect, useRef, useState } from "react";
 import {
   ArrowUp,
   ChevronRight,
@@ -41,11 +41,17 @@ const JesseAIExperienceContent = () => {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([INITIAL_MESSAGE]);
   const [isThinking, setIsThinking] = useState(false);
+  const [hasLeftHero, setHasLeftHero] = useState(false);
+  const [isCompactTrigger, setIsCompactTrigger] = useState(true);
   const [voiceLanguage, setVoiceLanguage] = useState<VoiceLanguage>("en");
   const [voiceError, setVoiceError] = useState<string | null>(null);
   const messageId = useRef(1);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const responseTimerRef = useRef<number>();
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const openerRef = useRef<HTMLElement | null>(null);
+  const dialogRef = useRef<HTMLElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
   const conversation = useConversation({
     onConnect: () => setVoiceError(null),
     onDisconnect: (details) => {
@@ -70,9 +76,40 @@ const JesseAIExperienceContent = () => {
   });
   const endVoiceSession = conversation.endSession;
 
+  const open = useCallback((opener?: HTMLElement | null) => {
+    openerRef.current = opener
+      ?? (document.activeElement instanceof HTMLElement ? document.activeElement : null)
+      ?? triggerRef.current;
+    setIsOpen(true);
+  }, []);
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView?.({ behavior: "smooth" });
   }, [messages, isThinking]);
+
+  useEffect(() => {
+    const openFromPage = (event: Event) => open((event as CustomEvent<{ opener?: HTMLElement }>).detail?.opener);
+    window.addEventListener("open-jesse-ai", openFromPage);
+    return () => window.removeEventListener("open-jesse-ai", openFromPage);
+  }, [open]);
+
+  useEffect(() => {
+    const updateTriggerVisibility = () => {
+      const isCompact = typeof window.matchMedia === "function"
+        && window.matchMedia("(max-width: 1023px), (max-height: 600px)").matches;
+      const hero = document.querySelector<HTMLElement>("[data-jesse-hero]");
+      setIsCompactTrigger(isCompact);
+      setHasLeftHero(!isCompact || !hero || hero.getBoundingClientRect().bottom <= window.innerHeight - 80);
+    };
+
+    updateTriggerVisibility();
+    window.addEventListener("scroll", updateTriggerVisibility, { passive: true });
+    window.addEventListener("resize", updateTriggerVisibility);
+    return () => {
+      window.removeEventListener("scroll", updateTriggerVisibility);
+      window.removeEventListener("resize", updateTriggerVisibility);
+    };
+  }, []);
 
   useEffect(
     () => () => {
@@ -82,19 +119,59 @@ const JesseAIExperienceContent = () => {
     [endVoiceSession],
   );
 
-  const cancelPendingAnswer = () => {
+  const cancelPendingAnswer = useCallback(() => {
     if (responseTimerRef.current) {
       window.clearTimeout(responseTimerRef.current);
       responseTimerRef.current = undefined;
     }
     setIsThinking(false);
-  };
+  }, []);
 
-  const close = () => {
+  const close = useCallback(() => {
     cancelPendingAnswer();
-    conversation.endSession();
+    endVoiceSession();
     setIsOpen(false);
-  };
+    const restoreFocus = () => (openerRef.current ?? triggerRef.current)?.focus();
+    if (typeof window.requestAnimationFrame === "function") window.requestAnimationFrame(restoreFocus);
+    else restoreFocus();
+  }, [cancelPendingAnswer, endVoiceSession]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const focusCloseButton = () => closeButtonRef.current?.focus();
+    if (typeof window.requestAnimationFrame === "function") window.requestAnimationFrame(focusCloseButton);
+    else focusCloseButton();
+
+    const manageDialogKeyboard = (event: globalThis.KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        close();
+        return;
+      }
+
+      if (event.key !== "Tab" || !dialogRef.current) return;
+      const focusable = Array.from(
+        dialogRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        ),
+      ).filter((element) => !element.hasAttribute("hidden"));
+      if (!focusable.length) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    window.addEventListener("keydown", manageDialogKeyboard);
+    return () => window.removeEventListener("keydown", manageDialogKeyboard);
+  }, [close, isOpen]);
 
   const ask = (rawQuestion: string) => {
     const question = rawQuestion.trim();
@@ -209,24 +286,31 @@ const JesseAIExperienceContent = () => {
         : "Live · listening"
       : conversation.status === "connecting"
         ? "Connecting securely…"
-        : conversation.status === "disconnecting"
-          ? "Ending conversation…"
-          : "ElevenLabs live agent";
+        : "ElevenLabs live agent";
 
   return (
     <div className="fixed bottom-0 right-0 z-[80] pointer-events-none">
       {!isOpen && (
         <button
           type="button"
+          ref={triggerRef}
           aria-label="Talk to Jesse AI"
-          onClick={() => setIsOpen(true)}
-          className="group pointer-events-auto fixed bottom-4 right-4 flex h-14 w-14 items-center justify-center rounded-full border border-white/20 bg-neutral-950 p-1.5 text-white shadow-2xl shadow-orange-500/20 transition hover:-translate-y-1 hover:border-primary/60 sm:bottom-7 sm:right-7 sm:h-auto sm:w-auto sm:gap-3 sm:py-2 sm:pl-2 sm:pr-4"
+          aria-haspopup="dialog"
+          onClick={() => {
+            openerRef.current = null;
+            setIsOpen(true);
+          }}
+          className={cn(
+            "group pointer-events-auto fixed bottom-[max(16px,env(safe-area-inset-bottom))] right-4 h-[52px] w-[52px] items-center justify-center rounded-full border border-white/20 bg-neutral-950 p-1.5 text-white shadow-2xl shadow-orange-500/20 transition hover:-translate-y-1 hover:border-primary/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-300 focus-visible:ring-offset-2 motion-reduce:transform-none motion-reduce:transition-none",
+            hasLeftHero ? "flex" : "hidden",
+            !isCompactTrigger && "bottom-7 right-7 h-auto w-auto justify-start gap-3 py-2 pl-2 pr-4",
+          )}
         >
-          <span className="relative block h-11 w-11 overflow-hidden rounded-full ring-2 ring-primary/60 sm:h-12 sm:w-12">
+          <span className={cn("relative block h-10 w-10 shrink-0 overflow-hidden rounded-full ring-2 ring-primary/60", !isCompactTrigger && "h-12 w-12")}>
             <img src={profileImage} alt="" className="h-full w-full object-cover" />
             <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-neutral-950 bg-emerald-400" />
           </span>
-          <span className="hidden text-left sm:block">
+          <span className={cn("hidden text-left", !isCompactTrigger && "block")}>
             <span className="block text-[10px] font-semibold uppercase tracking-[0.18em] text-primary">Interactive AI</span>
             <span className="flex items-center gap-1 text-sm font-semibold">
               Talk to Jesse AI <ChevronRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" />
@@ -237,9 +321,11 @@ const JesseAIExperienceContent = () => {
 
       {isOpen && (
         <section
+          ref={dialogRef}
           role="dialog"
           aria-modal="true"
           aria-label="Jesse AI conversation"
+          tabIndex={-1}
           className="pointer-events-auto fixed inset-0 flex flex-col overflow-hidden bg-background shadow-2xl sm:inset-auto sm:bottom-5 sm:right-5 sm:h-[min(780px,calc(100vh-2.5rem))] sm:w-[460px] sm:rounded-[28px] sm:border sm:border-border/80"
         >
           <header className="flex items-center justify-between border-b border-white/10 bg-neutral-950 px-4 py-3 text-white">
@@ -257,10 +343,10 @@ const JesseAIExperienceContent = () => {
               </div>
             </div>
             <div className="flex items-center gap-1">
-              <button type="button" onClick={reset} aria-label="Reset conversation" className="rounded-full p-2 text-white/60 transition hover:bg-white/10 hover:text-white">
+              <button type="button" onClick={reset} aria-label="Reset conversation" className="flex h-11 w-11 items-center justify-center rounded-full text-white/60 transition hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-300">
                 <RotateCcw className="h-4 w-4" />
               </button>
-              <button type="button" onClick={close} aria-label="Close Jesse AI" className="rounded-full p-2 text-white/60 transition hover:bg-white/10 hover:text-white">
+              <button ref={closeButtonRef} type="button" onClick={close} aria-label="Close Jesse AI" className="flex h-11 w-11 items-center justify-center rounded-full text-white/60 transition hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-300">
                 <X className="h-5 w-5" />
               </button>
             </div>
@@ -273,14 +359,14 @@ const JesseAIExperienceContent = () => {
               <button
                 type="button"
                 onClick={() => selectMode("text")}
-                className={cn("flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition", mode === "text" ? "bg-neutral-950 text-white" : "text-muted-foreground hover:text-foreground")}
+                className={cn("flex min-h-11 items-center gap-1.5 rounded-full px-3 py-2 text-xs font-semibold transition", mode === "text" ? "bg-neutral-950 text-white" : "text-muted-foreground hover:text-foreground")}
               >
                 <MessageCircle className="h-3.5 w-3.5" /> Text
               </button>
               <button
                 type="button"
                 onClick={() => selectMode("voice")}
-                className={cn("flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition", mode === "voice" ? "bg-neutral-950 text-white" : "text-muted-foreground hover:text-foreground")}
+                className={cn("flex min-h-11 items-center gap-1.5 rounded-full px-3 py-2 text-xs font-semibold transition", mode === "voice" ? "bg-neutral-950 text-white" : "text-muted-foreground hover:text-foreground")}
               >
                 <Mic className="h-3.5 w-3.5" /> Voice
               </button>
@@ -303,7 +389,7 @@ const JesseAIExperienceContent = () => {
                   disabled={conversation.status !== "disconnected"}
                   onClick={() => setVoiceLanguage("en")}
                   className={cn(
-                    "rounded-full px-2 py-1 font-semibold transition disabled:cursor-not-allowed disabled:opacity-60",
+                    "min-h-11 rounded-full px-2 py-2 font-semibold transition disabled:cursor-not-allowed disabled:opacity-60",
                     voiceLanguage === "en" ? "bg-neutral-950 text-white" : "text-orange-950 hover:bg-orange-100",
                   )}
                 >
@@ -316,7 +402,7 @@ const JesseAIExperienceContent = () => {
                   disabled={conversation.status !== "disconnected"}
                   onClick={() => setVoiceLanguage("zh")}
                   className={cn(
-                    "rounded-full px-2 py-1 font-semibold transition disabled:cursor-not-allowed disabled:opacity-60",
+                    "min-h-11 rounded-full px-2 py-2 font-semibold transition disabled:cursor-not-allowed disabled:opacity-60",
                     voiceLanguage === "zh" ? "bg-neutral-950 text-white" : "text-orange-950 hover:bg-orange-100",
                   )}
                 >
@@ -342,7 +428,7 @@ const JesseAIExperienceContent = () => {
                             key={followUp}
                             type="button"
                             onClick={() => ask(followUp)}
-                            className="rounded-full border border-primary/20 bg-orange-50 px-2.5 py-1 text-left text-[11px] font-medium text-orange-950 transition hover:border-primary/50"
+                            className="min-h-11 rounded-full border border-primary/20 bg-orange-50 px-3 py-2 text-left text-[11px] font-medium text-orange-950 transition hover:border-primary/50"
                           >
                             {followUp}
                           </button>
@@ -362,7 +448,7 @@ const JesseAIExperienceContent = () => {
               {messages.length === 1 && (
                 <div className="grid gap-2 pt-1">
                   {STARTER_QUESTIONS.map((question) => (
-                    <button key={question} type="button" onClick={() => ask(question)} className="group flex items-center justify-between rounded-xl border bg-card px-3 py-2.5 text-left text-xs font-medium transition hover:border-primary/50 hover:bg-orange-50">
+                    <button key={question} type="button" onClick={() => ask(question)} className="group flex min-h-11 items-center justify-between rounded-xl border bg-card px-3 py-2.5 text-left text-xs font-medium transition hover:border-primary/50 hover:bg-orange-50">
                       {question}
                       <ArrowUp className="h-3.5 w-3.5 rotate-45 text-muted-foreground transition group-hover:text-primary" />
                     </button>
@@ -381,8 +467,7 @@ const JesseAIExperienceContent = () => {
                 type="button"
                 onClick={toggleVoiceConversation}
                 aria-label={conversation.status === "connected" ? "End voice conversation" : "Start voice conversation"}
-                disabled={conversation.status === "disconnecting"}
-                className={cn("mb-2 flex w-full items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold transition disabled:cursor-wait disabled:opacity-60", conversation.status === "connected" ? "bg-red-500 text-white" : "bg-neutral-950 text-white hover:bg-neutral-800")}
+                className={cn("mb-2 flex w-full items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold transition", conversation.status === "connected" ? "bg-red-500 text-white" : "bg-neutral-950 text-white hover:bg-neutral-800")}
               >
                 {conversation.status === "connected" ? (
                   <><PhoneOff className="h-4 w-4" /> End voice conversation</>
@@ -402,13 +487,13 @@ const JesseAIExperienceContent = () => {
                 onKeyDown={handleComposerKeyDown}
                 placeholder={mode === "voice" ? "Or type your question…" : "Ask Jesse AI anything…"}
                 rows={1}
-                className="max-h-24 min-h-9 flex-1 resize-none bg-transparent px-2 py-2 text-sm outline-none placeholder:text-muted-foreground/70"
+                className="max-h-24 min-h-11 flex-1 resize-none bg-transparent px-2 py-2 text-base outline-none placeholder:text-muted-foreground/70"
               />
               <button
                 type="submit"
                 aria-label="Send message"
                 disabled={!input.trim() || isThinking}
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-35"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-35"
               >
                 <ArrowUp className="h-4 w-4" />
               </button>

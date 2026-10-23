@@ -128,3 +128,4 @@ describe("public AI usage aggregate", () => {
     expect(result.body).toEqual({ error: "Aggregate baseline unavailable" });
   });
 });
+

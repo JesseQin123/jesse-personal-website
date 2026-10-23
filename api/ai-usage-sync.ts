@@ -178,3 +178,4 @@ export default async function handler(request: ApiRequest, response: ApiResponse
     daysStored: storedSnapshot.days.length,
   });
 }
+

@@ -65,3 +65,4 @@ test("a stale upload may backfill but cannot overwrite an existing machine-day",
   ]);
   assert.equal(result.acceptedDays, 1);
 });
+
