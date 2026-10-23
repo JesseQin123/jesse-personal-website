@@ -2,7 +2,7 @@ export const recruiterFacts = {
   currentRole: {
     title: "Senior Member of Technical Staff",
     organization: "Kamiwaza",
-    period: "Jul 2025–Present",
+    period: "Jul 2025–2026",
     summary: "Enterprise AI infrastructure and product engineering",
   },
   toolbox: {
@@ -54,7 +54,7 @@ export const recruiterCaseStudies: RecruiterCaseStudy[] = [
     slug: "kamiwaza-ai",
     category: "Enterprise AI infrastructure",
     title: "Kamiwaza AI",
-    status: `Current role · ${recruiterFacts.currentRole.period}`,
+    status: `Previous role · ${recruiterFacts.currentRole.period}`,
     problem:
       "Organizations need to deploy and govern AI around distributed data and real workflows without losing control of security, context, or product usability.",
     role:

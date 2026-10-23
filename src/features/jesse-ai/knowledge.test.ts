@@ -19,10 +19,11 @@ describe("answerJesseQuestion", () => {
     expect(result.answer).toContain("Solo Unicorn Club");
   });
 
-  it("states Jesse's current role at Kamiwaza", () => {
+  it("states Jesse founded Solo Unicorn Lab and previously worked at Kamiwaza", () => {
     const result = answerJesseQuestion("What is Jesse's role at Kamiwaza?");
 
     expect(result.kind).toBe("grounded");
+    expect(result.answer).toContain("founder of Solo Unicorn Lab");
     expect(result.answer).toContain("Senior Member of Technical Staff at Kamiwaza");
   });
 
