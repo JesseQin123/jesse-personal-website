@@ -11,8 +11,9 @@ const HomeClosing = () => (
   <section
     id="contact"
     aria-labelledby="closing-heading"
-    className="bg-white px-5 pb-10 pt-24 font-hero text-[#080808] sm:px-[8vw] sm:pt-32"
+    className="bg-white pb-10 pt-24 font-hero text-[#080808] sm:pt-32"
   >
+    <div className="mx-auto w-full max-w-[1080px] px-5 sm:px-10">
     <div className="max-w-[34rem]">
       <h2 id="closing-heading" className="text-[36px] font-medium leading-[1.05] tracking-[-0.02em] sm:text-[48px]">
         Building context systems for people and AI agents
@@ -37,6 +38,7 @@ const HomeClosing = () => (
     </div>
 
     <p className="mt-28 text-[14px] text-[#8A8792] sm:mt-40">© {new Date().getFullYear()} Jesse Qin</p>
+    </div>
   </section>
 );
 
